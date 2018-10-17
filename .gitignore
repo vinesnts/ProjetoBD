@@ -1,7 +1,7 @@
-/build
 /dist
-/nbproject
+/build
+# /nbproject necessario pra abrir no NetBeans
 /test
-*.xml
-*.jar
+build.xml
 *.mf
+*.class

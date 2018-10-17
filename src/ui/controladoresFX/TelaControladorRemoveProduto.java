@@ -59,7 +59,7 @@ public class TelaControladorRemoveProduto implements Initializable {
 		} else {
 			boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
 					"Tem certeza que deseja remover o produto?",
-					"Todas as informações dele serão perdidas");
+					"Todas as informacaos dele serao perdidas");
 			if (confirmacao) {
 				try {
 					limparLabels();

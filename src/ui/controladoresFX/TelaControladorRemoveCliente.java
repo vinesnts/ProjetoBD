@@ -48,7 +48,7 @@ public class TelaControladorRemoveCliente {
 		} else {
 			boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
 					"Tem certeza que deseja remover o cliente?",
-					"Todas as informações dele serão perdidas");
+					"Todas as informacoes dele serao perdidas");
 			if (confirmacao) {
 				try {
 					limparLabels();

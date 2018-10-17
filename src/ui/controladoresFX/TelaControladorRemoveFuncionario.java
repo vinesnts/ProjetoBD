@@ -67,8 +67,8 @@ public class TelaControladorRemoveFuncionario implements Initializable {
 
 		} else {
 			boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
-					"Tem certeza que deseja remover o funcionário?",
-					"Todas as informações dele serão perdidas");
+					"Tem certeza que deseja remover o funcionario?",
+					"Todas as informaï¿½ï¿½es dele serao perdidas");
 			if (confirmacao) {
 				try {
 					fachada.getFuncionario(txCampoMatricula.getText());
