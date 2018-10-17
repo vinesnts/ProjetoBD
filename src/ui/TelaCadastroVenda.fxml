@@ -86,17 +86,7 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" layoutX="27.0" layoutY="123.0" prefHeight="40.0" prefWidth="554.0">
          <children>
-            <Label fx:id="labelMsgRemoverProduto" prefHeight="40.0" prefWidth="140.0" textFill="#e81010" />
-            <Label fx:id="labelMsgProduto" prefHeight="40.0" prefWidth="140.0" textFill="#e81010" />
-            <Label fx:id="labelMsgQuantidade" alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="140.0" textFill="#e81010" />
-            <Button fx:id="BotaoListar" mnemonicParsing="false" onAction="#ListarProdutosAdicionados" prefHeight="40.0" prefWidth="138.0" text="Listar Produtos">
-               <effect>
-                  <Glow />
-               </effect>
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
+            <Label fx:id="labelMsg" prefHeight="40.0" prefWidth="400.0" />
          </children>
       </HBox>
       <GridPane alignment="CENTER" layoutX="28.0" layoutY="168.0" prefHeight="146.0" prefWidth="274.0">
@@ -147,7 +137,7 @@
             <Label fx:id="labelMsgCliente" prefHeight="40.0" prefWidth="193.0" textFill="#e81010" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <ListView fx:id="listProdutos" layoutX="308.0" layoutY="173.0" onMouseClicked="#carregarListProdutos" prefHeight="182.0" prefWidth="274.0">
+      <ListView fx:id="listProdutos" layoutX="308.0" layoutY="173.0" prefHeight="182.0" prefWidth="274.0">
          <effect>
             <InnerShadow />
          </effect>
@@ -160,7 +150,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <DatePicker fx:id="data" layoutX="372.0" layoutY="369.0" onAction="#seletorDeData" prefHeight="40.0" prefWidth="210.0">
+      <DatePicker fx:id="data" layoutX="372.0" layoutY="369.0" prefHeight="40.0" prefWidth="210.0">
          <effect>
             <InnerShadow />
          </effect></DatePicker>

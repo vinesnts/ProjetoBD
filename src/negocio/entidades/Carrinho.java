@@ -40,7 +40,7 @@ public class Carrinho implements Comparable<Carrinho>, Serializable{
 
     @Override
     public String toString() {
-        return "Quant: " + quantidade + "\t" + produto.toString();
+        return "Quant: " + quantidade + " | " + produto.toString();
     }
 
     @Override

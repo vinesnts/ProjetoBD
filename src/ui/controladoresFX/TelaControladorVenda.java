@@ -12,11 +12,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -27,14 +28,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import negocio.entidades.Carrinho;
 import negocio.entidades.Cliente;
 import negocio.entidades.Funcionario;
 import negocio.entidades.Produto;
 import negocio.excecoes.DataInvalidaException;
 import negocio.excecoes.ClienteInexistenteException;
-import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.ProdutoInexistenteException;
 import negocio.excecoes.ProdutosInsuficientesException;
 import negocio.excecoes.QuantidadeInsuficienteException;
@@ -60,8 +59,6 @@ public class TelaControladorVenda implements Initializable {
     private Button BotaoPesuisarCliente;
     @FXML
     private TextField txCampoQuantidade;
-    @FXML
-    private Button BotaoListar;
     @FXML
     private TextArea txAreaInformativa;
     @FXML
@@ -89,21 +86,17 @@ public class TelaControladorVenda implements Initializable {
     @FXML
     private Label labelMsgDesconto;
     @FXML
-    private Label labelMsgProduto;
-    @FXML
-    private Label labelMsgQuantidade;
-    @FXML
     private Label labelMsgData;
     @FXML
     private Label labelMsgCarrinho;
-    @FXML
-    private Label labelMsgRemoverProduto;
     @FXML
     private Button botaoRemoverProduto;
     @FXML
     private Label labelMsgCarrinho1;
     @FXML
     private Button botaoAplicarDesconto;
+    @FXML
+    private Label labelMsg;
 
     /**
      * Initializes the controller class.
@@ -113,7 +106,7 @@ public class TelaControladorVenda implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	fachada = Fachada.getInstance();
+        fachada = Fachada.getInstance();
     }
 
     @FXML
@@ -130,30 +123,35 @@ public class TelaControladorVenda implements Initializable {
             }
             if (fachada.getCarrinhos() == null) {
                 throw new ProdutosInsuficientesException();
-            }else if(fachada.getCarrinhos().isEmpty()){
-                throw  new ProdutosInsuficientesException();
+            } else if (fachada.getCarrinhos().isEmpty()) {
+                throw new ProdutosInsuficientesException();
             }
-            
+
             fachada.adicionarVenda(dataVenda, cliente, funcionario, fachada.getCarrinhos());
             desconto = Integer.parseInt(txCampoDesconto.getText()) / 100.0;
             if (desconto < 0 || desconto > 0.15) {
                 throw new NumberFormatException();
             }
-            if(cliente.getDataAniversario().equals(dataVenda)){
-                desconto+= 0.05;
+            if (cliente.getDataAniversario().equals(dataVenda)) {
+                desconto += 0.05;
             }
-            txAreaInformativa.setText("Valor Total da venda: \t" + fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() + "\nDesconto: " + (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() * (desconto)) + "\nValor Com Desconto: " + (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() - (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() * (desconto))));
+            txAreaInformativa.setText("Valor Total da venda: \t" + fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda()
+                    + "\nDesconto: " + (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() * (desconto))
+                    + "\nValor Com Desconto: " + (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() - (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() * (desconto))));
             limparLabels();
             limparCampos();
             fachada.getCarrinhos().clear();
+            listarProdutosAdicionados();
         } catch (ClienteInexistenteException error) {
             labelMsgCliente.setText(error.getMessage());
         } catch (NumberFormatException error) {
-            labelMsgDesconto.setText("Desconto invalido.");
+            labelMsgDesconto.setText("Desconto invalido");
         } catch (ProdutosInsuficientesException error) {
             labelMsgCarrinho.setText(error.getMessage());
         } catch (DataInvalidaException error) {
             labelMsgData.setText(error.getMessage());
+        } catch (ProdutoInexistenteException ex) {
+            labelMsg.setText(ex.getMessage());
         }
 
     }
@@ -161,18 +159,18 @@ public class TelaControladorVenda implements Initializable {
     @FXML
     private void botaoCancelar(ActionEvent event) throws IOException {
 //        anchorPane.setVisible(false);
-    	((Node) event.getSource()).getScene().getWindow().hide();
+        ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
     @FXML
     private void pesquisarProdutos(ActionEvent event) {
         try {
             Produto produto = fachada.buscarProdutoId(Integer.parseInt(txCampoProduto.getText()));
-            labelMsgProduto.setText("Produto " + produto.getNome() + " encontrado.");
+            labelMsg.setText("Produto " + produto.getNome() + " encontrado");
         } catch (ProdutoInexistenteException erro) {
-            labelMsgProduto.setText(erro.getMessage());
+            labelMsg.setText(erro.getMessage());
         } catch (NumberFormatException error) {
-            labelMsgProduto.setText("Produto não existe!");
+            labelMsg.setText("Produto não existe!");
         }
     }
 
@@ -189,12 +187,11 @@ public class TelaControladorVenda implements Initializable {
         }
     }
 
-
-    @FXML
-    private void ListarProdutosAdicionados(ActionEvent event) throws ProdutoInexistenteException {
+    private void listarProdutosAdicionados() throws ProdutoInexistenteException {
         listProdutos.setItems(null);
         lista = lista = new ArrayList();
-        limparCampos();
+        txCampoProduto.clear();
+        txCampoQuantidade.clear();
         limparLabels();
         double desconto1;
         int x = 0;
@@ -210,40 +207,32 @@ public class TelaControladorVenda implements Initializable {
                 throw new QuantidadeInsuficienteException();
             }
         } catch (QuantidadeInsuficienteException error) {
+            System.out.println("Carrinho limpo");
         } catch (NumberFormatException error) {
-            labelMsgDesconto.setText("Desconto Invalido.");
+            labelMsgDesconto.setText("Desconto invalido");
         }
     }
 
     @FXML
-    private void adicionarProdutos(ActionEvent event
-    ) {
-
+    private void adicionarProdutos(ActionEvent event) {
         int quantidade;
-        labelMsgProduto.setText("");
-        labelMsgQuantidade.setText("");
+        labelMsg.setText("");
         try {
             quantidade = Integer.parseInt(txCampoQuantidade.getText());
             if (quantidade < 1) {
                 throw new QuantidadeInsuficienteException();
             }
             Produto produto = fachada.buscarProdutoId(Integer.parseInt(txCampoProduto.getText()));
-            txCampoProduto.clear();
-            txCampoQuantidade.clear();
             limparLabels();
-            labelMsgProduto.setText("Produto Adicionado.");
+            labelMsg.setText("Produto adicionado");
             if (produto != null) {
                 fachada.adicionarCarrinho(produto, quantidade);
-            } else {
-
             }
-        } catch (ProdutoInexistenteException error) {
-            labelMsgProduto.setText(error.getMessage());
+            listarProdutosAdicionados();
+        } catch (ProdutoInexistenteException | QuantidadeInsuficienteException error) {
+            labelMsg.setText(error.getMessage());
         } catch (NumberFormatException error) {
-
-        } catch (QuantidadeInsuficienteException error) {
-            labelMsgQuantidade.setText(error.getMessage());
-
+            labelMsg.setText("Digite apenas números");
         }
     }
 
@@ -252,8 +241,7 @@ public class TelaControladorVenda implements Initializable {
     ) {
         Carrinho carrinho;
         boolean existe = false;
-        labelMsgProduto.setText("");
-        labelMsgQuantidade.setText("");
+        labelMsg.setText("");
         try {
             if (fachada.getCarrinhos().size() > 0) {
                 for (int i = 0; i < fachada.getCarrinhos().size(); i++) {
@@ -261,9 +249,8 @@ public class TelaControladorVenda implements Initializable {
                         carrinho = new Carrinho(fachada.getCarrinhos().get(i).getProduto(),
                                 Integer.parseInt(txCampoQuantidade.getText()));
                         fachada.removerCarrinho(carrinho);
-                        labelMsgRemoverProduto.setText("Produto Removido");
-                        limparCampos();
-                        //  limparLabels();
+                        labelMsg.setText("Produto Removido");
+                        listarProdutosAdicionados();
                     }
                 }
                 if (existe == true) {
@@ -273,22 +260,13 @@ public class TelaControladorVenda implements Initializable {
             } else {
                 throw new ProdutosInsuficientesException();
             }
-        } catch (ProdutosInsuficientesException | ProdutoInexistenteException error) {
-            labelMsgRemoverProduto.setText(error.getMessage());
-        } catch (QuantidadeInsuficienteException error) {
-            labelMsgQuantidade.setText(error.getMessage());
-
+        } catch (ProdutosInsuficientesException |
+                ProdutoInexistenteException |
+                QuantidadeInsuficienteException error) {
+            labelMsg.setText(error.getMessage());
         } catch (NumberFormatException error) {
-            labelMsgQuantidade.setText("Quantidade Insuficientes.");
+            labelMsg.setText("Quantidade insuficiente");
         }
-    }
-
-    @FXML
-    private void seletorDeData(ActionEvent event) {
-    }
-
-    @FXML
-    private void carregarListProdutos(MouseEvent event) {
     }
 
     private void limparCampos() {
@@ -304,15 +282,8 @@ public class TelaControladorVenda implements Initializable {
         labelMsgDesconto.setText("");
         labelMsgCliente.setText("");
         labelMsgData.setText("");
-        labelMsgProduto.setText("");
-        labelMsgQuantidade.setText("");
+        labelMsg.setText("");
         labelMsgCarrinho.setText("");
-        labelMsgRemoverProduto.setText("");
-        labelMsgRemoverProduto.setText("");
-
-    }
-
-    void carregarlista() {
     }
 
     public double calcularValorCarrinho() {

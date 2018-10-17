@@ -12,7 +12,7 @@ package negocio.excecoes;
 public class QuantidadeInsuficienteException extends Exception {
 
     public QuantidadeInsuficienteException() {
-        super("Quantidade Insuficiente.");
+        super("Quantidade insuficiente");
     }
 
     public QuantidadeInsuficienteException(String msg) {
