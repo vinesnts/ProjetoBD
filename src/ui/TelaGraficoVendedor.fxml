@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="522.0" prefWidth="616.0" stylesheets="@tema.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorGraficoVendedor">
+   <children>
+      <Label alignment="CENTER" layoutX="207.0" layoutY="14.0" prefHeight="25.0" prefWidth="236.0" text="GRÁFICO FUNCIONÁRIO" textAlignment="CENTER">
+         <effect>
+            <Glow />
+         </effect>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="anchorPaneGrafico" layoutX="58.0" layoutY="227.0" prefHeight="248.0" prefWidth="500.0" />
+      <GridPane layoutX="58.0" layoutY="70.0" prefHeight="118.0" prefWidth="500.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="labelMatricula" prefHeight="35.0" prefWidth="106.0" text="Matrícula:">
+               <effect>
+                  <Glow />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txCampoMatricula" editable="false" prefHeight="37.0" prefWidth="148.0" GridPane.columnIndex="1">
+               <effect>
+                  <InnerShadow />
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+            <Button fx:id="botaoCancelar" mnemonicParsing="false" onAction="#acaoCancelarFuncionario" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <effect>
+                  <InnerShadow />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="botaoMostrarGrafico" mnemonicParsing="false" onAction="#acaoMostrarGrafico" text="Mostrar Grafico" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <effect>
+                  <InnerShadow />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
