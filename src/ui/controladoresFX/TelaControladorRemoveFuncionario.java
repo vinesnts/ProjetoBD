@@ -16,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import negocio.excecoes.FuncionarioInexistenteException;
 
 /**
@@ -41,7 +40,7 @@ public class TelaControladorRemoveFuncionario implements Initializable {
     @FXML
     private Label labelMsgErro;
 
-    Fachada fachada;
+    private Fachada fachada;
 
     /**
      * Initializes the controller class.
@@ -53,7 +52,6 @@ public class TelaControladorRemoveFuncionario implements Initializable {
 
     @FXML
     private void acaoCancelarFuncionario(ActionEvent event) {
-//        anchorPane.setVisible(false);
     	((Node) event.getSource()).getScene().getWindow().hide();
     }
 
@@ -68,7 +66,7 @@ public class TelaControladorRemoveFuncionario implements Initializable {
 		} else {
 			boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
 					"Tem certeza que deseja remover o funcionario?",
-					"Todas as informa��es dele serao perdidas");
+					"Todas as informacoes dele serao perdidas");
 			if (confirmacao) {
 				try {
 					fachada.getFuncionario(txCampoMatricula.getText());
@@ -82,8 +80,6 @@ public class TelaControladorRemoveFuncionario implements Initializable {
 					labelMsgErro.setText(error.getMessage());
 
 				}
-			} else {
-				// nada a fazer
 			}
 		}
 

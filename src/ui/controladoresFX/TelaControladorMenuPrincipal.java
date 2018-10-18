@@ -88,9 +88,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaCadastroCliente(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaCadastroCliente.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Cadastrar cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -102,9 +99,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaAtualizaCliente(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaAtualizaCliente.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Atualizar cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -116,9 +110,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaRemoverCliente(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaRemoveCliente.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
         Stage stage = new Stage();
         stage.setTitle("Remover cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -130,8 +121,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaCadastroFuncionario(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaCadastroFuncionario.fxml"));
-//        AnchorPane.getChildren().setAll(a);
         Stage stage = new Stage();
         stage.setTitle("Cadastrar funcion�rio");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -143,9 +132,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaAtualizarFun(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaAtualizaFuncionario.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
         Stage stage = new Stage();
         stage.setTitle("Atualizar funcion�rio");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -157,9 +143,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaRemoverFun(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaRemoveFuncionario.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
         Stage stage = new Stage();
         stage.setTitle("Remover funcion�rio");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -170,8 +153,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
     }
 
     private void redirecionaTelaCadastrarProduto(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaCadastroProduto.fxml"));
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Cadastrar produto");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -193,9 +174,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
     }
 
     private void redirecionaTelaRemoverProduto(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaRemoveProduto.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
         Stage stage = new Stage();
         stage.setTitle("Remover produto");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -207,8 +185,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaCadastroVendas(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaCadastroVenda.fxml"));
-//        AnchorPane.getChildren().setAll(a);
         Stage stage = new Stage();
         stage.setTitle("Nova venda");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -228,8 +204,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaTelaPeridoVendas(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaGraficoGerente.fxml"));
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Gr�fico gerente");
         stage.initModality(Modality.APPLICATION_MODAL);

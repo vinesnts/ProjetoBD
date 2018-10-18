@@ -49,7 +49,7 @@
                 <MenuItem fx:id="menuItemVendasPeriodo" mnemonicParsing="false" onAction="#redirecionaTelaPeridoVendas" text="Vendas por periodo" />
               </items>
             </MenuButton>
-            <TextField fx:id="campoFuncionario" editable="false" prefHeight="20.0" prefWidth="76.0" promptText="Pessoa logada" />
+            <TextField fx:id="campoFuncionario" editable="false" prefHeight="20.0" prefWidth="70.0" promptText="Pessoa logada" />
             <Button fx:id="botaoSair" mnemonicParsing="false" onAction="#redirecionaSaidaLogin" text="Sair">
                <font>
                   <Font name="System Bold" size="12.0" />

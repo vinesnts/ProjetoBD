@@ -65,8 +65,8 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
     @FXML
     private Label labelMsgErro;
 
-    private String tipo = "";
-    Fachada fachada;
+    private String tipoFuncionario;
+    private Fachada fachada;
 
     /**
      * Initializes the controller class.
@@ -74,22 +74,26 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	 fachada = Fachada.getInstance();
+         tipoFuncionario = "";
     }
 
     @FXML
     private void radionVendedor(ActionEvent event) {
-        this.tipo = "Vendedor";
+        this.tipoFuncionario = "Vendedor";
     }
 
     @FXML
     private void radionGerente(ActionEvent event) {
-        this.tipo = "Gerente";
+        this.tipoFuncionario = "Gerente";
     }
 
     @FXML
     private void acaoAtualizarFuncionario(ActionEvent event) {
         try {
-            if (txCampoCpf.getText().equals("") || txCampoNome.getText().equals("") || txCampoSenha.getText().equals("") || tipo.equals("")) {
+            if (txCampoCpf.getText().equals("") ||
+                    txCampoNome.getText().equals("") ||
+                    txCampoSenha.getText().equals("") ||
+                    tipoFuncionario.equals("")) {
                 limparLabels();
                 labelMsgErro.setText("Campo Inválido.");
             } else {
@@ -99,7 +103,7 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
                     funcionario.setNome(txCampoNome.getText());
                     funcionario.setCpf(txCampoCpf.getText());
                     funcionario.setSenha(txCampoSenha.getText());
-                    funcionario.setTipo(tipo);
+                    funcionario.setTipo(tipoFuncionario);
                     fachada.atualizarFuncionario(funcionario);
                     limparCampos();
                     limparLabels();
@@ -147,7 +151,7 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
         txCampoCpf.clear();
         txCampoMatricula.clear();
         txCampoSenha.clear();
-        tipo = "";
+        tipoFuncionario = "";
 
     }
 

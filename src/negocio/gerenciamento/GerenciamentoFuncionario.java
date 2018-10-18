@@ -39,11 +39,10 @@ public class GerenciamentoFuncionario {
      *
      * @param funcionario Verifica se o funcionario passado pelo parametro
      * existe, se sim lança esceção, caso não o cadastro é realizado
-     * @throws ClienteExistenteException
+     * @throws negocio.excecoes.FuncionarioExistenteException
      */
     public void adicionar(Funcionario funcionario) throws FuncionarioExistenteException {
-        boolean existe = repositorio.verificarExistencia(funcionario);
-        if (existe == true) {
+        if (repositorio.verificarExistencia(funcionario)) {
             throw new FuncionarioExistenteException();
         } else {
             repositorio.adicionar(funcionario);

@@ -90,8 +90,8 @@ public class Fachada {
     }
 
     //FUNCIONARIO
-    public void adicionarFuncionario(String nome, String CPF, String matricula, String tipo, String senha) throws FuncionarioExistenteException {
-        Funcionario funcionario = new Funcionario(nome, CPF, matricula, tipo, senha);
+    public void adicionarFuncionario(String nome, String CPF, String tipoFuncionario, String matricula, String senha) throws FuncionarioExistenteException {
+        Funcionario funcionario = new Funcionario(nome, CPF, matricula, tipoFuncionario, senha);
         funcionarios.adicionar(funcionario);
     }
 

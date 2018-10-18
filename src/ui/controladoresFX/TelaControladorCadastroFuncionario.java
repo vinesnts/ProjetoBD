@@ -29,13 +29,10 @@ public class TelaControladorCadastroFuncionario implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
-
     @FXML
     private TextField txCampoNome;
     @FXML
     private TextField txCampoCpf;
-    @FXML
-    private TextField txCampoMatricula;
     @FXML
     private PasswordField txCampoSenha;
     @FXML
@@ -46,7 +43,6 @@ public class TelaControladorCadastroFuncionario implements Initializable {
     private Label labelSenha;
     @FXML
     private Label labelTipo;
-
     @FXML
     private Label labelMatricula;
     @FXML
@@ -62,8 +58,8 @@ public class TelaControladorCadastroFuncionario implements Initializable {
     @FXML
     private Label labelMsgErro;
 
-    private String tipo = "";
-    Fachada fachada;
+    private String tipoFuncionario;
+    private Fachada fachada;
 
     /**
      * Initializes the controller class.
@@ -71,33 +67,41 @@ public class TelaControladorCadastroFuncionario implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	fachada = Fachada.getInstance();
+        tipoFuncionario = "";
     }
 
     @FXML
     private void radionGerente(ActionEvent event) {
-        this.tipo = "Gerente";
+        this.tipoFuncionario = "Gerente";
 
     }
 
     @FXML
     private void radionVendedor(ActionEvent event) {
         this.radionGerente.arm();
-        this.tipo = "Vendedor";
+        this.tipoFuncionario = "Vendedor";
     }
 
     @FXML
     private void acaoCadastrarFuncionario(ActionEvent event) {
         try {
             limparLabels();
-            if (txCampoNome.getText().equals("") || txCampoCpf.getText().equals("") || txCampoMatricula.getText().equals("")
-                    || txCampoSenha.getText().equals("") || tipo.equals("")) {
+            if (txCampoNome.getText().equals("") ||
+                    txCampoCpf.getText().equals("") ||
+                    txCampoSenha.getText().equals("") ||
+                    tipoFuncionario.equals("")) {
                 limparLabels();
                 labelMsgErro.setText("Campo Inválido.");
             } else {
-                fachada.adicionarFuncionario(txCampoNome.getText(), txCampoCpf.getText(), tipo, txCampoMatricula.getText(), txCampoSenha.getText());
+                String matricula = gerarMatricula(tipoFuncionario, txCampoCpf.getText());
+                fachada.adicionarFuncionario(txCampoNome.getText(),
+                        txCampoCpf.getText(),
+                        tipoFuncionario,
+                        matricula,
+                        txCampoSenha.getText());
                 limparCampos();
                 limparLabels();
-                labelMsg.setText("Funcionario Cadastrado.");
+                labelMsg.setText("Cadastrado com ID: " + matricula);
             }
         } catch (FuncionarioExistenteException e) {
             limparCampos();
@@ -105,21 +109,23 @@ public class TelaControladorCadastroFuncionario implements Initializable {
             labelMsgErro.setText(e.getMessage());
         }
     }
+    
+    private static String gerarMatricula(String tipoFuncionario, String cpf) {
+        if(tipoFuncionario.equals("Gerente")) return "G" + cpf;
+        else if(tipoFuncionario.equals("Vendedor")) return "V" + cpf;
+        return null;
+    }
 
     @FXML
     private void acaoCancelarFuncionario(ActionEvent event) {
-//        limparCampos();
-//        limparLabels();
-//        anchorPane.setVisible(false);
         ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
     private void limparCampos() {
         txCampoNome.clear();
         txCampoCpf.clear();
-        txCampoMatricula.clear();
         txCampoSenha.clear();
-        tipo = "";
+        tipoFuncionario = "";
 
     }
 

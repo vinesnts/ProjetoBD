@@ -93,14 +93,12 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public boolean verificarExistencia(Funcionario funcionario) {
-        boolean existe = false;
         for (int i = 0; i < funcionarios.size(); i++) {
             if (funcionarios.get(i).getMatricula().equals(funcionario.getMatricula())) {
-                existe = true;
+                return true;
             }
         }
-
-        return existe;
+        return false;
     }
 
     /**

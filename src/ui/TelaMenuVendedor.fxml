@@ -12,7 +12,7 @@
 
 <VBox fx:id="vboxMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="616.0" stylesheets="@tema.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorMenuVendedor">
    <children>
-      <ToolBar prefHeight="40.0" prefWidth="616.0" stylesheets="@tema_menus.css">
+      <ToolBar prefHeight="40.0" prefWidth="616.0" stylesheets="@tema_menus.css" VBox.vgrow="NEVER">
          <items>
             <MenuButton mnemonicParsing="false" prefHeight="20.0" text="Cliente">
               <items>
@@ -31,7 +31,7 @@
                 <MenuItem fx:id="menuItemMinhasVendas" mnemonicParsing="false" onAction="#redirecionaTelaGraficoVendedor" text="Minhas Vendas" />
               </items>
             </MenuButton>
-            <Separator opacity="0.0" prefHeight="27.0" prefWidth="243.0" />
+            <Separator opacity="0.0" prefHeight="27.0" prefWidth="235.0" />
             <TextField fx:id="campoVendedor" editable="false" prefHeight="27.0" prefWidth="95.0" />
             <Button fx:id="botaoSair" mnemonicParsing="false" onAction="#redirecionaSaidaLogin" text="Sair">
                <font>

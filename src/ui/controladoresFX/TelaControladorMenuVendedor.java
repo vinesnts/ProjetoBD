@@ -71,9 +71,6 @@ public class TelaControladorMenuVendedor implements Initializable {
 
     @FXML
     private void redirecionaTelaCadastroCliente(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaCadastroCliente.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Cadastrar cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -84,9 +81,6 @@ public class TelaControladorMenuVendedor implements Initializable {
 
     @FXML
     private void redirecionaTelaAtualizaCliente(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaAtualizaCliente.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Atualizar cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -97,9 +91,6 @@ public class TelaControladorMenuVendedor implements Initializable {
 
     @FXML
     private void redirecionaTelaRemoverCliente(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaRemoveCliente.fxml"));
-//        a.setVisible(true);
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Remover cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -111,8 +102,6 @@ public class TelaControladorMenuVendedor implements Initializable {
   
     @FXML
     private void redirecionaTelaCadastroVendas(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaCadastroVenda.fxml"));
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Nova venda");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -124,8 +113,6 @@ public class TelaControladorMenuVendedor implements Initializable {
     
     @FXML
     private void redirecionaTelaGraficoVendedor(ActionEvent event) throws IOException {
-//        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/ui/TelaGraficoVendedor.fxml"));
-//        AnchorPane.getChildren().setAll(a);
     	Stage stage = new Stage();
         stage.setTitle("Gr�fico vendedor");
         stage.initModality(Modality.APPLICATION_MODAL);

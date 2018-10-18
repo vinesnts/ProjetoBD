@@ -16,7 +16,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="522.0" prefWidth="616.0" stylesheets="@tema.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorCadastroFuncionario">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="32.0" prefHeight="21.0" prefWidth="150.0" text="FUNCIONÁRIOS" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="69.0" prefHeight="21.0" prefWidth="150.0" text="FUNCIONÁRIOS" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -24,13 +24,12 @@
             <Glow />
          </effect>
       </Label>
-      <GridPane layoutX="58.0" layoutY="82.0" prefHeight="408.0" prefWidth="500.0">
+      <GridPane layoutX="58.0" layoutY="119.0" prefHeight="335.0" prefWidth="500.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -63,15 +62,7 @@
                   <InnerShadow />
                </effect>
             </TextField>
-            <TextField fx:id="txCampoMatricula" prefHeight="40.0" prefWidth="375.0" promptText="Digite sua mátricula" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <effect>
-                  <InnerShadow />
-               </effect>
-            </TextField>
-            <PasswordField fx:id="txCampoSenha" prefHeight="40.0" prefWidth="375.0" promptText="Digite a senha" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <PasswordField fx:id="txCampoSenha" prefHeight="40.0" prefWidth="375.0" promptText="Digite a senha" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="19.0" />
                </font>
@@ -79,7 +70,7 @@
                   <InnerShadow />
                </effect>
             </PasswordField>
-            <RadioButton fx:id="radionGerente" mnemonicParsing="false" onAction="#radionGerente" text="Gerente" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <RadioButton fx:id="radionVendedor" mnemonicParsing="false" onAction="#radionVendedor" text="Vendedor" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                <font>
                   <Font size="20.0" />
                </font>
@@ -90,7 +81,7 @@
                   <ToggleGroup fx:id="funcionario" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="radionVendedor" mnemonicParsing="false" onAction="#radionVendedor" text="Vendedor" toggleGroup="$funcionario" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+            <RadioButton fx:id="radionGerente" mnemonicParsing="false" onAction="#radionGerente" text="Gerente" toggleGroup="$funcionario" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <font>
                   <Font size="20.0" />
                </font>
@@ -98,7 +89,7 @@
                   <InnerShadow />
                </effect>
             </RadioButton>
-            <Label fx:id="labelTipo" text="Tipo:" GridPane.rowIndex="4">
+            <Label fx:id="labelTipo" text="Tipo:" GridPane.rowIndex="3">
                <font>
                   <Font size="24.0" />
                </font>
@@ -114,7 +105,7 @@
                   <Glow />
                </effect>
             </Label>
-            <Label fx:id="labelMatricula" text="Matrícula:" GridPane.rowIndex="2">
+            <Label fx:id="labelSenha" text="Senha:" GridPane.rowIndex="2">
                <font>
                   <Font size="24.0" />
                </font>
@@ -122,15 +113,7 @@
                   <Glow />
                </effect>
             </Label>
-            <Label fx:id="labelSenha" text="Senha:" GridPane.rowIndex="3">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <effect>
-                  <Glow />
-               </effect>
-            </Label>
-            <Button fx:id="botaoCancelar" mnemonicParsing="false" onAction="#acaoCancelarFuncionario" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+            <Button fx:id="botaoCancelar" mnemonicParsing="false" onAction="#acaoCancelarFuncionario" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
                <effect>
                   <InnerShadow />
                </effect>
@@ -138,7 +121,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="botaoCadastrar" mnemonicParsing="false" onAction="#acaoCadastrarFuncionario" text="Cadastrar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+            <Button fx:id="botaoCadastrar" mnemonicParsing="false" onAction="#acaoCadastrarFuncionario" text="Cadastrar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <font>
                   <Font size="18.0" />
                </font>
@@ -146,8 +129,8 @@
                   <InnerShadow />
                </effect>
             </Button>
-            <Label fx:id="labelMsgErro" prefHeight="21.0" prefWidth="282.0" textFill="#e81010" GridPane.rowIndex="5" />
-            <Label fx:id="labelMsg" prefHeight="21.0" prefWidth="375.0" textFill="#044a28" GridPane.rowIndex="6">
+            <Label fx:id="labelMsgErro" prefHeight="21.0" prefWidth="282.0" textFill="#e81010" GridPane.rowIndex="4" />
+            <Label fx:id="labelMsg" prefHeight="21.0" prefWidth="375.0" textFill="#044a28" GridPane.rowIndex="5">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
