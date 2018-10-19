@@ -22,7 +22,6 @@ import negocio.gerenciamento.GerenciamentoVenda;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import negocio.entidades.Carrinho;
-import negocio.entidades.Pessoa;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.QuantidadeInsuficienteException;
@@ -90,8 +89,8 @@ public class Fachada {
     }
 
     //FUNCIONARIO
-    public void adicionarFuncionario(String nome, String CPF, String tipoFuncionario, String matricula, String senha) throws FuncionarioExistenteException {
-        Funcionario funcionario = new Funcionario(nome, CPF, matricula, tipoFuncionario, senha);
+    public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException {
+        Funcionario funcionario = new Funcionario(nome, CPF, eGerente, matricula, senha);
         funcionarios.adicionar(funcionario);
     }
 

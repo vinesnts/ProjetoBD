@@ -58,7 +58,7 @@ public class TelaControladorCadastroFuncionario implements Initializable {
     @FXML
     private Label labelMsgErro;
 
-    private String tipoFuncionario;
+    private boolean eGerente;
     private Fachada fachada;
 
     /**
@@ -67,19 +67,17 @@ public class TelaControladorCadastroFuncionario implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	fachada = Fachada.getInstance();
-        tipoFuncionario = "";
     }
 
     @FXML
     private void radionGerente(ActionEvent event) {
-        this.tipoFuncionario = "Gerente";
+        this.eGerente = true;
 
     }
 
     @FXML
     private void radionVendedor(ActionEvent event) {
-        this.radionGerente.arm();
-        this.tipoFuncionario = "Vendedor";
+        this.eGerente = false;
     }
 
     @FXML
@@ -88,15 +86,14 @@ public class TelaControladorCadastroFuncionario implements Initializable {
             limparLabels();
             if (txCampoNome.getText().equals("") ||
                     txCampoCpf.getText().equals("") ||
-                    txCampoSenha.getText().equals("") ||
-                    tipoFuncionario.equals("")) {
+                    txCampoSenha.getText().equals("")) {
                 limparLabels();
                 labelMsgErro.setText("Campo Inválido.");
             } else {
-                String matricula = gerarMatricula(tipoFuncionario, txCampoCpf.getText());
+                String matricula = gerarMatricula(eGerente, txCampoCpf.getText());
                 fachada.adicionarFuncionario(txCampoNome.getText(),
                         txCampoCpf.getText(),
-                        tipoFuncionario,
+                        eGerente,
                         matricula,
                         txCampoSenha.getText());
                 limparCampos();
@@ -110,10 +107,9 @@ public class TelaControladorCadastroFuncionario implements Initializable {
         }
     }
     
-    private static String gerarMatricula(String tipoFuncionario, String cpf) {
-        if(tipoFuncionario.equals("Gerente")) return "G" + cpf;
-        else if(tipoFuncionario.equals("Vendedor")) return "V" + cpf;
-        return null;
+    public static String gerarMatricula(boolean eGerente, String cpf) {
+        if(eGerente) return "G" + cpf;
+        else return "V" + cpf;
     }
 
     @FXML
@@ -125,7 +121,9 @@ public class TelaControladorCadastroFuncionario implements Initializable {
         txCampoNome.clear();
         txCampoCpf.clear();
         txCampoSenha.clear();
-        tipoFuncionario = "";
+        radionGerente.setSelected(false);
+        radionVendedor.setSelected(false);
+        eGerente = false;
 
     }
 

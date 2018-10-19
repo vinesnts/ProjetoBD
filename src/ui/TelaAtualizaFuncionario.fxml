@@ -128,10 +128,10 @@
                   <Font size="20.0" />
                </font>
                <toggleGroup>
-                  <ToggleGroup fx:id="funcionario" />
+                  <ToggleGroup fx:id="funcionarioGroup" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="radionGerente" mnemonicParsing="false" onAction="#radionGerente" text="Gerente" toggleGroup="$funcionario" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <RadioButton fx:id="radionGerente" mnemonicParsing="false" onAction="#radionGerente" text="Gerente" toggleGroup="$funcionarioGroup" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <effect>
                   <InnerShadow />
                </effect>

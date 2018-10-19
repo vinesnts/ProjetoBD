@@ -60,7 +60,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
                 this.funcionarios.get(i).setNome(f.getNome());
                 this.funcionarios.get(i).setCpf(f.getCpf());
                 this.funcionarios.get(i).setSenha(f.getSenha());
-                this.funcionarios.get(i).setTipo(f.getTipo());
+                this.funcionarios.get(i).setEGerente(f.eGerente());
             }
         }
     }
@@ -70,7 +70,6 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      * @param matricula
      * @return retorna o objeto funcionario.
      * @throws negocio.excecoes.FuncionarioInexistenteException
-     * @throws negocio.excecoes.ClienteInexistenteException
      */
     @Override
     public Funcionario buscar(String matricula) throws FuncionarioInexistenteException {
@@ -117,7 +116,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
     public ArrayList<Funcionario> getVendedores() {
         ArrayList<Funcionario> vendedores = new ArrayList();
         for (int i = 0; i < funcionarios.size(); i++) {
-            if (funcionarios.get(i).getTipo().equals("Vendedor")) {
+            if (!funcionarios.get(i).eGerente()) {
                 vendedores.add(funcionarios.get(i));
             }
         }
@@ -131,7 +130,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
     public ArrayList<Funcionario> getGerentes() {
         ArrayList<Funcionario> gerentes = new ArrayList();
         for (int i = 0; i < funcionarios.size(); i++) {
-            if (funcionarios.get(i).getTipo().equals("Gerente")) {
+            if (funcionarios.get(i).eGerente()) {
                 gerentes.add(funcionarios.get(i));
             }
         }

@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import negocio.entidades.Funcionario;
 import negocio.excecoes.FuncionarioInexistenteException;
@@ -65,8 +66,10 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
     @FXML
     private Label labelMsgErro;
 
-    private String tipoFuncionario;
+    private boolean eGerente;
     private Fachada fachada;
+    @FXML
+    private ToggleGroup funcionarioGroup;
 
     /**
      * Initializes the controller class.
@@ -74,17 +77,16 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	 fachada = Fachada.getInstance();
-         tipoFuncionario = "";
     }
 
     @FXML
     private void radionVendedor(ActionEvent event) {
-        this.tipoFuncionario = "Vendedor";
+        this.eGerente = false;
     }
 
     @FXML
     private void radionGerente(ActionEvent event) {
-        this.tipoFuncionario = "Gerente";
+        this.eGerente = true;
     }
 
     @FXML
@@ -92,8 +94,7 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
         try {
             if (txCampoCpf.getText().equals("") ||
                     txCampoNome.getText().equals("") ||
-                    txCampoSenha.getText().equals("") ||
-                    tipoFuncionario.equals("")) {
+                    txCampoSenha.getText().equals("")) {
                 limparLabels();
                 labelMsgErro.setText("Campo Inválido.");
             } else {
@@ -103,7 +104,8 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
                     funcionario.setNome(txCampoNome.getText());
                     funcionario.setCpf(txCampoCpf.getText());
                     funcionario.setSenha(txCampoSenha.getText());
-                    funcionario.setTipo(tipoFuncionario);
+                    funcionario.setEGerente(eGerente);
+                    funcionario.setMatricula(TelaControladorCadastroFuncionario.gerarMatricula(eGerente, txCampoCpf.getText()));
                     fachada.atualizarFuncionario(funcionario);
                     limparCampos();
                     limparLabels();
@@ -151,7 +153,9 @@ public class TelaControladorAtualizaFuncionario implements Initializable {
         txCampoCpf.clear();
         txCampoMatricula.clear();
         txCampoSenha.clear();
-        tipoFuncionario = "";
+        radionGerente.setSelected(false);
+        radionVendedor.setSelected(false);
+        eGerente = false;
 
     }
 

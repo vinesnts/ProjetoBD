@@ -9,23 +9,23 @@ import java.io.Serializable;
 public class Funcionario extends Pessoa implements Serializable {
 
     private String matricula;
-    private String tipo;
+    private boolean eGerente;
     private String senha;
 
-    public Funcionario(String nome, String cpf, String tipo, String matricula, String senha) {
+    public Funcionario(String nome, String cpf, boolean eGerente, String matricula, String senha) {
         super(nome, cpf);
-        this.tipo = tipo;
+        this.eGerente = eGerente;
         this.matricula = matricula;
         this.senha = senha;
 
     }
 
-    public String getTipo() {
-        return tipo;
+    public void setEGerente(boolean eGerente) {
+        this.eGerente = eGerente;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public boolean eGerente() {
+        return eGerente;
     }
 
     public String getMatricula() {
@@ -46,6 +46,9 @@ public class Funcionario extends Pessoa implements Serializable {
 
     @Override
     public String toString() {
+        String tipo;
+        if(eGerente) tipo = "Gerente";
+        else tipo = "Vendedor";
         return super.toString() + "\tTipo: " + tipo + "\tMatricula: " + matricula;
     }
 

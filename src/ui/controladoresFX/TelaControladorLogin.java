@@ -64,7 +64,7 @@ public class TelaControladorLogin implements Initializable {
                 fachada.setLogado(funcionario);
                 System.out.println(fachada.getLogado().getNome());
             	limparCampo();
-                if (funcionario.getTipo().equals("Gerente")) {
+                if (funcionario.eGerente()) {
                     VBox v = (VBox) FXMLLoader.load(getClass().getResource("/ui/TelaMenuGerente.fxml"));
                     anchorPane.getChildren().setAll(v);
                 } else {
