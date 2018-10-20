@@ -49,7 +49,7 @@ public class Funcionario extends Pessoa implements Serializable {
         String tipo;
         if(eGerente) tipo = "Gerente";
         else tipo = "Vendedor";
-        return super.toString() + "\tTipo: " + tipo + "\tMatricula: " + matricula;
+        return super.toString() + " | Tipo: " + tipo + " | Matricula: " + matricula;
     }
 
 }

@@ -178,16 +178,15 @@ public class TelaControladorEstoque implements Initializable {
             } else {
                 labelMsg.setText("");
                 produto = fachada.buscarProdutoId(Integer.parseInt(txtCampoId.getText()));
-                if (produto.getId() == Integer.parseInt(txtCampoId.getText())) {
-                    txtCampoNome.setText(produto.getNome());
-                    txtCampoPreco.setText(String.valueOf(produto.getPreco()));
-                    txtCampoTamanho.setText(produto.getTamanho());
-                    txtCampoMarca.setText(produto.getMarca());
-                    txtCampoCategoria.setText(produto.getCategoria());
-                    cadastrarEditarGrid.setVisible(true);
-                    menusGrid.setVisible(false);
-                    listaEstoque.setVisible(false);
-                }
+                txtCampoNome.setText(produto.getNome());
+                txtCampoPreco.setText(String.valueOf(produto.getPreco()));
+                txtCampoTamanho.setText(produto.getTamanho());
+                txtCampoMarca.setText(produto.getMarca());
+                txtCampoCategoria.setText(produto.getCategoria());
+                cadastrarEditarGrid.setVisible(true);
+                menusGrid.setVisible(false);
+                listaEstoque.setVisible(false);
+
             }
 
         } catch (ProdutoInexistenteException erro) {

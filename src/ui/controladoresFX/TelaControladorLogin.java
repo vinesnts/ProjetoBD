@@ -59,7 +59,7 @@ public class TelaControladorLogin implements Initializable {
 
         try {
             Funcionario funcionario = fachada.getFuncionario(txCampoMatricula.getText());
-            if (funcionario.getMatricula().equals(txCampoMatricula.getText()) &&
+            if (funcionario.getMatricula().equals(txCampoMatricula.getText().toUpperCase()) &&
                     funcionario.getSenha().equals(txCampoSenha.getText())) {
                 fachada.setLogado(funcionario);
                 System.out.println(fachada.getLogado().getNome());
@@ -85,7 +85,6 @@ public class TelaControladorLogin implements Initializable {
     }
 
     private void limparCampo() {
-        txCampoMatricula.clear();
         txCampoSenha.clear();
         labelMsg.setText("");
     }

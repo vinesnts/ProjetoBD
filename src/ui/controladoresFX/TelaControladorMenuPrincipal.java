@@ -40,17 +40,9 @@ public class TelaControladorMenuPrincipal implements Initializable {
     @FXML
     private MenuItem menuItemRemoverCliente;
     @FXML
-    private MenuItem menuItemCadastroFun;
-    @FXML
-    private MenuItem menuItemAtualizaFun;
-    @FXML
-    private MenuItem menuItemremoverFun;
-    @FXML
     private MenuItem menuItemRelatorioVendas;
     @FXML
     private MenuItem menuItemVendasPeriodo;
-    @FXML
-    private MenuItem menuItemEncerrar;
     @FXML
     private MenuItem menuItematualizaCliente;
     @FXML
@@ -61,6 +53,10 @@ public class TelaControladorMenuPrincipal implements Initializable {
     private Button botaoCadastrarVenda;
     @FXML
     private TextField campoFuncionario;
+    @FXML
+    private Button botaoSair;
+    @FXML
+    private Button botaoListarFuncionario;
 
     /**
      * Initializes the controller class.
@@ -119,7 +115,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show();        
     }
 
-    @FXML
     private void redirecionaTelaCadastroFuncionario(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Cadastrar funcion�rio");
@@ -130,7 +125,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show(); 
     }
 
-    @FXML
     private void redirecionaTelaAtualizarFun(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Atualizar funcion�rio");
@@ -141,7 +135,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show();
     }
 
-    @FXML
     private void redirecionaTelaRemoverFun(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Remover funcion�rio");
@@ -208,6 +201,17 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.setTitle("Gr�fico gerente");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGraficoGerente.fxml")));
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    private void botaoListarFuncionario(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        stage.setTitle("Lista de funcionarios");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaFuncionario.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

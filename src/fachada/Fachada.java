@@ -50,10 +50,7 @@ public class Fachada {
     }
     
     public static Fachada getInstance() {
-        if (instancia == null) {
-            instancia = new Fachada();
-
-        }
+        if (instancia == null) instancia = new Fachada();
         return instancia;
     }
     
@@ -90,11 +87,13 @@ public class Fachada {
 
     //FUNCIONARIO
     public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException {
+        matricula = matricula.toUpperCase();
         Funcionario funcionario = new Funcionario(nome, CPF, eGerente, matricula, senha);
         funcionarios.adicionar(funcionario);
     }
 
     public void removerFuncionario(String matricula) throws FuncionarioInexistenteException {
+        matricula = matricula.toUpperCase();
         Funcionario funcionario = funcionarios.buscarFuncionario(matricula);
         funcionarios.remover(funcionario);
     }
@@ -105,6 +104,7 @@ public class Fachada {
     }
 
     public Funcionario getFuncionario(String matricula) throws FuncionarioInexistenteException {
+        matricula = matricula.toUpperCase();
         return funcionarios.buscarFuncionario(matricula);
     }
 

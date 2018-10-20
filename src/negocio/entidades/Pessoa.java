@@ -39,7 +39,7 @@ public abstract class Pessoa implements Serializable{
 
     @Override
     public String toString() {
-        return "Nome: " + nome + "\tCpf: " + cpf;
+        return "Nome: " + nome + " | Cpf: " + cpf;
     }
 
 }

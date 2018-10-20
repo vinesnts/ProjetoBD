@@ -22,13 +22,11 @@
                   <MenuItem fx:id="menuItemRemoverCliente" mnemonicParsing="false" onAction="#redirecionaTelaRemoverCliente" text="Remover" />
               </items>
             </MenuButton>
-            <MenuButton mnemonicParsing="false" prefHeight="20.0" text="Funcionário">
-              <items>
-                <MenuItem fx:id="menuItemCadastroFun" mnemonicParsing="false" onAction="#redirecionaTelaCadastroFuncionario" text="Cadastrar" />
-                  <MenuItem fx:id="menuItemAtualizaFun" mnemonicParsing="false" onAction="#redirecionaTelaAtualizarFun" text="Atualizar" />
-                  <MenuItem fx:id="menuItemremoverFun" mnemonicParsing="false" onAction="#redirecionaTelaRemoverFun" text="Remover" />
-              </items>
-            </MenuButton>
+            <Button fx:id="botaoListarFuncionario" mnemonicParsing="false" onAction="#botaoListarFuncionario" text="Funcionário">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
             <Button fx:id="botaoTelaEstoque" mnemonicParsing="false" onAction="#redirecionarTelaEstoque" prefHeight="20.0" text="Estoque">
                <font>
                   <Font name="System Bold" size="12.0" />
