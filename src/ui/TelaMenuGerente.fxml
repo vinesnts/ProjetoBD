@@ -15,13 +15,11 @@
    <children>
       <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="616.0" stylesheets="@tema_menus.css">
          <items>
-            <MenuButton mnemonicParsing="false" prefHeight="20.0" text="Cliente">
-              <items>
-                  <MenuItem fx:id="menuItemCadastroCliente" mnemonicParsing="false" onAction="#redirecionaTelaCadastroCliente" text="Cadastrar" />
-                <MenuItem fx:id="menuItematualizaCliente" mnemonicParsing="false" onAction="#redirecionaTelaAtualizaCliente" text="Atualizar" />
-                  <MenuItem fx:id="menuItemRemoverCliente" mnemonicParsing="false" onAction="#redirecionaTelaRemoverCliente" text="Remover" />
-              </items>
-            </MenuButton>
+            <Button fx:id="botaoListarClientes" mnemonicParsing="false" onAction="#botaoListarClientes" text="Cliente">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
             <Button fx:id="botaoListarFuncionario" mnemonicParsing="false" onAction="#botaoListarFuncionario" text="Funcionário">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -47,7 +45,7 @@
                 <MenuItem fx:id="menuItemVendasPeriodo" mnemonicParsing="false" onAction="#redirecionaTelaPeridoVendas" text="Vendas por periodo" />
               </items>
             </MenuButton>
-            <TextField fx:id="campoFuncionario" editable="false" prefHeight="20.0" prefWidth="70.0" promptText="Pessoa logada" />
+            <TextField fx:id="campoFuncionario" editable="false" prefHeight="30.0" prefWidth="76.0" promptText="Pessoa logada" />
             <Button fx:id="botaoSair" mnemonicParsing="false" onAction="#redirecionaSaidaLogin" text="Sair">
                <font>
                   <Font name="System Bold" size="12.0" />

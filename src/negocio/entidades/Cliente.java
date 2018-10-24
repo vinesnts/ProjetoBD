@@ -33,7 +33,8 @@ public class Cliente extends Pessoa implements Serializable{
 
     @Override
     public String toString() {
-        return super.toString() + "\tData de Aniversario: " + dataAniversario.getDayOfMonth()+" / "+dataAniversario.getMonthValue();
+        return super.toString() + " | Data de Aniversario: " + dataAniversario.getDayOfMonth() +
+                " / " + dataAniversario.getMonthValue() + " / " + dataAniversario.getYear();
     }
 
 }

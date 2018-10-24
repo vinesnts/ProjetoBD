@@ -34,17 +34,11 @@ public class TelaControladorMenuPrincipal implements Initializable {
     private Fachada fachada;
 
     @FXML
-    private MenuItem menuItemCadastroCliente;
-    @FXML
     private VBox vboxMenu;
-    @FXML
-    private MenuItem menuItemRemoverCliente;
     @FXML
     private MenuItem menuItemRelatorioVendas;
     @FXML
     private MenuItem menuItemVendasPeriodo;
-    @FXML
-    private MenuItem menuItematualizaCliente;
     @FXML
     private Label gerenteAvisos;
     @FXML
@@ -57,6 +51,8 @@ public class TelaControladorMenuPrincipal implements Initializable {
     private Button botaoSair;
     @FXML
     private Button botaoListarFuncionario;
+    @FXML
+    private Button botaoListarClientes;
 
     /**
      * Initializes the controller class.
@@ -82,7 +78,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     }
 
-    @FXML
     private void redirecionaTelaCadastroCliente(ActionEvent event) throws IOException {
     	Stage stage = new Stage();
         stage.setTitle("Cadastrar cliente");
@@ -93,7 +88,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show();
     }
 
-    @FXML
     private void redirecionaTelaAtualizaCliente(ActionEvent event) throws IOException {
     	Stage stage = new Stage();
         stage.setTitle("Atualizar cliente");
@@ -104,7 +98,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show();
     }
 
-    @FXML
     private void redirecionaTelaRemoverCliente(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Remover cliente");
@@ -198,7 +191,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
     @FXML
     private void redirecionaTelaPeridoVendas(ActionEvent event) throws IOException {
     	Stage stage = new Stage();
-        stage.setTitle("Gr�fico gerente");
+        stage.setTitle("Grafico gerente");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGraficoGerente.fxml")));
         stage.setScene(scene);
@@ -212,6 +205,17 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.setTitle("Lista de funcionarios");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaFuncionario.fxml")));
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    private void botaoListarClientes(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        stage.setTitle("Lista de clientes");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaCliente.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

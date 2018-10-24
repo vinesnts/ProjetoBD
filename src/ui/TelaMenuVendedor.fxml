@@ -14,14 +14,12 @@
    <children>
       <ToolBar prefHeight="40.0" prefWidth="616.0" stylesheets="@tema_menus.css" VBox.vgrow="NEVER">
          <items>
-            <MenuButton mnemonicParsing="false" prefHeight="20.0" text="Cliente">
-              <items>
-                  <MenuItem fx:id="menuItemCadastroCliente" mnemonicParsing="false" onAction="#redirecionaTelaCadastroCliente" text="Cadastrar" />
-                <MenuItem fx:id="menuItematualizaCliente" mnemonicParsing="false" onAction="#redirecionaTelaAtualizaCliente" text="Atualizar" />
-                  <MenuItem fx:id="menuItemRemoverCliente" mnemonicParsing="false" onAction="#redirecionaTelaRemoverCliente" text="Remover" />
-              </items>
-            </MenuButton>
-            <Button fx:id="botaoVenda" mnemonicParsing="false" onAction="#redirecionaTelaCadastroVendas" prefHeight="27.0" prefWidth="55.0" text="Venda">
+            <Button fx:id="botaoListarClientes" mnemonicParsing="false" onAction="#botaoListarClientes" text="Cliente">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="botaoVenda" mnemonicParsing="false" onAction="#redirecionaTelaCadastroVendas" prefHeight="27.0" prefWidth="64.0" text="Venda">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

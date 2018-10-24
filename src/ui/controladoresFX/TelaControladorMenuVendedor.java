@@ -34,12 +34,6 @@ public class TelaControladorMenuVendedor implements Initializable {
     @FXML
     private VBox vboxMenu;
     @FXML
-    private MenuItem menuItemCadastroCliente;
-    @FXML
-    private MenuItem menuItematualizaCliente;
-    @FXML
-    private MenuItem menuItemRemoverCliente;
-    @FXML
     private AnchorPane AnchorPane;
     @FXML
     private MenuItem menuItemMinhasVendas;
@@ -49,6 +43,8 @@ public class TelaControladorMenuVendedor implements Initializable {
     private TextField campoVendedor;
     @FXML
     private Button botaoSair;
+    @FXML
+    private Button botaoListarClientes;
 
     
     @Override
@@ -69,7 +65,6 @@ public class TelaControladorMenuVendedor implements Initializable {
 
     }
 
-    @FXML
     private void redirecionaTelaCadastroCliente(ActionEvent event) throws IOException {
     	Stage stage = new Stage();
         stage.setTitle("Cadastrar cliente");
@@ -79,7 +74,6 @@ public class TelaControladorMenuVendedor implements Initializable {
         stage.show();
     }
 
-    @FXML
     private void redirecionaTelaAtualizaCliente(ActionEvent event) throws IOException {
     	Stage stage = new Stage();
         stage.setTitle("Atualizar cliente");
@@ -89,7 +83,6 @@ public class TelaControladorMenuVendedor implements Initializable {
         stage.show();
     }
 
-    @FXML
     private void redirecionaTelaRemoverCliente(ActionEvent event) throws IOException {
     	Stage stage = new Stage();
         stage.setTitle("Remover cliente");
@@ -121,6 +114,16 @@ public class TelaControladorMenuVendedor implements Initializable {
         stage.show();
     }
 
+    @FXML
+    private void botaoListarClientes(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        stage.setTitle("Lista de clientes");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaCliente.fxml")));
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
   
     
 }
