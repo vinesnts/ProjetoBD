@@ -32,7 +32,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="labelMatricula" prefHeight="35.0" prefWidth="106.0" text="Matrícula:">
+            <Label fx:id="labelMatricula" prefHeight="35.0" prefWidth="125.0" text="Matrícula:">
                <effect>
                   <Glow />
                </effect>
