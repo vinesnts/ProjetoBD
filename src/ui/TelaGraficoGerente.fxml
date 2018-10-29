@@ -13,7 +13,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="522.0" prefWidth="616.0" stylesheets="@tema.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorGraficoGerente">
    <children>
-      <Label layoutX="215.0" layoutY="25.0" text="Vendas Por Período" textAlignment="CENTER">
+      <Label layoutX="215.0" layoutY="25.0" text="Vendas." textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

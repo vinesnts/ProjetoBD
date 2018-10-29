@@ -32,8 +32,6 @@ public class TelaControladorGraficoGerente implements Initializable {
     private AnchorPane anchorPane;
     @FXML
     private Label labelDataInicio;
-    private DatePicker campoDataInicio;
-    private DatePicker CampoDataFim;
     @FXML
     private Button botaoMostrarGrafico;
     @FXML
@@ -44,14 +42,16 @@ public class TelaControladorGraficoGerente implements Initializable {
     private AnchorPane anchorPaneGrafico;
     @FXML
     private TextField txCampoAno;
-    
+
     Fachada fachada;
+    
     /**
      * Initializes the controller class.
      */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	fachada = Fachada.getInstance();
+        fachada = Fachada.getInstance();
     }
 
     @FXML
@@ -63,22 +63,9 @@ public class TelaControladorGraficoGerente implements Initializable {
             graficoGerente.setAno(ano);
             FlowPane flow = new FlowPane(graficoGerente.criarGraficoPizza());
             anchorPaneGrafico.getChildren().setAll(flow);
+
         } catch (NumberFormatException error) {
             labelMsgErro.setText("Entrada invalida.");
-        }
-
-    }
-
-    private void periodoGrafico() {
-        int mesInicio = campoDataInicio.getValue().getMonthValue();
-        int anoInicio = campoDataInicio.getValue().getYear();
-        int mesFim = CampoDataFim.getValue().getMonthValue();
-        int anoFim = CampoDataFim.getValue().getYear();
-        fachada.getVendas();
-        for (int i = 0; i < fachada.getVendas().size(); i++) {
-            if (fachada.getVendas().get(i).getData().getMonthValue() >= mesInicio && fachada.getVendas().get(i).getData().getYear() == anoInicio) {
-                System.out.println(fachada.getVendas().get(i).getData());
-            }
         }
 
     }
@@ -86,7 +73,7 @@ public class TelaControladorGraficoGerente implements Initializable {
     @FXML
     private void acaoCancelarTelaMenu(ActionEvent event) throws IOException {
 //        anchorPane.setVisible(false);
-    	((Node) event.getSource()).getScene().getWindow().hide();
+        ((Node) event.getSource()).getScene().getWindow().hide();
 
     }
 
