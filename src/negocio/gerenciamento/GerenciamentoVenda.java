@@ -39,9 +39,10 @@ public class GerenciamentoVenda {
      *
      * @param venda Adiciona uma nova venda ao repositorio
      */
-    public void adicionar(Venda venda) {
+    public Venda adicionar(Venda venda) {
         repositorio.adicionar(venda);
         repositorio.gravar();
+        return venda;
     }
 
     /**

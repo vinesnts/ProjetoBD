@@ -64,7 +64,7 @@ public class GraficoVendedor extends Application {
         ArrayList<Venda> vendas = fachada.getVendas();
         for (int i = 0; i < vendas.size(); i++) {
             if (mes == vendas.get(i).getData().getMonthValue() && matricula.equals(vendas.get(i).getFuncionario().getMatricula())) {
-                valorVenda += vendas.get(i).calcularValorVenda();
+                valorVenda = vendas.get(i).getPrecoTotal();
             }
         }
 

@@ -22,8 +22,10 @@ import negocio.gerenciamento.GerenciamentoVenda;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import negocio.entidades.Carrinho;
+import negocio.excecoes.DataInvalidaException;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
+import negocio.excecoes.ProdutosInsuficientesException;
 import negocio.excecoes.QuantidadeInsuficienteException;
 import negocio.gerenciamento.GerenciamentoCarrinho;
 
@@ -157,9 +159,18 @@ public class Fachada {
     }
 
     //Venda
-    public void adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, ArrayList<Carrinho> carrinho) {
-        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, carrinho);
-        vendas.adicionar(venda);
+    public Venda adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Carrinho> carrinho) throws DataInvalidaException, ProdutosInsuficientesException {
+        if (data == null) {
+            throw new DataInvalidaException();
+        }
+        if (this.getCarrinhos() == null) {
+                throw new ProdutosInsuficientesException();
+        } else if (this.getCarrinhos().isEmpty()) {
+                throw new ProdutosInsuficientesException();
+        }
+            
+        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, desconto, carrinho);
+        return vendas.adicionar(venda);
 
     }
 
@@ -193,7 +204,7 @@ public class Fachada {
      * @return O objeto venda se ixistir no repositorio
      * @throws VendaInexistenteException
      */
-    public Venda BuscarVenda(int id) throws VendaInexistenteException {
+    public Venda buscarVenda(int id) throws VendaInexistenteException {
         return vendas.buscar(id);
     }
 

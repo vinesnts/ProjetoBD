@@ -5,7 +5,6 @@
  */
 package dados.repositorioArrayList;
 
-import negocio.entidades.Produto;
 import dados.repositorioInterface.IRepositorioVenda;
 import negocio.entidades.Venda;
 import java.io.FileInputStream;
@@ -177,7 +176,7 @@ public class RepositorioVenda implements IRepositorioVenda {
         double valorVenda = 0.0;
         for (int i = 0; i < vendas.size(); i++) {
             if (cpf.equals(vendas.get(i).getFuncionario().getCpf())) {
-                valorVenda += vendas.get(i).calcularValorVenda();
+                valorVenda += vendas.get(i).getPrecoTotal();
             }
         }
         return valorVenda;

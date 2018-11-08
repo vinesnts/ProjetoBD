@@ -12,8 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,12 +24,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import negocio.entidades.Carrinho;
 import negocio.entidades.Cliente;
 import negocio.entidades.Funcionario;
 import negocio.entidades.Produto;
+import negocio.entidades.Venda;
 import negocio.excecoes.DataInvalidaException;
 import negocio.excecoes.ClienteInexistenteException;
 import negocio.excecoes.ProdutoInexistenteException;
@@ -45,6 +43,11 @@ import negocio.excecoes.QuantidadeInsuficienteException;
  */
 public class TelaControladorVenda implements Initializable {
 
+    
+    private List<Carrinho> lista = new ArrayList();
+    private ObservableList<Carrinho> observableList;
+    private double desconto;
+    
     @FXML
     private Button botaoSalvar;
     @FXML
@@ -68,15 +71,6 @@ public class TelaControladorVenda implements Initializable {
     private Fachada fachada;
     @FXML
     private DatePicker data;
-
-    private List<Carrinho> lista = new ArrayList();
-    private ObservableList<Carrinho> observableList;
-    //private GerenciamentoCarrinho carrinhos;
-
-    private double desconto;
-
-    @FXML
-    private Label labelDeconto;
     @FXML
     private TextField txCampoDesconto;
     @FXML
@@ -92,11 +86,11 @@ public class TelaControladorVenda implements Initializable {
     @FXML
     private Button botaoRemoverProduto;
     @FXML
-    private Label labelMsgCarrinho1;
-    @FXML
     private Button botaoAplicarDesconto;
     @FXML
     private Label labelMsg;
+    @FXML
+    private Label labelDesconto;
 
     /**
      * Initializes the controller class.
@@ -107,37 +101,20 @@ public class TelaControladorVenda implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fachada = Fachada.getInstance();
+        data.setValue(LocalDate.now());
     }
 
     @FXML
     private void botaoSalvar(ActionEvent event) {
         Funcionario funcionario = funcionario = fachada.getLogado();
         Cliente cliente;
-        LocalDate dataVenda;
-
         try {
             cliente = fachada.getCliente(txCampoCliente.getText());
-            dataVenda = data.getValue();
-            if (dataVenda == null) {
-                throw new DataInvalidaException();
-            }
-            if (fachada.getCarrinhos() == null) {
-                throw new ProdutosInsuficientesException();
-            } else if (fachada.getCarrinhos().isEmpty()) {
-                throw new ProdutosInsuficientesException();
-            }
-
-            fachada.adicionarVenda(dataVenda, cliente, funcionario, fachada.getCarrinhos());
-            desconto = Integer.parseInt(txCampoDesconto.getText()) / 100.0;
-            if (desconto < 0 || desconto > 0.15) {
-                throw new NumberFormatException();
-            }
-            if (cliente.getDataAniversario().equals(dataVenda)) {
-                desconto += 0.05;
-            }
-            txAreaInformativa.setText("Valor Total da venda: \t" + fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda()
-                    + "\nDesconto: " + (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() * (desconto))
-                    + "\nValor Com Desconto: " + (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() - (fachada.getVendas().get(fachada.getVendas().size() - 1).calcularValorVenda() * (desconto))));
+            System.out.println("control desconto: " + desconto);
+            Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, fachada.getCarrinhos());
+            txAreaInformativa.setText("Valor Total da venda: \t" + venda.getPrecoSemDesconto()
+                    + "\nDesconto: " + venda.getDesconto()
+                    + "\nValor Com Desconto: " + venda.getPrecoTotal());
             limparLabels();
             limparCampos();
             fachada.getCarrinhos().clear();
@@ -158,7 +135,7 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void botaoCancelar(ActionEvent event) throws IOException {
-//        anchorPane.setVisible(false);
+        fachada.getCarrinhos().clear();
         ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
@@ -193,7 +170,6 @@ public class TelaControladorVenda implements Initializable {
         txCampoProduto.clear();
         txCampoQuantidade.clear();
         limparLabels();
-        double desconto1;
         int x = 0;
         try {
             if (fachada.getCarrinhos().size() > 0) {
@@ -274,7 +250,7 @@ public class TelaControladorVenda implements Initializable {
         txCampoDesconto.clear();
         txCampoProduto.clear();
         txCampoQuantidade.clear();
-        data.setValue(null);
+        data.setValue(LocalDate.now());
 
     }
 
@@ -287,7 +263,6 @@ public class TelaControladorVenda implements Initializable {
     }
 
     public double calcularValorCarrinho() {
-
         double valor = 0;
         if (fachada.getCarrinhos() != null) {
             for (int i = 0; i < fachada.getCarrinhos().size(); i++) {
@@ -300,6 +275,15 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void botaoAplicarDesconto(ActionEvent event) {
+        desconto = Integer.parseInt(txCampoDesconto.getText());
+        double valor = calcularValorCarrinho();
+        if (desconto < 0 || desconto > 15) {
+                labelMsgDesconto.setText("Desconto invalido!");
+                return;
+        }
+        valor -= (valor * desconto) / 100;
+        txAreaInformativa.setText("Valor dos produtos com desconto: \t" + valor);
+        labelMsgDesconto.setText("Desconto aplicado");
     }
 
 }

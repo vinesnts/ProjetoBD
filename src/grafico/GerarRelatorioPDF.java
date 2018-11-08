@@ -82,7 +82,7 @@ public class GerarRelatorioPDF {
                 PdfPCell celula1 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).getId())));
                 PdfPCell celula2 = new PdfPCell(new Phrase(vendas.get(i).getCliente().getNome()));
                 PdfPCell celula3 = new PdfPCell(new Phrase(vendas.get(i).getFuncionario().getNome()));
-                PdfPCell celula4 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).calcularValorVenda())));
+                PdfPCell celula4 = new PdfPCell( new Phrase( String.valueOf( vendas.get(i).getPrecoTotal() ) ) );
                 PdfPCell celula5 = new PdfPCell(new Phrase(vendas.get(i).getData().format(formatador)));
                 
                
