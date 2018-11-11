@@ -17,8 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import negocio.TextFieldFormatter;
 import negocio.entidades.Funcionario;
 import negocio.excecoes.FuncionarioInexistenteException;
 
@@ -87,6 +89,15 @@ public class TelaControladorLogin implements Initializable {
     private void limparCampo() {
         txCampoSenha.clear();
         labelMsg.setText("");
+    }
+
+    @FXML
+    private void txCampoMatriculaOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("?###.###.###-##");
+        tff.setCaracteresValidos("GVgv0123456789");
+        tff.setTf(txCampoMatricula);
+        tff.formatter();
     }
 
 }

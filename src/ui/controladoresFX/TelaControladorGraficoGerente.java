@@ -18,8 +18,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import negocio.TextFieldFormatter;
 
 /**
  * FXML Controller class
@@ -75,6 +77,15 @@ public class TelaControladorGraficoGerente implements Initializable {
 //        anchorPane.setVisible(false);
         ((Node) event.getSource()).getScene().getWindow().hide();
 
+    }
+
+    @FXML
+    private void txCampoAnoOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("####");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txCampoAno);
+        tff.formatter();
     }
 
 }

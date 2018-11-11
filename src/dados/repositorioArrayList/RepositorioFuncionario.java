@@ -49,20 +49,19 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
 
     /**
      *
-     * @param funcionario Atualiza os dados do funcionario ja existente com os
+     * @param matricula Atualiza os dados do funcionario ja existente com os
      * novos dados passados.
+     * @param nome Nome novo do funcionario
+     * @param eGerente Cargo novo do funcionario
+     * @param senha Senha nova do funcionario
+     * @throws negocio.excecoes.FuncionarioInexistenteException Se o funcionario nao existe, lanca erro
      */
     @Override
-    public void atualizar(Funcionario funcionario) {
-        Funcionario f = (Funcionario) funcionario;
-        for (int i = 0; i < funcionarios.size(); i++) {
-            if (this.funcionarios.get(i).getMatricula().equals(f.getMatricula())) {
-                this.funcionarios.get(i).setNome(f.getNome());
-                this.funcionarios.get(i).setCpf(f.getCpf());
-                this.funcionarios.get(i).setSenha(f.getSenha());
-                this.funcionarios.get(i).setEGerente(f.eGerente());
-            }
-        }
+    public void atualizar(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
+        Funcionario funcionario = this.buscar(matricula);
+        funcionario.setNome(nome);
+        funcionario.setSenha(senha);
+        funcionario.setEGerente(eGerente);
     }
 
     /**

@@ -11,6 +11,7 @@ import negocio.entidades.Cliente;
 import negocio.excecoes.ClienteExistenteException;
 import negocio.excecoes.ClienteInexistenteException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -80,14 +81,9 @@ public class GerenciamentoCliente {
      * cliente já cadastrado, se sim atualiza os dados do cliente, caso não a
      * exceção é lançada
      */
-    public void atualizar(Cliente cliente) throws ClienteInexistenteException {
-        Cliente clienteAux = repositorio.buscar(cliente.getCpf());
-        if (clienteAux == null) {
-            throw new ClienteInexistenteException();
-        } else {
-            repositorio.atualizar(cliente);
+    public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
+            repositorio.atualizar(cpf, nome, dataAniversario);
             repositorio.gravar();
-        }
     }
 
     /**

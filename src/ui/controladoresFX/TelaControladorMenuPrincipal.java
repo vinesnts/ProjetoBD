@@ -78,80 +78,10 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     }
 
-    private void redirecionaTelaCadastroCliente(ActionEvent event) throws IOException {
-    	Stage stage = new Stage();
-        stage.setTitle("Cadastrar cliente");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaCadastroCliente.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    private void redirecionaTelaAtualizaCliente(ActionEvent event) throws IOException {
-    	Stage stage = new Stage();
-        stage.setTitle("Atualizar cliente");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaAtualizaCliente.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    private void redirecionaTelaRemoverCliente(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        stage.setTitle("Remover cliente");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaRemoveCliente.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();        
-    }
-
-    private void redirecionaTelaCadastroFuncionario(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        stage.setTitle("Cadastrar funcion�rio");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaCadastroFuncionario.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show(); 
-    }
-
-    private void redirecionaTelaAtualizarFun(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        stage.setTitle("Atualizar funcion�rio");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaAtualizaFuncionario.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    private void redirecionaTelaRemoverFun(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        stage.setTitle("Remover funcion�rio");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaRemoveFuncionario.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    private void redirecionaTelaCadastrarProduto(ActionEvent event) throws IOException {
-    	Stage stage = new Stage();
-        stage.setTitle("Cadastrar produto");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaCadastroProduto.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
     @FXML
     private void redirecionarTelaEstoque(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        stage.setTitle("Atualizar produto");
+        stage.setTitle("Estoque de produtos");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaEstoque.fxml")));
         stage.setScene(scene);
@@ -159,15 +89,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show();
     }
 
-    private void redirecionaTelaRemoverProduto(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        stage.setTitle("Remover produto");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaRemoveProduto.fxml")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
 
     @FXML
     private void redirecionaTelaCadastroVendas(ActionEvent event) throws IOException {

@@ -13,7 +13,7 @@ package negocio.excecoes;
 public class ClienteExistenteException extends Exception {
 
     public ClienteExistenteException() {
-        super("CPF ja cadastrado.");
+        super("CPF ja cadastrado");
     }
 
     public ClienteExistenteException(String msg) {

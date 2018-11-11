@@ -24,7 +24,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import negocio.TextFieldFormatter;
 import negocio.entidades.Carrinho;
 import negocio.entidades.Cliente;
 import negocio.entidades.Funcionario;
@@ -89,8 +91,6 @@ public class TelaControladorVenda implements Initializable {
     private Button botaoAplicarDesconto;
     @FXML
     private Label labelMsg;
-    @FXML
-    private Label labelDesconto;
 
     /**
      * Initializes the controller class.
@@ -284,6 +284,33 @@ public class TelaControladorVenda implements Initializable {
         valor -= (valor * desconto) / 100;
         txAreaInformativa.setText("Valor dos produtos com desconto: \t" + valor);
         labelMsgDesconto.setText("Desconto aplicado");
+    }
+
+    @FXML
+    private void txCampoClienteOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("###.###.###-##");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txCampoCliente);
+        tff.formatter();
+    }
+
+    @FXML
+    private void txCampoProdutoOnKeyReleased(KeyEvent event) {
+        if(!txCampoProduto.getText().matches("[0-9]+"))    txCampoProduto.setStyle("-fx-border-color: red;");
+        else    txCampoProduto.setStyle("-fx-border-color: black;");
+    }
+
+    @FXML
+    private void txCampoQuantidadeOnKeyReleased(KeyEvent event) {
+        if(!txCampoQuantidade.getText().matches("[0-9]+"))    txCampoQuantidade.setStyle("-fx-border-color: red;");
+        else    txCampoQuantidade.setStyle("-fx-border-color: black;");
+    }
+
+    @FXML
+    private void txCampoDescontoOnKeyReleased(KeyEvent event) {
+        if(!txCampoDesconto.getText().matches("[0-9]+"))    txCampoDesconto.setStyle("-fx-border-color: red;");
+        else    txCampoDesconto.setStyle("-fx-border-color: black;");
     }
 
 }

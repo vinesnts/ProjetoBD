@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import negocio.excecoes.ClienteInexistenteException;
 
 /**
@@ -56,13 +57,10 @@ public class RepositorioCliente implements IRepositorioCliente {
      * dados passados
      */
     @Override
-    public void atualizar(Cliente cliente) {
-        for (int i = 0; i < clientes.size(); i++) {
-            if (clientes.get(i).getCpf().equals(cliente.getCpf())) {
-                clientes.get(i).setNome(cliente.getNome());
-                clientes.get(i).setDataAniversario(cliente.getDataAniversario());
-            }
-        }
+    public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
+        Cliente cliente = this.buscar(cpf);
+        cliente.setNome(nome);
+        cliente.setDataAniversario(dataAniversario);
     }
 
     /**

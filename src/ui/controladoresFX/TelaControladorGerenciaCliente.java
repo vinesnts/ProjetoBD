@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,11 +21,16 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import negocio.DatePickerFormatter;
+import negocio.TextFieldFormatter;
 import negocio.entidades.Cliente;
+import negocio.excecoes.CPFInvalidoException;
 import negocio.excecoes.ClienteExistenteException;
 import negocio.excecoes.ClienteInexistenteException;
-import negocio.excecoes.FuncionarioInexistenteException;
+import negocio.excecoes.DataInvalidaException;
+import negocio.excecoes.NomeInvalidoException;
 
 /**
  * FXML Controller class
@@ -79,39 +82,34 @@ public class TelaControladorGerenciaCliente implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         fachada = Fachada.getInstance();
         listarClientes();
+        //caixaData.getEditor().setDisable(true);
     }
 
     @FXML
     private void botaoSalvarCliente(ActionEvent event) {
-        if (txtCampoNome.getText().equals("") || txtCampoCPF.getText().equals("") || caixaData.getValue() == null) {
-            labelMsg.setText("Campo invalido");
-        } else {
-            try {
-                if (cliente != null) {
-                    cliente = fachada.getCliente(txtCampoProcurarCPF.getText());
-                    if (cliente.getCpf().equals(txtCampoProcurarCPF.getText())) {
-                        cliente.setNome(txtCampoNome.getText());
-                        cliente.setDataAniversario(caixaData.getValue());
-                        fachada.atualizarCliente(cliente);
-                        limparCampos();
-                        labelMsg.setText("Cliente atualizado");
-                    }
-                } else {
-                    fachada.adicionarCliente(txtCampoNome.getText(), txtCampoCPF.getText(), caixaData.getValue());
-                    limparCampos();
-                    labelMsg.setText("Cliente cadastrado");
-                }
-
-            } catch (ClienteExistenteException | ClienteInexistenteException e) {
+        try {
+            if (caixaData.getEditor().getText().length() != 10) throw new DataInvalidaException();
+            if (cliente != null) {
+                fachada.atualizarCliente(txtCampoProcurarCPF.getText(),
+                        txtCampoNome.getText(),
+                        caixaData.getValue());
                 limparCampos();
-                labelMsg.setText(e.getMessage());
+                labelMsg.setText("Cliente atualizado");
+            } else {
+                fachada.adicionarCliente(txtCampoNome.getText(), txtCampoCPF.getText(), caixaData.getValue());
+                limparCampos();
+                labelMsg.setText("Cliente cadastrado");
             }
+        } catch (ClienteExistenteException | ClienteInexistenteException e) {
+            limparCampos();
+            labelMsg.setText(e.getMessage());
+        } catch (NomeInvalidoException | CPFInvalidoException | DataInvalidaException e) {
+            labelMsg.setText(e.getMessage());
         }
-
     }
 
-    @FXML
-    private void botaoRemoverCliente(ActionEvent event) {
+@FXML
+        private void botaoRemoverCliente(ActionEvent event) {
         if (txtCampoProcurarCPF.getText().equals("")) {
             labelMsg.setText("Campo CPF invalido");
         } else {
@@ -133,11 +131,11 @@ public class TelaControladorGerenciaCliente implements Initializable {
     }
 
     @FXML
-    private void caixaData(ActionEvent event) {
+        private void caixaData(ActionEvent event) {
     }
 
     @FXML
-    private void botaoCadastrarCliente(ActionEvent event) {
+        private void botaoCadastrarCliente(ActionEvent event) {
         limparCampos();
         cadastrarEditarGrid.setVisible(true);
         botaoRemoverCliente.setVisible(false);
@@ -146,7 +144,7 @@ public class TelaControladorGerenciaCliente implements Initializable {
     }
 
     @FXML
-    private void botaoProcurarCPF(ActionEvent event) {
+        private void botaoProcurarCPF(ActionEvent event) {
         labelMsg.setText("");
         try {
             if (txtCampoProcurarCPF.getText().equals("")) {
@@ -169,17 +167,17 @@ public class TelaControladorGerenciaCliente implements Initializable {
     }
 
     @FXML
-    private void botaoCancelar(ActionEvent event) {
+        private void botaoCancelar(ActionEvent event) {
         ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
     @FXML
-    private void botaoCancelarEdicao(ActionEvent event) {
+        private void botaoCancelarEdicao(ActionEvent event) {
         limparCampos();
     }
 
     @FXML
-    private void botaoEditarCliente(ActionEvent event) {
+        private void botaoEditarCliente(ActionEvent event) {
         try {
             cliente = listViewCliente.getSelectionModel().selectedItemProperty().getValue();
             txtCampoProcurarCPF.setText(String.valueOf(cliente.getCpf()));
@@ -220,6 +218,35 @@ public class TelaControladorGerenciaCliente implements Initializable {
         cadastrarEditarGrid.setVisible(false);
         botaoRemoverCliente.setVisible(true);
         listViewCliente.setVisible(true);
+    }
+
+    @FXML
+        private void cadastrarCPFOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("###.###.###-##");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txtCampoCPF);
+        tff.formatter();
+        if(txtCampoCPF.getText().contains(" "))    txtCampoCPF.setStyle("-fx-border-color: red;");
+        else    txtCampoCPF.setStyle("-fx-border-color: black;");
+    }
+
+    @FXML
+        private void txtCampoProcurarCPFOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("###.###.###-##");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txtCampoProcurarCPF);
+        tff.formatter();
+    }
+
+    @FXML
+    private void caixaDataOnKeyReleased(KeyEvent event) {
+        DatePickerFormatter dpf = new DatePickerFormatter();
+        dpf.setMask("##/##/####");
+        dpf.setCaracteresValidos("0123456789");
+        dpf.setDp(caixaData);
+        dpf.formatter();
     }
 
 }

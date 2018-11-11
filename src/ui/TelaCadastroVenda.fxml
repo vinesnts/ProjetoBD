@@ -36,7 +36,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <TextField fx:id="txCampoProduto" prefHeight="40.0" prefWidth="69.0">
+            <TextField fx:id="txCampoProduto" onKeyReleased="#txCampoProdutoOnKeyReleased" prefHeight="40.0" prefWidth="69.0" promptText="ID do produto">
                <effect>
                   <InnerShadow />
                </effect>
@@ -59,7 +59,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <TextField fx:id="txCampoQuantidade" prefHeight="40.0" prefWidth="44.0">
+            <TextField fx:id="txCampoQuantidade" onKeyReleased="#txCampoQuantidadeOnKeyReleased" prefHeight="40.0" prefWidth="44.0" promptText="Quantidade de itens">
                <effect>
                   <InnerShadow />
                </effect>
@@ -108,7 +108,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <TextField fx:id="txCampoCliente" prefHeight="40.0" promptText="CPF do cliente" GridPane.columnIndex="1">
+            <TextField fx:id="txCampoCliente" onKeyReleased="#txCampoClienteOnKeyReleased" prefHeight="40.0" promptText="CPF do cliente" GridPane.columnIndex="1">
                <effect>
                   <InnerShadow />
                </effect>
@@ -129,7 +129,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <TextField fx:id="txCampoDesconto" prefHeight="40.0" promptText="Desconto" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="txCampoDesconto" onKeyReleased="#txCampoDescontoOnKeyReleased" prefHeight="40.0" promptText="Desconto" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <effect>
                   <InnerShadow />
                </effect>

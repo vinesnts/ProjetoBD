@@ -22,11 +22,14 @@ import negocio.gerenciamento.GerenciamentoVenda;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import negocio.entidades.Carrinho;
+import negocio.excecoes.CPFInvalidoException;
 import negocio.excecoes.DataInvalidaException;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
+import negocio.excecoes.NomeInvalidoException;
 import negocio.excecoes.ProdutosInsuficientesException;
 import negocio.excecoes.QuantidadeInsuficienteException;
+import negocio.excecoes.SenhaInvalidaException;
 import negocio.gerenciamento.GerenciamentoCarrinho;
 
 /**
@@ -64,7 +67,9 @@ public class Fachada {
         this.logado = logado;
     }
     //CLIENTE
-    public void adicionarCliente(String nome, String CPF, LocalDate dataAniversario) throws ClienteExistenteException {
+    public void adicionarCliente(String nome, String CPF, LocalDate dataAniversario) throws ClienteExistenteException, NomeInvalidoException, CPFInvalidoException {
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        if (CPF.contains(" ")) throw new CPFInvalidoException();
         Cliente cliente = new Cliente(nome, CPF, dataAniversario);
         clientes.adicionar(cliente);
     }
@@ -74,9 +79,9 @@ public class Fachada {
         clientes.remover(cliente);
     }
 
-    public void atualizarCliente(Cliente cliente) throws ClienteInexistenteException {
-        Cliente c = clientes.buscar(cliente.getCpf());
-        clientes.atualizar(cliente);
+    public void atualizarCliente(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException, NomeInvalidoException {
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        clientes.atualizar(cpf, nome, dataAniversario);
     }
 
     public Cliente getCliente(String cpf) throws ClienteInexistenteException {
@@ -88,7 +93,10 @@ public class Fachada {
     }
 
     //FUNCIONARIO
-    public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException {
+    public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException, NomeInvalidoException, CPFInvalidoException, SenhaInvalidaException{
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        if (CPF.contains(" ")) throw new CPFInvalidoException();
+        if (senha.equals(""))   throw new SenhaInvalidaException();
         matricula = matricula.toUpperCase();
         Funcionario funcionario = new Funcionario(nome, CPF, eGerente, matricula, senha);
         funcionarios.adicionar(funcionario);
@@ -100,9 +108,10 @@ public class Fachada {
         funcionarios.remover(funcionario);
     }
 
-    public void atualizarFuncionario(Funcionario funcionario) throws FuncionarioInexistenteException {
-        Funcionario f = funcionarios.buscarFuncionario(funcionario.getMatricula());
-        funcionarios.atualizar(funcionario);
+    public void atualizarFuncionario(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException, NomeInvalidoException, SenhaInvalidaException {
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        if (senha.equals(""))   throw new SenhaInvalidaException();
+        funcionarios.atualizar(matricula, nome, eGerente, senha);
     }
 
     public Funcionario getFuncionario(String matricula) throws FuncionarioInexistenteException {

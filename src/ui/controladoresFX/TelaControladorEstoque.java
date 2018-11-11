@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +21,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import negocio.CurrencyField;
 import negocio.entidades.Produto;
 import negocio.excecoes.PrecoInvalidoException;
 import negocio.excecoes.ProdutoExistenteException;
@@ -43,7 +46,7 @@ public class TelaControladorEstoque implements Initializable {
     @FXML
     private TextField txtCampoNome;
     @FXML
-    private TextField txtCampoPreco;
+    private CurrencyField txtCampoPreco;
     @FXML
     private TextField txtCampoTamanho;
     @FXML
@@ -113,18 +116,19 @@ public class TelaControladorEstoque implements Initializable {
 
     @FXML
     private void botaoSalvarEstoque(ActionEvent event) {
+        System.out.println(txtCampoPreco.getAmount());
         if (txtCampoNome.getText().equals("") || txtCampoPreco.getText().equals("") || txtCampoTamanho.getText().equals("")
                 || txtCampoMarca.getText().equals("") || txtCampoCategoria.getText().equals("")) {
             labelMsg.setText("Campo(s) vazio(s)");
         } else {
             try {
                 if (produto == null) {
-                    double preco = Double.parseDouble(txtCampoPreco.getText());
+                    double preco = txtCampoPreco.getAmount();
                     if (preco < 1.0) {
                         throw new PrecoInvalidoException();
                     }
                     fachada.adicionarProduto(txtCampoNome.getText(),
-                            Double.parseDouble(txtCampoPreco.getText()),
+                            txtCampoPreco.getAmount(),
                             txtCampoTamanho.getText(),
                             txtCampoMarca.getText(),
                             txtCampoCategoria.getText());
@@ -132,7 +136,7 @@ public class TelaControladorEstoque implements Initializable {
                     labelMsg.setText("Produto cadastrado");
                 } else {
                     produto.setNome(txtCampoNome.getText());
-                    produto.setPreco(txtCampoPreco.getText());
+                    produto.setPreco(txtCampoPreco.getAmount());
                     produto.setTamanho(txtCampoTamanho.getText());
                     produto.setMarca(txtCampoMarca.getText());
                     produto.setCategoria(txtCampoCategoria.getText());
@@ -143,8 +147,8 @@ public class TelaControladorEstoque implements Initializable {
             } catch (ProdutoInexistenteException erro) {
                 labelMsg.setText(erro.getMessage());
                 limparCampos();
-            } catch (PrecoInvalidoException erro) {
-                labelMsg.setText(erro.getMessage());
+            } catch (PrecoInvalidoException e) {
+                labelMsg.setText("Preco invalido");
                 txtCampoPreco.clear();
             } catch (ProdutoExistenteException ex) {
                 limparCampos();
@@ -240,4 +244,10 @@ public class TelaControladorEstoque implements Initializable {
     private void botaoCancelarEdicao(ActionEvent event) {
         limparCampos();
     }
+
+    @FXML
+    private void txtCampoIdOnKeyReleased(KeyEvent event) {
+        if(!txtCampoId.getText().matches("[0-9]+"))    txtCampoId.setStyle("-fx-border-color: red;");
+        else    txtCampoId.setStyle("-fx-border-color: black;");
+    }    
 }

@@ -23,10 +23,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import negocio.TextFieldFormatter;
 import negocio.entidades.Funcionario;
+import negocio.excecoes.CPFInvalidoException;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
+import negocio.excecoes.NomeInvalidoException;
+import negocio.excecoes.SenhaInvalidaException;
 /**
  * FXML Controller class
  *
@@ -131,35 +136,29 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
 
     @FXML
     private void botaoSalvarFuncionario(ActionEvent event) {
-        if (txtCampoNome.getText().equals("")
-                || txtCampoCPF.getText().equals("")
-                || campoSenha.getText().equals("")) {
-            labelMsg.setText("Campo Inválido.");
-        } else {
-            try {
-                if (funcionario == null) {
-                    String matricula = gerarMatricula(eGerente, txtCampoCPF.getText());
-                    fachada.adicionarFuncionario(txtCampoNome.getText(),
-                            txtCampoCPF.getText(),
-                            eGerente,
-                            matricula,
-                            campoSenha.getText());
-                    limparCampos();
-                    labelMsg.setText("Cadastrado com ID: " + matricula);
-                } else {
-                    funcionario = fachada.getFuncionario(txtCampoMatricula.getText());
-                    funcionario.setNome(txtCampoNome.getText());
-                    funcionario.setSenha(campoSenha.getText());
-                    funcionario.setEGerente(eGerente);
-                    funcionario.setMatricula(gerarMatricula(eGerente, txtCampoCPF.getText()));
-                    fachada.atualizarFuncionario(funcionario);
-                    limparCampos();
-                    labelMsg.setText("Funcionario Atualizado.");
-                }
-            } catch (FuncionarioExistenteException | FuncionarioInexistenteException e) {
-                labelMsg.setText(e.getMessage());
+        try {
+            if (funcionario == null) {
+                String matricula = gerarMatricula(eGerente, txtCampoCPF.getText());
+                fachada.adicionarFuncionario(txtCampoNome.getText(),
+                        txtCampoCPF.getText(),
+                        eGerente,
+                        matricula,
+                        campoSenha.getText());
+                limparCampos();
+                labelMsg.setText("Cadastrado com ID: " + matricula);
+            } else {
+                fachada.atualizarFuncionario(txtCampoMatricula.getText(), txtCampoNome.getText(),
+                        eGerente,
+                        campoSenha.getText());
+                limparCampos();
+                labelMsg.setText("Funcionario Atualizado.");
             }
-
+        } catch (FuncionarioExistenteException |
+                FuncionarioInexistenteException |
+                NomeInvalidoException |
+                CPFInvalidoException |
+                SenhaInvalidaException e){
+            labelMsg.setText(e.getMessage());
         }
     }
 
@@ -270,6 +269,26 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
         } else {
             return "V" + cpf;
         }
+    }
+    
+    @FXML
+    private void txtCampoCPFOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("###.###.###-##");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txtCampoCPF);
+        tff.formatter();
+        if(txtCampoCPF.getText().contains(" "))    txtCampoCPF.setStyle("-fx-border-color: red;");
+        else    txtCampoCPF.setStyle("-fx-border-color: black;");
+    }
+
+    @FXML
+    private void txtCampoMatriculaOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("?###.###.###-##");
+        tff.setCaracteresValidos("GVgv0123456789");
+        tff.setTf(txtCampoMatricula);
+        tff.formatter();
     }
 
 }

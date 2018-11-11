@@ -7,15 +7,15 @@ package negocio.excecoes;
 
 /**
  *
- * @author Raquell Vieira, Adilson Junior
+ * @author vinesnts
  */
-public class DataInvalidaException extends Exception{
+public class SenhaInvalidaException extends Exception {
 
-    public DataInvalidaException() {
-        super("Data invalida");
+    public SenhaInvalidaException() {
+        super("Senha invalida");
     }
 
-    public DataInvalidaException(String msg) {
+    public SenhaInvalidaException(String msg) {
         super(msg);
     }
     

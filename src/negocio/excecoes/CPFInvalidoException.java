@@ -7,15 +7,15 @@ package negocio.excecoes;
 
 /**
  *
- * @author Raquell Vieira, Adilson Junior
+ * @author vinesnts
  */
-public class DataInvalidaException extends Exception{
+public class CPFInvalidoException extends Exception {
 
-    public DataInvalidaException() {
-        super("Data invalida");
+    public CPFInvalidoException() {
+        super("CPF invalido");
     }
 
-    public DataInvalidaException(String msg) {
+    public CPFInvalidoException(String msg) {
         super(msg);
     }
     
