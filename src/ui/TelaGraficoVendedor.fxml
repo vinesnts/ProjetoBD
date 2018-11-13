@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="522.0" prefWidth="616.0" stylesheets="@tema.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorGraficoVendedor">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorGraficoVendedor">
    <children>
-      <Label alignment="CENTER" layoutX="207.0" layoutY="14.0" prefHeight="25.0" prefWidth="236.0" text="GRÁFICO FUNCIONÁRIO" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="217.0" layoutY="34.0" prefHeight="34.0" prefWidth="377.0" text="GRÁFICO FUNCIONÁRIO" textAlignment="CENTER">
          <effect>
             <Glow />
          </effect>
@@ -21,49 +22,38 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="anchorPaneGrafico" layoutX="58.0" layoutY="227.0" prefHeight="248.0" prefWidth="500.0" />
-      <GridPane layoutX="58.0" layoutY="70.0" prefHeight="118.0" prefWidth="500.0">
+      <GridPane layoutX="155.0" layoutY="89.0" prefHeight="422.0" prefWidth="500.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="302.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="labelMatricula" prefHeight="35.0" prefWidth="125.0" text="Matrícula:">
-               <effect>
-                  <Glow />
-               </effect>
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txCampoMatricula" editable="false" prefHeight="37.0" prefWidth="148.0" GridPane.columnIndex="1">
+            <JFXTextField fx:id="txCampoMatricula" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" GridPane.valignment="TOP">
                <effect>
                   <InnerShadow />
                </effect>
                <font>
                   <Font size="16.0" />
                </font>
-            </TextField>
-            <Button fx:id="botaoCancelar" mnemonicParsing="false" onAction="#acaoCancelarFuncionario" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            </JFXTextField>
+            <JFXButton fx:id="botaoCancelar" mnemonicParsing="false" onAction="#acaoCancelarFuncionario" text="Cancelar" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <effect>
                   <InnerShadow />
                </effect>
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="botaoMostrarGrafico" mnemonicParsing="false" onAction="#acaoMostrarGrafico" text="Mostrar Grafico" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            </JFXButton>
+            <JFXButton fx:id="botaoMostrarGrafico" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#acaoMostrarGrafico" prefHeight="40.0" prefWidth="180.0" text="Mostrar Grafico" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                <effect>
                   <InnerShadow />
                </effect>
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
+               <GridPane.margin>
+                  <Insets left="205.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <AnchorPane fx:id="anchorPaneGrafico" prefHeight="302.0" prefWidth="500.0" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

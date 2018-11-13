@@ -1,65 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<VBox fx:id="vboxMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="616.0" stylesheets="@tema.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorMenuPrincipal">
+<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controladoresFX.TelaControladorMenuPrincipal">
+   <columnConstraints>
+      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="147.5" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="15.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="147.5" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="28.0" minHeight="-Infinity" percentHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="157.5" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="15.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="15.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="172.5" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="616.0" stylesheets="@tema_menus.css">
-         <items>
-            <Button fx:id="botaoListarClientes" mnemonicParsing="false" onAction="#botaoListarClientes" text="Cliente">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="botaoListarFuncionario" mnemonicParsing="false" onAction="#botaoListarFuncionario" text="Funcionário">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="botaoTelaEstoque" mnemonicParsing="false" onAction="#redirecionarTelaEstoque" prefHeight="20.0" text="Estoque">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="botaoCadastrarVenda" mnemonicParsing="false" onAction="#redirecionaTelaCadastroVendas" prefHeight="20.0" text="Venda">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <MenuButton mnemonicParsing="false" prefHeight="20.0" text="Relatórios">
-               <items>
-              <MenuItem fx:id="menuItemRelatorioVendas" mnemonicParsing="false" onAction="#redirecionaTeladeRelatorioVendas" text="Gerar Relatorio de Vendas" />
-               </items>
-            </MenuButton>
-            <MenuButton mnemonicParsing="false" prefHeight="20.0" text="Gráficos">
-              <items>
-                <MenuItem fx:id="menuItemVendasPeriodo" mnemonicParsing="false" onAction="#redirecionaTelaPeridoVendas" text="Vendas por periodo" />
-              </items>
-            </MenuButton>
-            <TextField fx:id="campoFuncionario" editable="false" prefHeight="30.0" prefWidth="76.0" promptText="Pessoa logada" />
-            <Button fx:id="botaoSair" mnemonicParsing="false" onAction="#redirecionaSaidaLogin" text="Sair">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-         </items>
-      </ToolBar>
-      <HBox alignment="CENTER_RIGHT" focusTraversable="true" prefWidth="616.0">
+      <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" text="R.A.V. Shop" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <JFXButton fx:id="bListarClientes" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" onAction="#botaoListarClientes" prefHeight="60.0" prefWidth="250.0" stylesheets="@novo_tema_menus.css" text="Cliente" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <JFXButton fx:id="bListarFuncionarios" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" onAction="#botaoListarFuncionarios" prefHeight="60.0" prefWidth="250.0" stylesheets="@novo_tema_menus.css" text="Funcionário" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <JFXButton fx:id="bTelaEstoque" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#redirecionarTelaEstoque" prefHeight="60.0" prefWidth="250.0" stylesheets="@novo_tema_menus.css" text="Estoque" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+      <JFXButton fx:id="bVenda" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#redirecionaTelaCadastroVendas" prefHeight="60.0" prefWidth="250.0" stylesheets="@novo_tema_menus.css" text="Venda" GridPane.columnIndex="3" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+      <JFXButton alignment="BASELINE_LEFT" onAction="#redirecionaTelaRelatorioVendas" prefHeight="60.0" prefWidth="250.0" stylesheets="@novo_tema_menus.css" text="Relatórios" GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+      <JFXButton alignment="BASELINE_LEFT" onAction="#redirecionaTelaPeridoVendas" prefHeight="60.0" prefWidth="250.0" stylesheets="@novo_tema_menus.css" text="Gráficos" GridPane.columnIndex="3" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <image>
+            <Image url="@icons/cliente.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <image>
+            <Image url="@icons/funcionario.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+         <image>
+            <Image url="@icons/estoque.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+         <image>
+            <Image url="@icons/venda.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+         <image>
+            <Image url="@icons/graficos.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+         <image>
+            <Image url="@icons/relatorios.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <StackPane fx:id="stackPane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema_stackpane.css" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <children>
-            <Label fx:id="gerenteAvisos" textFill="RED" />
+            <JFXButton fx:id="botaoOkay" text="Okay" visible="false" />
+            <JFXButton fx:id="botaoNao" text="Não" visible="false" />
+            <JFXButton fx:id="botaoSim" text="Sim" visible="false" />
          </children>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </HBox>
+      </StackPane>
+      <JFXTextField fx:id="campoFuncionario" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="170.0" promptText="Bem-Vindo(a)" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="9" GridPane.valignment="TOP" />
+      <JFXButton alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#redirecionaSaidaLogin" prefHeight="60.0" prefWidth="68.0" stylesheets="@novo_tema.css" text="Sair" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="9" GridPane.valignment="TOP">
+         <graphic>
+            <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/sair_2.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
    </children>
-</VBox>
+</GridPane>

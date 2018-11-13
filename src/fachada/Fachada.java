@@ -69,7 +69,7 @@ public class Fachada {
     //CLIENTE
     public void adicionarCliente(String nome, String CPF, LocalDate dataAniversario) throws ClienteExistenteException, NomeInvalidoException, CPFInvalidoException {
         if (nome.equals(""))    throw new NomeInvalidoException();
-        if (CPF.contains(" ")) throw new CPFInvalidoException();
+        if (CPF.contains(" ") || CPF.equals("")) throw new CPFInvalidoException();
         Cliente cliente = new Cliente(nome, CPF, dataAniversario);
         clientes.adicionar(cliente);
     }
@@ -95,7 +95,7 @@ public class Fachada {
     //FUNCIONARIO
     public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException, NomeInvalidoException, CPFInvalidoException, SenhaInvalidaException{
         if (nome.equals(""))    throw new NomeInvalidoException();
-        if (CPF.contains(" ")) throw new CPFInvalidoException();
+        if (CPF.contains(" ") || CPF.equals("")) throw new CPFInvalidoException();
         if (senha.equals(""))   throw new SenhaInvalidaException();
         matricula = matricula.toUpperCase();
         Funcionario funcionario = new Funcionario(nome, CPF, eGerente, matricula, senha);

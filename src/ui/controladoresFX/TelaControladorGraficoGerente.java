@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -63,6 +62,7 @@ public class TelaControladorGraficoGerente implements Initializable {
             int ano = Integer.parseInt(txCampoAno.getText());
             GraficoGerente graficoGerente = new GraficoGerente();
             graficoGerente.setAno(ano);
+            labelMsgErro.setText("");
             FlowPane flow = new FlowPane(graficoGerente.criarGraficoPizza());
             anchorPaneGrafico.getChildren().setAll(flow);
 

@@ -5,6 +5,9 @@
  */
 package ui.controladoresFX;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import fachada.Fachada;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -23,15 +27,19 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import negocio.TextFieldFormatter;
 import negocio.entidades.Funcionario;
 import negocio.excecoes.CPFInvalidoException;
+import negocio.excecoes.ClienteInexistenteException;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.NomeInvalidoException;
 import negocio.excecoes.SenhaInvalidaException;
+
 /**
  * FXML Controller class
  *
@@ -83,9 +91,16 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     private RadioButton radioGerente;
     @FXML
     private RadioButton radioVendedor;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private JFXButton botaoNao;
+    @FXML
+    private JFXButton botaoSim;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -153,11 +168,11 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
                 limparCampos();
                 labelMsg.setText("Funcionario Atualizado.");
             }
-        } catch (FuncionarioExistenteException |
-                FuncionarioInexistenteException |
-                NomeInvalidoException |
-                CPFInvalidoException |
-                SenhaInvalidaException e){
+        } catch (FuncionarioExistenteException
+                | FuncionarioInexistenteException
+                | NomeInvalidoException
+                | CPFInvalidoException
+                | SenhaInvalidaException e) {
             labelMsg.setText(e.getMessage());
         }
     }
@@ -165,23 +180,51 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     @FXML
     private void botaoRemoverFuncionario(ActionEvent event) {
         if (txtCampoMatricula.getText().equals("")) {
-            labelMsg.setText("Campo Matricula Inválido.");
+            labelMsg.setText("Campo matricula invalido");
         } else {
-            boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
-                    "Tem certeza que deseja remover o funcionario?",
-                    "Todas as informacoes dele serao perdidas");
-            if (confirmacao) {
-                try {
-                    fachada.getFuncionario(txtCampoMatricula.getText());
-                    fachada.removerFuncionario(txtCampoMatricula.getText());
-                    labelMsg.setText("Funcionario removido");
-                    limparCampos();
-                } catch (FuncionarioInexistenteException error) {
-                    txtCampoMatricula.clear();
-                    labelMsg.setText(error.getMessage());
-                    limparCampos();
+            JFXDialogLayout content = new JFXDialogLayout();
+            content.setHeading(new ImageView("ui/icons/pergunta.png"));
+            content.setBody(new Label("Tem certeza que deseja demitir o funcionario?\n"));
+            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+            dialogo.setOverlayClose(false);
+            dialogo.setFocusTraversable(true);
+            stackPane.setVisible(true);
+            botaoNao.setVisible(true);
+            botaoSim.setVisible(true);
+            botaoNao.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    dialogo.close();
+                    botaoNao.setVisible(false);
+                    botaoSim.setVisible(false);
+                    stackPane.setVisible(false);
                 }
-            }
+            });
+            botaoSim.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        fachada.getFuncionario(txtCampoMatricula.getText());
+                        fachada.removerFuncionario(txtCampoMatricula.getText());
+                        labelMsg.setText("Funcionario removido");
+                        limparCampos();
+                        dialogo.close();
+                        botaoNao.setVisible(false);
+                        botaoSim.setVisible(false);
+                        stackPane.setVisible(false);
+                    } catch (FuncionarioInexistenteException ex) {
+                        txtCampoMatricula.clear();
+                        labelMsg.setText(ex.getMessage());
+                        limparCampos();
+                        dialogo.close();
+                        botaoNao.setVisible(false);
+                        botaoSim.setVisible(false);
+                        stackPane.setVisible(false);
+                    }
+                }
+            });
+            content.setActions(botaoNao, botaoSim);
+            dialogo.show();
         }
     }
 
@@ -270,7 +313,7 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
             return "V" + cpf;
         }
     }
-    
+
     @FXML
     private void txtCampoCPFOnKeyReleased(KeyEvent event) {
         TextFieldFormatter tff = new TextFieldFormatter();
@@ -278,8 +321,11 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
         tff.setCaracteresValidos("0123456789");
         tff.setTf(txtCampoCPF);
         tff.formatter();
-        if(txtCampoCPF.getText().contains(" "))    txtCampoCPF.setStyle("-fx-border-color: red;");
-        else    txtCampoCPF.setStyle("-fx-border-color: black;");
+        if (txtCampoCPF.getText().contains(" ")) {
+            txtCampoCPF.setStyle("-jfx-focus-color: red;");
+        } else {
+            txtCampoCPF.setStyle("-jfx-focus-color: #0080ff;");
+        }
     }
 
     @FXML

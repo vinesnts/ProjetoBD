@@ -5,6 +5,9 @@
  */
 package ui.controladoresFX;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import fachada.Fachada;
 import java.io.IOException;
 import java.net.URL;
@@ -13,13 +16,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import negocio.TextFieldFormatter;
 import negocio.entidades.Funcionario;
 import negocio.excecoes.FuncionarioInexistenteException;
@@ -32,21 +36,18 @@ import negocio.excecoes.FuncionarioInexistenteException;
 public class TelaControladorLogin implements Initializable {
 
     @FXML
-    private Button botaoEntrar;
-    @FXML
-    private Label rotuloMatricula;
-    @FXML
-    private Label rotuloSenha;
-    @FXML
-    private TextField txCampoMatricula;
-    @FXML
     private AnchorPane anchorPane;
-    @FXML
     private PasswordField txCampoSenha;
     @FXML
     private Label labelMsg;
 
     private Fachada fachada;
+    @FXML
+    private JFXButton bEntrar;
+    @FXML
+    private JFXTextField tfMatricula;
+    @FXML
+    private JFXPasswordField tfSenha;
 
     /**
      * Initializes the controller class.
@@ -60,44 +61,67 @@ public class TelaControladorLogin implements Initializable {
     private void acaoBotaoEntrar(ActionEvent event) throws IOException {
 
         try {
-            Funcionario funcionario = fachada.getFuncionario(txCampoMatricula.getText());
-            if (funcionario.getMatricula().equals(txCampoMatricula.getText().toUpperCase()) &&
-                    funcionario.getSenha().equals(txCampoSenha.getText())) {
+            Funcionario funcionario = fachada.getFuncionario(tfMatricula.getText());
+            if (funcionario.getMatricula().equals(tfMatricula.getText().toUpperCase())
+                    && funcionario.getSenha().equals(tfSenha.getText())) {
                 fachada.setLogado(funcionario);
                 System.out.println(fachada.getLogado().getNome());
-            	limparCampo();
+                limparCampo();
                 if (funcionario.eGerente()) {
-                    VBox v = (VBox) FXMLLoader.load(getClass().getResource("/ui/TelaMenuGerente.fxml"));
-                    anchorPane.getChildren().setAll(v);
+                    ((Node) event.getSource()).getScene().getWindow().hide();
+                    Stage stage = new Stage();
+                    stage.setTitle("Bem-Vindo(a), Gerente!");
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaMenuGerente.fxml")));
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
                 } else {
-                    VBox v = (VBox) FXMLLoader.load(getClass().getResource("/ui/TelaMenuVendedor.fxml"));
-                    anchorPane.getChildren().setAll(v);
+                    ((Node) event.getSource()).getScene().getWindow().hide();
+                    Stage stage = new Stage();
+                    stage.setTitle("Bem-Vindo(a), Vendedor!");
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaMenuVendedor.fxml")));
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
                 }
 
             } else {
                 limparCampo();
-                labelMsg.setText("Senha Inválida.");
+                labelMsg.setText("Senha invalida");
+                tfSenha.setStyle("-jfx-unfocus-color: red;");
             }
 
         } catch (FuncionarioInexistenteException erro) {
             limparCampo();
-            labelMsg.setText("Matricula Inexistente.");
+            labelMsg.setText("Matricula inexistente");
+            tfMatricula.setStyle("-jfx-unfocus-color: red;");
         }
 
     }
 
     private void limparCampo() {
-        txCampoSenha.clear();
+        tfSenha.clear();
         labelMsg.setText("");
+        tfSenha.setStyle("-jfx-unfocus-color: #0080ff;");
+        tfMatricula.setStyle("-jfx-unfocus-color: #0080ff;");
     }
 
-    @FXML
     private void txCampoMatriculaOnKeyReleased(KeyEvent event) {
         TextFieldFormatter tff = new TextFieldFormatter();
         tff.setMask("?###.###.###-##");
         tff.setCaracteresValidos("GVgv0123456789");
-        tff.setTf(txCampoMatricula);
+        tff.setTf(tfMatricula);
         tff.formatter();
     }
 
+    @FXML
+    private void tfMatriculaOnKeyReleased(KeyEvent event) {
+        TextFieldFormatter tff = new TextFieldFormatter();
+        tff.setMask("?###.###.###-##");
+        tff.setCaracteresValidos("GVgv0123456789");
+        tff.setTf(tfMatricula);
+        tff.formatter();
+    }
 }

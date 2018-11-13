@@ -7,6 +7,7 @@
 package negocio.entidades;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -77,10 +78,7 @@ public class Venda implements Serializable {
     private void setPrecoTotal() {
         for (int i = 0; i < this.getArrayVendaProduto().size(); i++) {
             precoTotal += this.getArrayVendaProduto().get(i).getProduto().getPreco() * this.getArrayVendaProduto().get(i).getQuantidade();
-            System.out.println("carrinho: " + precoTotal);
-            System.out.println("desconto: " + desconto);
             precoTotal -= (precoTotal * this.desconto);
-            System.out.println("valor com desconto: " + precoTotal);
         }
     }
     

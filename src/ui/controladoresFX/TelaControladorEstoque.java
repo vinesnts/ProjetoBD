@@ -5,6 +5,9 @@
  */
 package ui.controladoresFX;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import fachada.Fachada;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -21,10 +25,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import negocio.CurrencyField;
 import negocio.entidades.Produto;
+import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.PrecoInvalidoException;
 import negocio.excecoes.ProdutoExistenteException;
 import negocio.excecoes.ProdutoInexistenteException;
@@ -46,7 +53,7 @@ public class TelaControladorEstoque implements Initializable {
     @FXML
     private TextField txtCampoNome;
     @FXML
-    private CurrencyField txtCampoPreco;
+    private TextField txtCampoPreco;
     @FXML
     private TextField txtCampoTamanho;
     @FXML
@@ -75,6 +82,12 @@ public class TelaControladorEstoque implements Initializable {
     private Button botaoCancelarEdicao;
     @FXML
     private GridPane menusGrid;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private JFXButton botaoNao;
+    @FXML
+    private JFXButton botaoSim;
 
     /**
      * Initializes the controller class.
@@ -116,19 +129,18 @@ public class TelaControladorEstoque implements Initializable {
 
     @FXML
     private void botaoSalvarEstoque(ActionEvent event) {
-        System.out.println(txtCampoPreco.getAmount());
         if (txtCampoNome.getText().equals("") || txtCampoPreco.getText().equals("") || txtCampoTamanho.getText().equals("")
                 || txtCampoMarca.getText().equals("") || txtCampoCategoria.getText().equals("")) {
             labelMsg.setText("Campo(s) vazio(s)");
         } else {
             try {
                 if (produto == null) {
-                    double preco = txtCampoPreco.getAmount();
+                    double preco = Double.parseDouble(txtCampoPreco.getText());
                     if (preco < 1.0) {
                         throw new PrecoInvalidoException();
                     }
                     fachada.adicionarProduto(txtCampoNome.getText(),
-                            txtCampoPreco.getAmount(),
+                            Double.parseDouble(txtCampoPreco.getText()),
                             txtCampoTamanho.getText(),
                             txtCampoMarca.getText(),
                             txtCampoCategoria.getText());
@@ -136,7 +148,7 @@ public class TelaControladorEstoque implements Initializable {
                     labelMsg.setText("Produto cadastrado");
                 } else {
                     produto.setNome(txtCampoNome.getText());
-                    produto.setPreco(txtCampoPreco.getAmount());
+                    produto.setPreco(Double.parseDouble(txtCampoPreco.getText()));
                     produto.setTamanho(txtCampoTamanho.getText());
                     produto.setMarca(txtCampoMarca.getText());
                     produto.setCategoria(txtCampoCategoria.getText());
@@ -147,7 +159,7 @@ public class TelaControladorEstoque implements Initializable {
             } catch (ProdutoInexistenteException erro) {
                 labelMsg.setText(erro.getMessage());
                 limparCampos();
-            } catch (PrecoInvalidoException e) {
+            } catch (PrecoInvalidoException | NumberFormatException e) {
                 labelMsg.setText("Preco invalido");
                 txtCampoPreco.clear();
             } catch (ProdutoExistenteException ex) {
@@ -219,24 +231,49 @@ public class TelaControladorEstoque implements Initializable {
         if (txtCampoId.getText().equals("")) {
             labelMsg.setText("Nenhum item selecionado");
         } else {
-            boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
-                    "Tem certeza que deseja remover o produto?",
-                    "Todas as informacoees dele serao perdidas");
-            if (confirmacao) {
-                try {
-                    fachada.removerProduto(Integer.parseInt(txtCampoId.getText()));
-                    txtCampoId.clear();
-                    labelMsg.setText("Produto removido");
-                    limparCampos();
-                } catch (ProdutoInexistenteException erro) {
-                    limparCampos();
-                    txtCampoId.clear();
-                    labelMsg.setText(erro.getMessage());
-
+            JFXDialogLayout content = new JFXDialogLayout();
+            content.setHeading(new ImageView("ui/icons/pergunta.png"));
+            content.setBody(new Label("Tem certeza que deseja remover o produto?\n"));
+            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+            dialogo.setOverlayClose(false);
+            dialogo.setFocusTraversable(true);
+            stackPane.setVisible(true);
+            botaoNao.setVisible(true);
+            botaoSim.setVisible(true);
+            botaoNao.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    dialogo.close();
+                    botaoNao.setVisible(false);
+                    botaoSim.setVisible(false);
+                    stackPane.setVisible(false);
                 }
-            } else {
-                // nada a fazer
-            }
+            });
+            botaoSim.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        fachada.removerProduto(Integer.parseInt(txtCampoId.getText()));
+                        txtCampoId.clear();
+                        limparCampos();
+                        labelMsg.setText("Produto removido");
+                        dialogo.close();
+                        botaoNao.setVisible(false);
+                        botaoSim.setVisible(false);
+                        stackPane.setVisible(false);
+                    } catch (ProdutoInexistenteException erro) {
+                        limparCampos();
+                        txtCampoId.clear();
+                        labelMsg.setText(erro.getMessage());
+                        dialogo.close();
+                        botaoNao.setVisible(false);
+                        botaoSim.setVisible(false);
+                        stackPane.setVisible(false);
+                    }
+                }
+            });
+            content.setActions(botaoNao, botaoSim);
+            dialogo.show();
         }
     }
 
@@ -247,7 +284,10 @@ public class TelaControladorEstoque implements Initializable {
 
     @FXML
     private void txtCampoIdOnKeyReleased(KeyEvent event) {
-        if(!txtCampoId.getText().matches("[0-9]+"))    txtCampoId.setStyle("-fx-border-color: red;");
-        else    txtCampoId.setStyle("-fx-border-color: black;");
-    }    
+        if (!txtCampoId.getText().matches("[0-9]+")) {
+            txtCampoId.setStyle("-fx-border-color: red;");
+        } else {
+            txtCampoId.setStyle("-fx-border-color: black;");
+        }
+    }
 }

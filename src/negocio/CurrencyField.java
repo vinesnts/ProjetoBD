@@ -1,3 +1,5 @@
+//Nao utilizado no projeto
+
 package negocio;
 
 import java.text.NumberFormat;

@@ -5,6 +5,12 @@
  */
 package ui.controladoresFX;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import fachada.Fachada;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,16 +19,16 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import negocio.DatePickerFormatter;
 import negocio.TextFieldFormatter;
 import negocio.entidades.Cliente;
@@ -45,35 +51,42 @@ public class TelaControladorGerenciaCliente implements Initializable {
     private Cliente cliente;
 
     @FXML
-    private ListView<Cliente> listViewCliente;
+    private JFXListView<Cliente> listViewCliente;
     @FXML
     private GridPane cadastrarEditarGrid;
     @FXML
-    private TextField txtCampoNome;
-    @FXML
-    private TextField txtCampoCPF;
-    @FXML
-    private Button botaoSalvarCliente;
-    @FXML
-    private Button botaoCancelarEdicao;
-    @FXML
-    private Button botaoRemoverCliente;
-    @FXML
-    private DatePicker caixaData;
-    @FXML
     private GridPane menusGrid;
     @FXML
-    private Button botaoCadastrarCliente;
-    @FXML
-    private Button botaoEditarCliente;
-    @FXML
-    private Button botaoProcurarCPF;
-    @FXML
-    private Button botaoCancelar;
-    @FXML
     private Label labelMsg;
-    @FXML
     private TextField txtCampoProcurarCPF;
+    @FXML
+    private JFXTextField tfProcurarCPF;
+    @FXML
+    private JFXButton bProcurar;
+    @FXML
+    private JFXButton bCancelar;
+    @FXML
+    private JFXButton bCadastrarCliente;
+    @FXML
+    private JFXButton bEditarCliente;
+    @FXML
+    private JFXTextField tfNome;
+    @FXML
+    private JFXTextField tfCPF;
+    @FXML
+    private JFXDatePicker dpAniversario;
+    @FXML
+    private JFXButton bRemover;
+    @FXML
+    private JFXButton bSalvarCliente;
+    @FXML
+    private JFXButton bCancelarEdicao;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private JFXButton botaoNao;
+    @FXML
+    private JFXButton botaoSim;
 
     /**
      * Initializes the controller class.
@@ -82,109 +95,136 @@ public class TelaControladorGerenciaCliente implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         fachada = Fachada.getInstance();
         listarClientes();
-        //caixaData.getEditor().setDisable(true);
+        //dpAniversario.getEditor().setDisable(true);
     }
 
     @FXML
     private void botaoSalvarCliente(ActionEvent event) {
         try {
-            if (caixaData.getEditor().getText().length() != 10) throw new DataInvalidaException();
+            if (dpAniversario.getEditor().getText().length() != 10) {
+                throw new DataInvalidaException();
+            }
             if (cliente != null) {
-                fachada.atualizarCliente(txtCampoProcurarCPF.getText(),
-                        txtCampoNome.getText(),
-                        caixaData.getValue());
+                fachada.atualizarCliente(tfProcurarCPF.getText(),
+                        tfNome.getText(),
+                        dpAniversario.getValue());
                 limparCampos();
                 labelMsg.setText("Cliente atualizado");
             } else {
-                fachada.adicionarCliente(txtCampoNome.getText(), txtCampoCPF.getText(), caixaData.getValue());
+                fachada.adicionarCliente(tfNome.getText(), tfCPF.getText(), dpAniversario.getValue());
                 limparCampos();
                 labelMsg.setText("Cliente cadastrado");
             }
-        } catch (ClienteExistenteException | ClienteInexistenteException e) {
-            limparCampos();
-            labelMsg.setText(e.getMessage());
-        } catch (NomeInvalidoException | CPFInvalidoException | DataInvalidaException e) {
+        } catch (ClienteExistenteException |
+                ClienteInexistenteException |
+                NomeInvalidoException |
+                CPFInvalidoException |
+                DataInvalidaException e) {
             labelMsg.setText(e.getMessage());
         }
     }
 
-@FXML
-        private void botaoRemoverCliente(ActionEvent event) {
-        if (txtCampoProcurarCPF.getText().equals("")) {
+    @FXML
+    private void botaoRemoverCliente(ActionEvent event) {
+        if (tfProcurarCPF.getText().equals("")) {
             labelMsg.setText("Campo CPF invalido");
         } else {
-            boolean confirmacao = new GUIConfirmation().janelaConfirmacao(
-                    "Tem certeza que deseja remover o cliente?",
-                    "Todas as informacoes dele serao perdidas");
-            if (confirmacao) {
-                try {
-                    fachada.getCliente(txtCampoProcurarCPF.getText());
-                    fachada.removerCliente(txtCampoProcurarCPF.getText());
-                    limparCampos();
-                    labelMsg.setText("Cliente removido");
-                } catch (ClienteInexistenteException ex) {
-                    limparCampos();
-                    labelMsg.setText(ex.getMessage());
+            JFXDialogLayout content = new JFXDialogLayout();
+            content.setHeading(new ImageView("ui/icons/pergunta.png"));
+            content.setBody(new Label("Tem certeza que deseja remover o cliente?\n"));
+            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+            dialogo.setOverlayClose(false);
+            dialogo.setFocusTraversable(true);
+            stackPane.setVisible(true);
+            botaoNao.setVisible(true);
+            botaoSim.setVisible(true);
+            botaoNao.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    dialogo.close();
+                    botaoNao.setVisible(false);
+                    botaoSim.setVisible(false);
+                    stackPane.setVisible(false);
                 }
-            }
+            });
+            botaoSim.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        fachada.getCliente(tfProcurarCPF.getText());
+                        fachada.removerCliente(tfProcurarCPF.getText());
+                        limparCampos();
+                        labelMsg.setText("Cliente removido");
+                        dialogo.close();
+                        botaoNao.setVisible(false);
+                        botaoSim.setVisible(false);
+                        stackPane.setVisible(false);
+                    } catch (ClienteInexistenteException ex) {
+                        limparCampos();
+                        labelMsg.setText(ex.getMessage());
+                        dialogo.close();
+                        botaoNao.setVisible(false);
+                        botaoSim.setVisible(false);
+                        stackPane.setVisible(false);
+                    }
+                }
+            });
+            content.setActions(botaoNao, botaoSim);
+            dialogo.show();
         }
     }
 
     @FXML
-        private void caixaData(ActionEvent event) {
-    }
-
-    @FXML
-        private void botaoCadastrarCliente(ActionEvent event) {
+    private void botaoCadastrarCliente(ActionEvent event) {
         limparCampos();
         cadastrarEditarGrid.setVisible(true);
-        botaoRemoverCliente.setVisible(false);
+        bRemover.setVisible(false);
         menusGrid.setVisible(false);
         listViewCliente.setVisible(false);
     }
 
     @FXML
-        private void botaoProcurarCPF(ActionEvent event) {
+    private void botaoProcurarCPF(ActionEvent event) {
         labelMsg.setText("");
         try {
-            if (txtCampoProcurarCPF.getText().equals("")) {
+            if (tfProcurarCPF.getText().equals("")) {
                 labelMsg.setText("Digite o CPF");
             } else {
                 labelMsg.setText("");
-                cliente = fachada.getCliente(txtCampoProcurarCPF.getText());
-                txtCampoNome.setText(cliente.getNome());
-                txtCampoCPF.setText(cliente.getCpf());
-                caixaData.setValue(cliente.getDataAniversario());
-                txtCampoCPF.setDisable(true);
+                cliente = fachada.getCliente(tfProcurarCPF.getText());
+                tfNome.setText(cliente.getNome());
+                tfCPF.setText(cliente.getCpf());
+                dpAniversario.setValue(cliente.getDataAniversario());
+                tfCPF.setDisable(true);
                 cadastrarEditarGrid.setVisible(true);
                 menusGrid.setVisible(false);
                 listViewCliente.setVisible(false);
             }
         } catch (ClienteInexistenteException ex) {
             limparCampos();
-            labelMsg.setText(ex.getMessage());        
+            labelMsg.setText(ex.getMessage());
         }
     }
 
     @FXML
-        private void botaoCancelar(ActionEvent event) {
+    private void botaoCancelar(ActionEvent event) {
         ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
     @FXML
-        private void botaoCancelarEdicao(ActionEvent event) {
+    private void botaoCancelarEdicao(ActionEvent event) {
         limparCampos();
     }
 
     @FXML
-        private void botaoEditarCliente(ActionEvent event) {
+    private void botaoEditarCliente(ActionEvent event) {
         try {
             cliente = listViewCliente.getSelectionModel().selectedItemProperty().getValue();
-            txtCampoProcurarCPF.setText(String.valueOf(cliente.getCpf()));
-            txtCampoNome.setText(cliente.getNome());
-            txtCampoCPF.setText(String.valueOf(cliente.getCpf()));
-            txtCampoCPF.setDisable(true);
-            caixaData.setValue(cliente.getDataAniversario());
+            tfProcurarCPF.setText(String.valueOf(cliente.getCpf()));
+            tfNome.setText(cliente.getNome());
+            tfCPF.setText(String.valueOf(cliente.getCpf()));
+            tfCPF.setDisable(true);
+            dpAniversario.setValue(cliente.getDataAniversario());
             labelMsg.setText("");
             cadastrarEditarGrid.setVisible(true);
             menusGrid.setVisible(false);
@@ -206,37 +246,40 @@ public class TelaControladorGerenciaCliente implements Initializable {
 
     private void limparCampos() {
         cliente = null;
-        txtCampoNome.clear();
-        txtCampoCPF.clear();
-        txtCampoProcurarCPF.clear();
-        caixaData.setValue(null);
+        tfNome.clear();
+        tfCPF.clear();
+        tfProcurarCPF.clear();
+        dpAniversario.setValue(null);
         labelMsg.setText("");
         listarClientes();
         listViewCliente.refresh();
-        txtCampoCPF.setDisable(false);
+        tfCPF.setDisable(false);
         menusGrid.setVisible(true);
         cadastrarEditarGrid.setVisible(false);
-        botaoRemoverCliente.setVisible(true);
+        bRemover.setVisible(true);
         listViewCliente.setVisible(true);
     }
 
     @FXML
-        private void cadastrarCPFOnKeyReleased(KeyEvent event) {
+    private void cadastrarCPFOnKeyReleased(KeyEvent event) {
         TextFieldFormatter tff = new TextFieldFormatter();
         tff.setMask("###.###.###-##");
         tff.setCaracteresValidos("0123456789");
-        tff.setTf(txtCampoCPF);
+        tff.setTf(tfCPF);
         tff.formatter();
-        if(txtCampoCPF.getText().contains(" "))    txtCampoCPF.setStyle("-fx-border-color: red;");
-        else    txtCampoCPF.setStyle("-fx-border-color: black;");
+        if (tfCPF.getText().contains(" ")) {
+            tfCPF.setStyle("-fx-border-color: red;");
+        } else {
+            tfCPF.setStyle("-fx-border-color: black;");
+        }
     }
 
     @FXML
-        private void txtCampoProcurarCPFOnKeyReleased(KeyEvent event) {
+    private void txtCampoProcurarCPFOnKeyReleased(KeyEvent event) {
         TextFieldFormatter tff = new TextFieldFormatter();
         tff.setMask("###.###.###-##");
         tff.setCaracteresValidos("0123456789");
-        tff.setTf(txtCampoProcurarCPF);
+        tff.setTf(tfProcurarCPF);
         tff.formatter();
     }
 
@@ -245,7 +288,7 @@ public class TelaControladorGerenciaCliente implements Initializable {
         DatePickerFormatter dpf = new DatePickerFormatter();
         dpf.setMask("##/##/####");
         dpf.setCaracteresValidos("0123456789");
-        dpf.setDp(caixaData);
+        dpf.setDp(dpAniversario);
         dpf.formatter();
     }
 

@@ -21,12 +21,12 @@ public class Tela extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("TelaLogin.fxml"));
-        stage.setTitle("R.A. Corporation ® Generic Shop.");
+        stage.setTitle("R.A.V. Shop");
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setHeight(500);
-        stage.setWidth(616);
+        stage.setHeight(600);
+        stage.setWidth(810);
         stage.show();
     }
 

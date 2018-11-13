@@ -5,22 +5,26 @@
  */
 package ui.controladoresFX;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import fachada.Fachada;
 import grafico.GerarRelatorioPDF;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -30,29 +34,30 @@ import javafx.stage.Stage;
  * @author Raquell Vieira
  */
 public class TelaControladorMenuPrincipal implements Initializable {
-    
+
     private Fachada fachada;
 
-    @FXML
-    private VBox vboxMenu;
-    @FXML
-    private MenuItem menuItemRelatorioVendas;
-    @FXML
-    private MenuItem menuItemVendasPeriodo;
-    @FXML
     private Label gerenteAvisos;
-    @FXML
-    private Button botaoTelaEstoque;
-    @FXML
-    private Button botaoCadastrarVenda;
     @FXML
     private TextField campoFuncionario;
     @FXML
-    private Button botaoSair;
+    private JFXButton bListarClientes;
     @FXML
-    private Button botaoListarFuncionario;
+    private GridPane gridPane;
     @FXML
-    private Button botaoListarClientes;
+    private JFXButton bListarFuncionarios;
+    @FXML
+    private JFXButton bTelaEstoque;
+    @FXML
+    private JFXButton bVenda;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private JFXButton botaoOkay;
+    @FXML
+    private JFXButton botaoNao;
+    @FXML
+    private JFXButton botaoSim;
 
     /**
      * Initializes the controller class.
@@ -68,14 +73,44 @@ public class TelaControladorMenuPrincipal implements Initializable {
 
     @FXML
     private void redirecionaSaidaLogin(ActionEvent event) throws IOException {
-    	boolean confirmacao = new GUIConfirmation().janelaConfirmacao("Tem certeza que deseja sair?", "Seus dados serao salvos");
-    	if(confirmacao) {
-    		AnchorPane p = (AnchorPane) FXMLLoader.load(getClass().getClass().getResource("/ui/TelaLogin.fxml"));
-    		vboxMenu.getChildren().setAll(p);
-    	} else {
-    		// nada a fazer
-    	}
-
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new ImageView("ui/icons/pergunta.png"));
+        content.setBody(new Label("Tem certeza que deseja sair?"));
+        JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        dialogo.setOverlayClose(false);
+        dialogo.setFocusTraversable(true);
+        stackPane.setVisible(true);
+        botaoNao.setVisible(true);
+        botaoSim.setVisible(true);
+        botaoNao.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialogo.close();
+                botaoNao.setVisible(false);
+                botaoSim.setVisible(false);
+                stackPane.setVisible(false);
+            }
+        });
+        botaoSim.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ((Node) event.getSource()).getScene().getWindow().hide();
+                Stage stage = new Stage();
+                stage.setTitle("R.A.V Shop");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                Scene scene;
+                try {
+                    scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaLogin.fxml")));
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                } catch (IOException ex) {
+                    System.out.println("Erro");
+                }
+            }
+        });
+        content.setActions(botaoNao, botaoSim);
+        dialogo.show();
     }
 
     @FXML
@@ -89,7 +124,6 @@ public class TelaControladorMenuPrincipal implements Initializable {
         stage.show();
     }
 
-
     @FXML
     private void redirecionaTelaCadastroVendas(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -102,16 +136,32 @@ public class TelaControladorMenuPrincipal implements Initializable {
     }
 
     @FXML
-    private void redirecionaTeladeRelatorioVendas(ActionEvent event) {
+    private void redirecionaTelaRelatorioVendas(ActionEvent event) {
         GerarRelatorioPDF gr = new GerarRelatorioPDF();
         gr.criarRelatorio();
-        gerenteAvisos.setText("Relatario gerado com sucesso!");
-
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new ImageView("ui/icons/okay.png"));
+        content.setBody(new Label("Relatório gerado com sucesso"));
+        JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        dialogo.setOverlayClose(false);
+        dialogo.setFocusTraversable(true);
+        stackPane.setVisible(true);
+        botaoOkay.setVisible(true);
+        botaoOkay.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialogo.close();
+                botaoOkay.setVisible(false);
+                stackPane.setVisible(false);
+            }
+        });
+        content.setActions(botaoOkay);
+        dialogo.show();
     }
 
     @FXML
     private void redirecionaTelaPeridoVendas(ActionEvent event) throws IOException {
-    	Stage stage = new Stage();
+        Stage stage = new Stage();
         stage.setTitle("Grafico gerente");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGraficoGerente.fxml")));
@@ -121,7 +171,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
     }
 
     @FXML
-    private void botaoListarFuncionario(ActionEvent event) throws IOException {
+    private void botaoListarFuncionarios(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Lista de funcionarios");
         stage.initModality(Modality.APPLICATION_MODAL);

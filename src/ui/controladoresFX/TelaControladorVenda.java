@@ -8,6 +8,7 @@ package ui.controladoresFX;
 import fachada.Fachada;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,11 +111,10 @@ public class TelaControladorVenda implements Initializable {
         Cliente cliente;
         try {
             cliente = fachada.getCliente(txCampoCliente.getText());
-            System.out.println("control desconto: " + desconto);
             Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, fachada.getCarrinhos());
-            txAreaInformativa.setText("Valor Total da venda: \t" + venda.getPrecoSemDesconto()
+            txAreaInformativa.setText("Valor Total da venda: \t" + new DecimalFormat(".00").format(venda.getPrecoSemDesconto())
                     + "\nDesconto: " + venda.getDesconto()
-                    + "\nValor Com Desconto: " + venda.getPrecoTotal());
+                    + "\nValor Com Desconto: " + new DecimalFormat(".00").format(venda.getPrecoTotal()));
             limparLabels();
             limparCampos();
             fachada.getCarrinhos().clear();
@@ -275,14 +275,19 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void botaoAplicarDesconto(ActionEvent event) {
-        desconto = Integer.parseInt(txCampoDesconto.getText());
+        String descontoTexto = txCampoDesconto.getText();
+        if(descontoTexto.equals("")) {
+            labelMsgDesconto.setText("Desconto invalido!");
+            return;
+        }
+        desconto = Integer.parseInt(descontoTexto);
         double valor = calcularValorCarrinho();
         if (desconto < 0 || desconto > 15) {
                 labelMsgDesconto.setText("Desconto invalido!");
                 return;
         }
         valor -= (valor * desconto) / 100;
-        txAreaInformativa.setText("Valor dos produtos com desconto: \t" + valor);
+        txAreaInformativa.setText("Valor dos produtos com desconto: \t" + new DecimalFormat(".00").format(valor));
         labelMsgDesconto.setText("Desconto aplicado");
     }
 

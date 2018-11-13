@@ -1,38 +1,47 @@
 .root {
-     -fx-background-color: "#E6E6E6";
+     -fx-background-color: #ffffff;
+     -fx-font-family: 'Roboto';
+     -fx-font-size: 20;
 }
 
 .label {
+    -fx-font-family: 'Roboto';
     -fx-font-weight: bold;
-    -fx-text-fill: black;
+    -fx-text-fill: #4d4d4d;
+    -fx-font-size: 25;
     -fx-effect: null;	
 }
 
 .text-field {
-	-fx-text-fill: #000000;
-	-fx-prompt-text-fill: #d8d8d8;
+	-fx-text-fill: #4d4d4d;
+	-fx-prompt-text-fill: #c4c4c4;
 	-fx-border-color: black;
 	-fx-border-radius: 5;
 	-fx-background-radius: 5;
-	-fx-border-width: 1;
+	-fx-border-width: 0;
 	-fx-effect: null;
-	
+        -jfx-focus-color: #0080ff;
+        -jfx-unfocus-color: #0080ff;
+        -jfx-label-float: true;
 }
 
 .text-area {
-	-fx-text-fill: #000000;
-	-fx-prompt-text-fill: #d8d8d8;
-	-fx-border-color: black;
+        -fx-background-color: #ffffff;
+	-fx-text-fill: #4d4d4d;
+        -fx-font-size: 15;
+	-fx-prompt-text-fill: #c4c4c4;
+	-fx-border-color: #0080FF;
 	-fx-border-radius: 5;
 	-fx-background-radius: 5;
 	-fx-border-width: 1;
-	-fx-effect: null;
+        -jfx-focus-color: #ffffff;
+        -jfx-unfocus-color: #ffffff;
 }
 
 .list-view {
-	-fx-text-fill: #000000;
-	-fx-prompt-text-fill: #d8d8d8;
-	-fx-border-color: black;
+	-fx-background-color: #ffffff;
+        -fx-font-size: 15;
+	-fx-border-color: #0080ff;
 	-fx-border-radius: 5;
 	-fx-background-radius: 5;
 	-fx-border-width: 1;
@@ -53,7 +62,6 @@
 	-fx-background-radius: 5;
         -fx-underline: false;
         -fx-cursor: hand;
-	-fx-effect: null;
 }
 
 .menu {
@@ -80,9 +88,8 @@
         -fx-underline: false;
 	-fx-border-radius: 5;
 	-fx-background-radius: 5;
-	-fx-border-width: 1;
+	-fx-border-width: 0;
         -fx-cursor: hand;
-	-fx-effect: null;
 }
 
 .radio-button {
@@ -91,14 +98,9 @@
 	-fx-background-radius: 5;
 	-fx-border-width: 1;
         -fx-cursor: hand;
-	-fx-effect: null;
+        -jfx-selected-color: #0080ff;
 }
 
 .date-picker {
-	-fx-border-color: black;
-	-fx-border-radius: 5;
-	-fx-border-width: 0;
-        -fx-cursor: hand;
-	-fx-effect: null;
-	
+    jfx-default-color: #0080ff;
 }
