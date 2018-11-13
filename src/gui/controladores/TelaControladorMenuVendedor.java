@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -62,7 +62,7 @@ public class TelaControladorMenuVendedor implements Initializable {
     @FXML
     private void redirecionaSaidaLogin(ActionEvent event) throws IOException {
         JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new ImageView("ui/icons/pergunta.png"));
+        content.setHeading(new ImageView("gui/icons/pergunta.png"));
         content.setBody(new Label("Tem certeza que deseja sair?"));
         JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         dialogo.setOverlayClose(false);
@@ -88,7 +88,7 @@ public class TelaControladorMenuVendedor implements Initializable {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 Scene scene;
                 try {
-                    scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaLogin.fxml")));
+                    scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaLogin.fxml")));
                     stage.setScene(scene);
                     stage.setResizable(false);
                     stage.show();
@@ -106,7 +106,7 @@ public class TelaControladorMenuVendedor implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Cadastrar cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaCadastroCliente.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaCadastroCliente.fxml")));
         stage.setScene(scene);
         stage.show();
     }
@@ -115,7 +115,7 @@ public class TelaControladorMenuVendedor implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Atualizar cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaAtualizaCliente.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaAtualizaCliente.fxml")));
         stage.setScene(scene);
         stage.show();
     }
@@ -124,7 +124,7 @@ public class TelaControladorMenuVendedor implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Remover cliente");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaRemoveCliente.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaRemoveCliente.fxml")));
         stage.setScene(scene);
         stage.show();
     }
@@ -134,7 +134,7 @@ public class TelaControladorMenuVendedor implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Nova venda");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaCadastroVenda.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaCadastroVenda.fxml")));
         stage.setScene(scene);
         stage.show();
     }
@@ -144,7 +144,7 @@ public class TelaControladorMenuVendedor implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Gr�fico vendedor");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGraficoVendedor.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaGraficoVendedor.fxml")));
         stage.setScene(scene);
         stage.show();
     }
@@ -154,7 +154,7 @@ public class TelaControladorMenuVendedor implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Lista de clientes");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaCliente.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaGerenciaCliente.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

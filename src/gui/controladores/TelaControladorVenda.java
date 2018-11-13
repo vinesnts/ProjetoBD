@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import fachada.Fachada;
 import java.io.IOException;
@@ -277,8 +277,7 @@ public class TelaControladorVenda implements Initializable {
     private void botaoAplicarDesconto(ActionEvent event) {
         String descontoTexto = txCampoDesconto.getText();
         if(descontoTexto.equals("")) {
-            labelMsgDesconto.setText("Desconto invalido!");
-            return;
+            descontoTexto = "0";
         }
         desconto = Integer.parseInt(descontoTexto);
         double valor = calcularValorCarrinho();

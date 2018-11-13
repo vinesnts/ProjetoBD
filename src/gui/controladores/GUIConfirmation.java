@@ -1,4 +1,4 @@
-package ui.controladoresFX;
+package gui.controladores;
 
 import fachada.Fachada;
 import javafx.scene.control.Alert;

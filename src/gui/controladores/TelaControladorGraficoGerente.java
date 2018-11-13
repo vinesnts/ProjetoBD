@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import grafico.GraficoGerente;
 import fachada.Fachada;

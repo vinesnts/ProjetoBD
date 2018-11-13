@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -74,7 +74,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
     @FXML
     private void redirecionaSaidaLogin(ActionEvent event) throws IOException {
         JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new ImageView("ui/icons/pergunta.png"));
+        content.setHeading(new ImageView("gui/icons/pergunta.png"));
         content.setBody(new Label("Tem certeza que deseja sair?"));
         JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         dialogo.setOverlayClose(false);
@@ -100,7 +100,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 Scene scene;
                 try {
-                    scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaLogin.fxml")));
+                    scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaLogin.fxml")));
                     stage.setScene(scene);
                     stage.setResizable(false);
                     stage.show();
@@ -118,7 +118,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Estoque de produtos");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaEstoque.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaEstoque.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -129,7 +129,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Nova venda");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaCadastroVenda.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaCadastroVenda.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -140,7 +140,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
         GerarRelatorioPDF gr = new GerarRelatorioPDF();
         gr.criarRelatorio();
         JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new ImageView("ui/icons/okay.png"));
+        content.setHeading(new ImageView("gui/icons/okay.png"));
         content.setBody(new Label("Relatório gerado com sucesso"));
         JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         dialogo.setOverlayClose(false);
@@ -164,7 +164,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Grafico gerente");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGraficoGerente.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaGraficoGerente.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -175,7 +175,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Lista de funcionarios");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaFuncionario.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaGerenciaFuncionario.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -186,7 +186,7 @@ public class TelaControladorMenuPrincipal implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Lista de clientes");
         stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaGerenciaCliente.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaGerenciaCliente.fxml")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -34,7 +34,6 @@ import javafx.scene.layout.StackPane;
 import negocio.TextFieldFormatter;
 import negocio.entidades.Funcionario;
 import negocio.excecoes.CPFInvalidoException;
-import negocio.excecoes.ClienteInexistenteException;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.NomeInvalidoException;
@@ -162,7 +161,7 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
                 limparCampos();
                 labelMsg.setText("Cadastrado com ID: " + matricula);
             } else {
-                fachada.atualizarFuncionario(txtCampoMatricula.getText(), txtCampoNome.getText(),
+                fachada.atualizarFuncionario(funcionario.getMatricula(), txtCampoNome.getText(),
                         eGerente,
                         campoSenha.getText());
                 limparCampos();
@@ -183,7 +182,7 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
             labelMsg.setText("Campo matricula invalido");
         } else {
             JFXDialogLayout content = new JFXDialogLayout();
-            content.setHeading(new ImageView("ui/icons/pergunta.png"));
+            content.setHeading(new ImageView("gui/icons/pergunta.png"));
             content.setBody(new Label("Tem certeza que deseja demitir o funcionario?\n"));
             JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
             dialogo.setOverlayClose(false);

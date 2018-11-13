@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -72,7 +72,7 @@ public class TelaControladorLogin implements Initializable {
                     Stage stage = new Stage();
                     stage.setTitle("Bem-Vindo(a), Gerente!");
                     stage.initModality(Modality.APPLICATION_MODAL);
-                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaMenuGerente.fxml")));
+                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaMenuGerente.fxml")));
                     stage.setScene(scene);
                     stage.setResizable(false);
                     stage.show();
@@ -81,7 +81,7 @@ public class TelaControladorLogin implements Initializable {
                     Stage stage = new Stage();
                     stage.setTitle("Bem-Vindo(a), Vendedor!");
                     stage.initModality(Modality.APPLICATION_MODAL);
-                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/ui/TelaMenuVendedor.fxml")));
+                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaMenuVendedor.fxml")));
                     stage.setScene(scene);
                     stage.setResizable(false);
                     stage.show();

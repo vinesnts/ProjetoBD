@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,9 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import negocio.CurrencyField;
 import negocio.entidades.Produto;
-import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.PrecoInvalidoException;
 import negocio.excecoes.ProdutoExistenteException;
 import negocio.excecoes.ProdutoInexistenteException;
@@ -152,9 +149,9 @@ public class TelaControladorEstoque implements Initializable {
                     produto.setTamanho(txtCampoTamanho.getText());
                     produto.setMarca(txtCampoMarca.getText());
                     produto.setCategoria(txtCampoCategoria.getText());
-                    labelMsg.setText("Produto atualizado");
                     fachada.atualizarProduto(produto);
                     limparCampos();
+                    labelMsg.setText("Produto atualizado");
                 }
             } catch (ProdutoInexistenteException erro) {
                 labelMsg.setText(erro.getMessage());
@@ -232,7 +229,7 @@ public class TelaControladorEstoque implements Initializable {
             labelMsg.setText("Nenhum item selecionado");
         } else {
             JFXDialogLayout content = new JFXDialogLayout();
-            content.setHeading(new ImageView("ui/icons/pergunta.png"));
+            content.setHeading(new ImageView("gui/icons/pergunta.png"));
             content.setBody(new Label("Tem certeza que deseja remover o produto?\n"));
             JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
             dialogo.setOverlayClose(false);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controladoresFX;
+package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
@@ -130,7 +130,7 @@ public class TelaControladorGerenciaCliente implements Initializable {
             labelMsg.setText("Campo CPF invalido");
         } else {
             JFXDialogLayout content = new JFXDialogLayout();
-            content.setHeading(new ImageView("ui/icons/pergunta.png"));
+            content.setHeading(new ImageView("gui/icons/pergunta.png"));
             content.setBody(new Label("Tem certeza que deseja remover o cliente?\n"));
             JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
             dialogo.setOverlayClose(false);
