@@ -7,9 +7,7 @@ package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -18,7 +16,7 @@ import java.sql.Statement;
 public class ConexaoMySql {
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
 
-        String servidor = "127.0.0.1:3307"; 
+        String servidor = "127.0.0.1:3306"; 
         String nomeDoBanco = "projetoloja";
         final String url = "jdbc:mariadb://" + servidor + "/" + nomeDoBanco + "?useTimezone=true&serverTimezone=UTC";
         String usuario = "root";

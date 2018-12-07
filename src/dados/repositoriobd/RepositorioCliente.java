@@ -7,7 +7,6 @@ package dados.repositoriobd;
 
 import connection.ConexaoMySql;
 import negocio.entidades.Cliente;
-import java.util.ArrayList;
 import dados.repositorioInterface.IRepositorioCliente;
 import java.sql.Connection;
 import java.sql.Date;
@@ -16,9 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.DateFormatter;
 import negocio.excecoes.ClienteInexistenteException;
 
 /**
@@ -40,7 +39,6 @@ public class RepositorioCliente implements IRepositorioCliente {
     public RepositorioCliente() {
     }
 
-
     @Override
     public void adicionar(Cliente cliente) {
         String sql = "INSERT INTO cliente VALUES (?,?,?)";
@@ -50,8 +48,8 @@ public class RepositorioCliente implements IRepositorioCliente {
             Connection conn = ConexaoMySql.getConnection();
             PreparedStatement pst = conn.prepareStatement(sql);
 
-            pst.setString(1, cliente.getNome());
-            pst.setString(2, cliente.getCpf());
+            pst.setString(1, cliente.getCpf());
+            pst.setString(2, cliente.getNome());
             pst.setDate(3, Date.valueOf(cliente.getDataAniversario()));
 
             pst.execute();
@@ -59,7 +57,7 @@ public class RepositorioCliente implements IRepositorioCliente {
             pst.close();
             conn.close();
 
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -89,31 +87,29 @@ public class RepositorioCliente implements IRepositorioCliente {
 
     @Override
     public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
-         String sql = "UPDATE cliente SET Nome=?, DataAniversario=? WHERE CPF=(?)";
+        String sql = "UPDATE cliente SET Nome=?, DataAniversario=? WHERE CPF=(?)";
 
         try {
             Connection conn = ConexaoMySql.getConnection();
             PreparedStatement pst = conn.prepareStatement(sql);
 
-            pst.setString(2, cpf);
             pst.setString(1, nome);
-            pst.setDate(3, Date.valueOf(dataAniversario));
+            pst.setDate(2, Date.valueOf(dataAniversario));
+            pst.setString(3, cpf);
             pst.executeUpdate();
 
             pst.close();
             conn.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
     }
 
     @Override
     public Cliente buscar(String cpf) throws ClienteInexistenteException {
-         String sql = "SELECT * FROM cliente WHERE CPF=?";
-         Cliente cliente = null;
+        String sql = "SELECT * FROM cliente WHERE CPF=?";
+        Cliente cliente = null;
         try {
             Connection conn = ConexaoMySql.getConnection();
             PreparedStatement pst = conn.prepareStatement(sql);
@@ -123,20 +119,17 @@ public class RepositorioCliente implements IRepositorioCliente {
 
             while (rs.next()) {
                 String cpfa = rs.getString("CPF");
-                String nome = rs.getString("NOME");
+                String nome = rs.getString("Nome");
                 String dataAniversario = rs.getString("DataAniversario");
-                
-                cliente = new Cliente(cpfa, nome, LocalDate.parse(dataAniversario, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                
+                cliente = new Cliente(nome, cpfa, LocalDate.parse(dataAniversario, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
             }
 
             pst.close();
             conn.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
 
         return cliente;
@@ -147,7 +140,6 @@ public class RepositorioCliente implements IRepositorioCliente {
 
         String sql = "SELECT * FROM cliente WHERE CPF = (?)";
         Cliente c;
-        System.out.println(cliente.getCpf()); 
         try {
             Connection conn = ConexaoMySql.getConnection();
             PreparedStatement pst = conn.prepareStatement(sql);
@@ -159,22 +151,46 @@ public class RepositorioCliente implements IRepositorioCliente {
                 String nome = rs.getString("Nome");
                 String cpfa = rs.getString("CPF");
                 String data = rs.getString("DataAniversario");
-                
-                c = new Cliente(cpfa, nome, LocalDate.parse(data, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                
+
+                c = new Cliente(nome, cpfa, LocalDate.parse(data, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
                 return true;
             }
 
             pst.close();
             conn.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
 
         return false;
+    }
+
+    public ArrayList<Cliente> getClientes() {
+        String sql = "SELECT * FROM cliente";
+        ArrayList<Cliente> lista = new ArrayList<Cliente>();
+
+        try {
+            Connection conn = ConexaoMySql.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String dataAniversario = rs.getString("DataAniversario");
+                lista.add(new Cliente(nome, cpf, LocalDate.parse(dataAniversario, DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            }
+
+            pst.close();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+
     }
 
 }

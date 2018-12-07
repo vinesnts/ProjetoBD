@@ -99,36 +99,7 @@ public class GerenciamentoCliente {
      * @return ArrayList com todos os clientes cadastrados
      */
     public ArrayList<Cliente> getClientes() {
-        String sql = "SELECT * FROM cliente";
-
-        ArrayList<Cliente> lista = new ArrayList<Cliente>();
-
-        try {
-
-            Connection conn = ConexaoMySql.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
-
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                String cpf = rs.getString("CPF");
-                String nome = rs.getString("Nome");
-                String dataAniversario = rs.getString("DataAniversario");
-
-                lista.add(new Cliente(cpf, nome, LocalDate.parse(dataAniversario, DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-            }
-
-            pst.close();
-            conn.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-
-        return lista;
-
+        return repositorio.getClientes();
     }
 
 }
