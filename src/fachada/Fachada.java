@@ -22,10 +22,14 @@ import negocio.gerenciamento.GerenciamentoVenda;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import negocio.entidades.Carrinho;
-import negocio.entidades.Pessoa;
+import negocio.excecoes.CPFInvalidoException;
+import negocio.excecoes.DataInvalidaException;
 import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
+import negocio.excecoes.NomeInvalidoException;
+import negocio.excecoes.ProdutosInsuficientesException;
 import negocio.excecoes.QuantidadeInsuficienteException;
+import negocio.excecoes.SenhaInvalidaException;
 import negocio.gerenciamento.GerenciamentoCarrinho;
 
 /**
@@ -51,10 +55,7 @@ public class Fachada {
     }
     
     public static Fachada getInstance() {
-        if (instancia == null) {
-            instancia = new Fachada();
-
-        }
+        if (instancia == null) instancia = new Fachada();
         return instancia;
     }
     
@@ -66,19 +67,25 @@ public class Fachada {
         this.logado = logado;
     }
     //CLIENTE
-    public void adicionarCliente(String nome, String CPF, LocalDate dataAniversario) throws ClienteExistenteException {
+    public void adicionarCliente(String nome, String CPF, LocalDate dataAniversario) throws ClienteExistenteException, NomeInvalidoException, CPFInvalidoException {
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        if (CPF.contains(" ") || CPF.equals("")) throw new CPFInvalidoException();
         Cliente cliente = new Cliente(nome, CPF, dataAniversario);
         clientes.adicionar(cliente);
     }
 
     public void removerCliente(String cpf) throws ClienteInexistenteException {
         Cliente cliente = clientes.buscar(cpf);
-        clientes.remover(cliente);
+        if (cliente == null) {
+            throw new ClienteInexistenteException();
+        } else {
+            clientes.remover(cliente);
+        }
     }
 
-    public void atualizarCliente(Cliente cliente) throws ClienteInexistenteException {
-        Cliente c = clientes.buscar(cliente.getCpf());
-        clientes.atualizar(cliente);
+    public void atualizarCliente(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException, NomeInvalidoException {
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        clientes.atualizar(cpf, nome, dataAniversario);
     }
 
     public Cliente getCliente(String cpf) throws ClienteInexistenteException {
@@ -90,22 +97,29 @@ public class Fachada {
     }
 
     //FUNCIONARIO
-    public void adicionarFuncionario(String nome, String CPF, String tipoFuncionario, String matricula, String senha) throws FuncionarioExistenteException {
-        Funcionario funcionario = new Funcionario(nome, CPF, matricula, tipoFuncionario, senha);
+    public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException, NomeInvalidoException, CPFInvalidoException, SenhaInvalidaException{
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        if (CPF.contains(" ") || CPF.equals("")) throw new CPFInvalidoException();
+        if (senha.equals(""))   throw new SenhaInvalidaException();
+        matricula = matricula.toUpperCase();
+        Funcionario funcionario = new Funcionario(nome, CPF, eGerente, matricula, senha);
         funcionarios.adicionar(funcionario);
     }
 
     public void removerFuncionario(String matricula) throws FuncionarioInexistenteException {
+        matricula = matricula.toUpperCase();
         Funcionario funcionario = funcionarios.buscarFuncionario(matricula);
         funcionarios.remover(funcionario);
     }
 
-    public void atualizarFuncionario(Funcionario funcionario) throws FuncionarioInexistenteException {
-        Funcionario f = funcionarios.buscarFuncionario(funcionario.getMatricula());
-        funcionarios.atualizar(funcionario);
+    public void atualizarFuncionario(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException, NomeInvalidoException, SenhaInvalidaException {
+        if (nome.equals(""))    throw new NomeInvalidoException();
+        if (senha.equals(""))   throw new SenhaInvalidaException();
+        funcionarios.atualizar(matricula, nome, eGerente, senha);
     }
 
     public Funcionario getFuncionario(String matricula) throws FuncionarioInexistenteException {
+        matricula = matricula.toUpperCase();
         return funcionarios.buscarFuncionario(matricula);
     }
 
@@ -158,9 +172,18 @@ public class Fachada {
     }
 
     //Venda
-    public void adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, ArrayList<Carrinho> carrinho) {
-        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, carrinho);
-        vendas.adicionar(venda);
+    public Venda adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Carrinho> carrinho) throws DataInvalidaException, ProdutosInsuficientesException {
+        if (data == null) {
+            throw new DataInvalidaException();
+        }
+        if (this.getCarrinhos() == null) {
+                throw new ProdutosInsuficientesException();
+        } else if (this.getCarrinhos().isEmpty()) {
+                throw new ProdutosInsuficientesException();
+        }
+            
+        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, desconto, carrinho);
+        return vendas.adicionar(venda);
 
     }
 
@@ -194,7 +217,7 @@ public class Fachada {
      * @return O objeto venda se ixistir no repositorio
      * @throws VendaInexistenteException
      */
-    public Venda BuscarVenda(int id) throws VendaInexistenteException {
+    public Venda buscarVenda(int id) throws VendaInexistenteException {
         return vendas.buscar(id);
     }
 

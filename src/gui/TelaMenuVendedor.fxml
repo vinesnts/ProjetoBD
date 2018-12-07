@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controladores.TelaControladorMenuVendedor">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="280.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="280.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="157.5" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="155.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <JFXButton alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" onAction="#redirecionaTelaGraficoVendedor" prefHeight="60.0" prefWidth="250.0" text="Gráficos" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <JFXButton fx:id="botaoListarClientes" alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#botaoListarClientes" prefHeight="60.0" prefWidth="250.0" text="Cliente" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <JFXButton fx:id="botaoVenda" alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#redirecionaTelaCadastroVendas" prefHeight="60.0" prefWidth="250.0" text="Venda" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <JFXTextField fx:id="campoVendedor" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="170.0" promptText="Bem-Vindo(a)" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.valignment="TOP" />
+      <JFXButton fx:id="botaoSair" alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#redirecionaSaidaLogin" prefHeight="60.0" prefWidth="68.0" text="Sair" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8" GridPane.valignment="TOP">
+         <graphic>
+            <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/sair_2.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+         <image>
+            <Image url="@icons/cliente.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+         <image>
+            <Image url="@icons/venda.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <ImageView disable="true" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+         <image>
+            <Image url="@icons/graficos.png" />
+         </image>
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </ImageView>
+      <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" text="R.A.V. Shop" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+      <StackPane fx:id="stackPane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema_stackpane.css" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <children>
+            <JFXButton fx:id="botaoOkay" text="Okay" visible="false" />
+            <JFXButton fx:id="botaoNao" text="Não" visible="false" />
+            <JFXButton fx:id="botaoSim" text="Sim" visible="false" />
+         </children>
+      </StackPane>
+   </children>
+</GridPane>

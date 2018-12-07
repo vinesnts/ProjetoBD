@@ -23,6 +23,11 @@ public class Cliente extends Pessoa implements Serializable{
         this.dataAniversario = dataAniversario;
     }
 
+    public Cliente(String nome, String cpf) {
+        super(nome, cpf);
+    }
+
+       
     public LocalDate getDataAniversario() {
         return dataAniversario;
     }
@@ -33,7 +38,8 @@ public class Cliente extends Pessoa implements Serializable{
 
     @Override
     public String toString() {
-        return super.toString() + "\tData de Aniversario: " + dataAniversario.getDayOfMonth()+" / "+dataAniversario.getMonthValue();
+        return super.toString() + " | Data de Aniversario: " + dataAniversario.getDayOfMonth() +
+                " / " + dataAniversario.getMonthValue() + " / " + dataAniversario.getYear();
     }
 
 }

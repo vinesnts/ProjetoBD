@@ -12,7 +12,7 @@ package negocio.excecoes;
 public class DataInvalidaException extends Exception{
 
     public DataInvalidaException() {
-        super("Data Invalida.");
+        super("Data invalida");
     }
 
     public DataInvalidaException(String msg) {

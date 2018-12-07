@@ -18,7 +18,7 @@ public interface IRepositorioFuncionario {
 
     public void remover(Funcionario funcionario);
 
-    public void atualizar(Funcionario funcionario);
+    public void atualizar(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException;
 
     public Funcionario buscar(String matricula)throws FuncionarioInexistenteException;
 

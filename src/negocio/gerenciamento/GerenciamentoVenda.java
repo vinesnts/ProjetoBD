@@ -6,7 +6,7 @@
  */
 package negocio.gerenciamento;
 
-import dados.repositorioArrayList.RepositorioVenda;
+import dados.repositoriobd.RepositorioVenda;
 import negocio.entidades.Funcionario;
 import negocio.entidades.Venda;
 import negocio.excecoes.VendaInexistenteException;
@@ -39,9 +39,10 @@ public class GerenciamentoVenda {
      *
      * @param venda Adiciona uma nova venda ao repositorio
      */
-    public void adicionar(Venda venda) {
+    public Venda adicionar(Venda venda) {
         repositorio.adicionar(venda);
         repositorio.gravar();
+        return venda;
     }
 
     /**

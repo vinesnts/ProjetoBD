@@ -7,7 +7,6 @@ package grafico;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
-import static com.itextpdf.text.Element.ALIGN_CENTER;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -16,6 +15,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import fachada.Fachada;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import negocio.entidades.Venda;
@@ -82,7 +82,7 @@ public class GerarRelatorioPDF {
                 PdfPCell celula1 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).getId())));
                 PdfPCell celula2 = new PdfPCell(new Phrase(vendas.get(i).getCliente().getNome()));
                 PdfPCell celula3 = new PdfPCell(new Phrase(vendas.get(i).getFuncionario().getNome()));
-                PdfPCell celula4 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).calcularValorVenda())));
+                PdfPCell celula4 = new PdfPCell( new Phrase( String.valueOf( new DecimalFormat(".00").format(vendas.get(i).getPrecoTotal()) ) ) );
                 PdfPCell celula5 = new PdfPCell(new Phrase(vendas.get(i).getData().format(formatador)));
                 
                
