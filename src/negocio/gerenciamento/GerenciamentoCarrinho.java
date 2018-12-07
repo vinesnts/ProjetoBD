@@ -1,6 +1,6 @@
 package negocio.gerenciamento;
 
-import dados.repositorioArrayList.RepositorioCarrinho;
+import dados.repositoriobd.RepositorioCarrinho;
 import java.util.ArrayList;
 import negocio.entidades.Carrinho;
 import negocio.excecoes.ProdutoInexistenteException;

@@ -6,7 +6,7 @@
  */
 package negocio.gerenciamento;
 
-import dados.repositorioArrayList.RepositorioProduto;
+import dados.repositoriobd.RepositorioProduto;
 import negocio.entidades.Produto;
 import negocio.excecoes.ProdutoExistenteException;
 import negocio.excecoes.ProdutoInexistenteException;
