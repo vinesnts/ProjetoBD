@@ -23,6 +23,11 @@ public class Cliente extends Pessoa implements Serializable{
         this.dataAniversario = dataAniversario;
     }
 
+    public Cliente(String nome, String cpf) {
+        super(nome, cpf);
+    }
+
+       
     public LocalDate getDataAniversario() {
         return dataAniversario;
     }

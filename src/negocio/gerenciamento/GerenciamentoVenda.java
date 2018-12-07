@@ -6,7 +6,7 @@
  */
 package negocio.gerenciamento;
 
-import dados.repositorioArrayList.RepositorioVenda;
+import dados.repositoriobd.RepositorioVenda;
 import negocio.entidades.Funcionario;
 import negocio.entidades.Venda;
 import negocio.excecoes.VendaInexistenteException;

@@ -1,4 +1,4 @@
-package dados.repositorioArrayList;
+package dados.repositoriobd;
 
 import dados.repositorioInterface.IRepositorioFuncionario;
 import negocio.entidades.Funcionario;

@@ -76,7 +76,11 @@ public class Fachada {
 
     public void removerCliente(String cpf) throws ClienteInexistenteException {
         Cliente cliente = clientes.buscar(cpf);
-        clientes.remover(cliente);
+        if (cliente == null) {
+            throw new ClienteInexistenteException();
+        } else {
+            clientes.remover(cliente);
+        }
     }
 
     public void atualizarCliente(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException, NomeInvalidoException {

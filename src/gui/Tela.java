@@ -6,6 +6,8 @@
 package gui;
 
 import connection.ConexaoMySql;
+import dados.repositoriobd.RepositorioCliente;
+import java.time.LocalDate;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -13,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import negocio.entidades.Cliente;
 
 /**
  *
@@ -22,7 +25,7 @@ public class Tela extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("TelaLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("TelaGerenciaCliente.fxml"));
         stage.setTitle("R.A.V. Shop");
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -33,9 +36,7 @@ public class Tela extends Application {
     }
 
     public static void main(String[] args) {
-        //launch(args);
-        ConexaoMySql sql = new ConexaoMySql();
-        sql.doo();
+        launch(args);
 
     }
 }

@@ -6,7 +6,7 @@
  */
 package negocio.gerenciamento;
 
-import dados.repositorioArrayList.RepositorioFuncionario;
+import dados.repositoriobd.RepositorioFuncionario;
 import negocio.entidades.Funcionario;
 import java.util.ArrayList;
 import negocio.excecoes.FuncionarioExistenteException;

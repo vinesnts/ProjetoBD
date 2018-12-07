@@ -6,12 +6,18 @@
  */
 package negocio.gerenciamento;
 
-import dados.repositorioArrayList.RepositorioCliente;
+import connection.ConexaoMySql;
+import dados.repositoriobd.RepositorioCliente;
 import negocio.entidades.Cliente;
 import negocio.excecoes.ClienteExistenteException;
 import negocio.excecoes.ClienteInexistenteException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -28,7 +34,7 @@ public class GerenciamentoCliente {
      */
     private GerenciamentoCliente() {
         this.repositorio = new RepositorioCliente();
-        repositorio.ler();
+        // repositorio.ler();
     }
 
     /**
@@ -53,7 +59,6 @@ public class GerenciamentoCliente {
             throw new ClienteExistenteException();
         } else {
             repositorio.adicionar(cliente);
-            repositorio.gravar();
 
         }
     }
@@ -66,13 +71,7 @@ public class GerenciamentoCliente {
      * caso não lança exceção.
      */
     public void remover(Cliente cliente) throws ClienteInexistenteException {
-        boolean existe = repositorio.verificarExistencia(cliente);
-        if (existe == false) {
-            throw new ClienteInexistenteException();
-        } else {
-            repositorio.remover(cliente);
-            repositorio.gravar();
-        }
+        repositorio.remover(cliente);
     }
 
     /**
@@ -82,8 +81,8 @@ public class GerenciamentoCliente {
      * exceção é lançada
      */
     public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
-            repositorio.atualizar(cpf, nome, dataAniversario);
-            repositorio.gravar();
+        repositorio.atualizar(cpf, nome, dataAniversario);
+        //repositorio.gravar();
     }
 
     /**
@@ -100,7 +99,36 @@ public class GerenciamentoCliente {
      * @return ArrayList com todos os clientes cadastrados
      */
     public ArrayList<Cliente> getClientes() {
-        return repositorio.getClientes();
+        String sql = "SELECT * FROM cliente";
+
+        ArrayList<Cliente> lista = new ArrayList<Cliente>();
+
+        try {
+
+            Connection conn = ConexaoMySql.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String dataAniversario = rs.getString("DataAniversario");
+
+                lista.add(new Cliente(cpf, nome, LocalDate.parse(dataAniversario, DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            }
+
+            pst.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+        return lista;
+
     }
 
 }
