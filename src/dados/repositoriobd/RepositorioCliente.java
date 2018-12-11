@@ -7,7 +7,7 @@ package dados.repositoriobd;
 
 import connection.ConexaoMySql;
 import negocio.entidades.Cliente;
-import dados.repositorioInterface.IRepositorioCliente;
+import dados.interfacerepositorio.IRepositorioCliente;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -26,83 +26,77 @@ import negocio.excecoes.ClienteInexistenteException;
  */
 public class RepositorioCliente implements IRepositorioCliente {
 
-    private static RepositorioCliente myself;
+    private static RepositorioCliente instancia;
 
     public static RepositorioCliente getInstance() {
-        if (myself == null) {
-            myself = new RepositorioCliente();
+        if (instancia == null) {
+            instancia = new RepositorioCliente();
         }
 
-        return myself;
+        return instancia;
     }
 
-    public RepositorioCliente() {
-    }
-
+    private RepositorioCliente() {}
+    
     @Override
     public void adicionar(Cliente cliente) {
         String sql = "INSERT INTO cliente VALUES (?,?,?)";
 
         try {
-
-            Connection conn = ConexaoMySql.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
 
             pst.setString(1, cliente.getCpf());
             pst.setString(2, cliente.getNome());
             pst.setDate(3, Date.valueOf(cliente.getDataAniversario()));
 
             pst.execute();
-
             pst.close();
-            conn.close();
-
+            conexao.close();
+            
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+           System.out.println("ERRO: " + e.getMessage());
         }
     }
 
     @Override
     public void remover(Cliente cliente) {
-
         String sql = "DELETE FROM cliente WHERE CPF=(?)";
 
         try {
-            Connection conn = ConexaoMySql.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
 
             pst.setString(1, cliente.getCpf());
+            
             pst.execute();
-
             pst.close();
-            conn.close();
+            conexao.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RepositorioCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
 
     }
 
     @Override
     public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
-        String sql = "UPDATE cliente SET Nome=?, DataAniversario=? WHERE CPF=(?)";
+        String sql = "UPDATE cliente SET Nome=(?), DataAniversario=(?) WHERE CPF=(?)";
 
         try {
-            Connection conn = ConexaoMySql.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
 
             pst.setString(1, nome);
             pst.setDate(2, Date.valueOf(dataAniversario));
             pst.setString(3, cpf);
+            
             pst.executeUpdate();
-
             pst.close();
-            conn.close();
+            conexao.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -111,8 +105,8 @@ public class RepositorioCliente implements IRepositorioCliente {
         String sql = "SELECT * FROM cliente WHERE CPF=?";
         Cliente cliente = null;
         try {
-            Connection conn = ConexaoMySql.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
 
             pst.setString(1, cpf);
             ResultSet rs = pst.executeQuery();
@@ -126,13 +120,14 @@ public class RepositorioCliente implements IRepositorioCliente {
             }
 
             pst.close();
-            conn.close();
+            conexao.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
-
-        return cliente;
+        
+        if(cliente == null) throw new ClienteInexistenteException();
+        else return cliente;
     }
 
     @Override
@@ -161,7 +156,7 @@ public class RepositorioCliente implements IRepositorioCliente {
             conn.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
 
         return false;
@@ -186,7 +181,7 @@ public class RepositorioCliente implements IRepositorioCliente {
             conn.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
 
         return lista;

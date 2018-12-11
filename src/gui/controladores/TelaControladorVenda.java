@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.controladores;
 
 import fachada.Fachada;
@@ -111,10 +107,7 @@ public class TelaControladorVenda implements Initializable {
         Cliente cliente;
         try {
             cliente = fachada.getCliente(txCampoCliente.getText());
-            Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, fachada.getCarrinhos());
-            txAreaInformativa.setText("Valor Total da venda: \t" + new DecimalFormat(".00").format(venda.getPrecoSemDesconto())
-                    + "\nDesconto: " + venda.getDesconto()
-                    + "\nValor Com Desconto: " + new DecimalFormat(".00").format(venda.getPrecoTotal()));
+            adicionarVenda(cliente, funcionario);
             limparLabels();
             limparCampos();
             fachada.getCarrinhos().clear();
@@ -131,6 +124,13 @@ public class TelaControladorVenda implements Initializable {
             labelMsg.setText(ex.getMessage());
         }
 
+    }
+
+    private void adicionarVenda(Cliente cliente, Funcionario funcionario) throws DataInvalidaException, ProdutosInsuficientesException {
+        Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, fachada.getCarrinhos());
+        txAreaInformativa.setText("Valor Total da venda: \t" + new DecimalFormat(".00").format(venda.getPrecoSemDesconto())
+                + "\nDesconto: " + venda.getDesconto()
+                + "\nValor Com Desconto: " + new DecimalFormat(".00").format(venda.getPrecoTotal()));
     }
 
     @FXML

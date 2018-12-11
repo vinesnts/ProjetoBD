@@ -7,7 +7,11 @@ package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import negocio.entidades.Funcionario;
 
 /**
  *
@@ -21,12 +25,31 @@ public class ConexaoMySql {
         final String url = "jdbc:mariadb://" + servidor + "/" + nomeDoBanco + "?useTimezone=true&serverTimezone=UTC";
         String usuario = "root";
         String senha = "99102904";
-
-        System.out.println("carregou o driver");
-
+        
         return DriverManager.getConnection(url, usuario, senha);
-
     }
-  
+    
+    public static void gerarUsuario() {
+        String sql = "INSERT INTO funcionario VALUES (?,?,?,?,?)";
+        Funcionario funcionario = new Funcionario("Administrador", "000.000.000-00", true, "admin");
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, funcionario.getMatricula());
+            pst.setBoolean(2, funcionario.eGerente());
+            pst.setString(3, funcionario.getCpf());
+            pst.setString(4, funcionario.getNome());
+            pst.setString(5, funcionario.getSenha());
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+            
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
 
 }

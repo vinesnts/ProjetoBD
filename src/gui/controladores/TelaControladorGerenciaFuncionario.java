@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
@@ -150,18 +146,21 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
 
     @FXML
     private void botaoSalvarFuncionario(ActionEvent event) {
+        String matricula;
         try {
             if (funcionario == null) {
-                String matricula = gerarMatricula(eGerente, txtCampoCPF.getText());
                 fachada.adicionarFuncionario(txtCampoNome.getText(),
                         txtCampoCPF.getText(),
                         eGerente,
-                        matricula,
                         campoSenha.getText());
-                limparCampos();
+                
+                if (eGerente) matricula = "G" + txtCampoCPF.getText();
+                else matricula = "V" + txtCampoCPF.getText();
+                
                 labelMsg.setText("Cadastrado com ID: " + matricula);
+                limparCampos();
             } else {
-                fachada.atualizarFuncionario(funcionario.getMatricula(), txtCampoNome.getText(),
+                fachada.atualizarFuncionario(funcionario.getCpf(), txtCampoNome.getText(),
                         eGerente,
                         campoSenha.getText());
                 limparCampos();
@@ -303,14 +302,6 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     @FXML
     private void radioVendedor(ActionEvent event) {
         this.eGerente = false;
-    }
-
-    public static String gerarMatricula(boolean eGerente, String cpf) {
-        if (eGerente) {
-            return "G" + cpf;
-        } else {
-            return "V" + cpf;
-        }
     }
 
     @FXML

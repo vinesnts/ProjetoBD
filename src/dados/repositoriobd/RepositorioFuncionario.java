@@ -1,12 +1,12 @@
 package dados.repositoriobd;
 
-import dados.repositorioInterface.IRepositorioFuncionario;
+import connection.ConexaoMySql;
+import dados.interfacerepositorio.IRepositorioFuncionario;
 import negocio.entidades.Funcionario;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import negocio.excecoes.FuncionarioInexistenteException;
 
@@ -16,15 +16,16 @@ import negocio.excecoes.FuncionarioInexistenteException;
  */
 public class RepositorioFuncionario implements IRepositorioFuncionario {
 
-    private ArrayList<Funcionario> funcionarios;
-    FileOutputStream arquivoParaGravar;
-    FileInputStream recuperadorDeArquivos;
-    ObjectOutputStream escritor;
-    ObjectInputStream leitor;
+    private static RepositorioFuncionario instancia;
 
-    public RepositorioFuncionario() {
-        this.funcionarios = new ArrayList();
+    public static RepositorioFuncionario getInstance() {
+        if (instancia == null) {
+            instancia = new RepositorioFuncionario();
+        }
+        return instancia;
     }
+    
+    private RepositorioFuncionario() {}
 
     /**
      *
@@ -33,8 +34,25 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public void adicionar(Funcionario funcionario) {
-        this.funcionarios.add(funcionario);
-
+        String sql = "INSERT INTO funcionario VALUES (?,?,?,?,?)";
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, funcionario.getMatricula());
+            pst.setBoolean(2, funcionario.eGerente());
+            pst.setString(3, funcionario.getCpf());
+            pst.setString(4, funcionario.getNome());
+            pst.setString(5, funcionario.getSenha());
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+            
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     /**
@@ -44,7 +62,22 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public void remover(Funcionario funcionario) {
-        this.funcionarios.remove(funcionario);
+        String sql = "DELETE FROM funcionario WHERE Matricula=(?) AND Senha=(?)";
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, funcionario.getMatricula());
+            pst.setString(2, funcionario.getSenha());
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     /**
@@ -57,11 +90,26 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      * @throws negocio.excecoes.FuncionarioInexistenteException Se o funcionario nao existe, lanca erro
      */
     @Override
-    public void atualizar(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
-        Funcionario funcionario = this.buscar(matricula);
-        funcionario.setNome(nome);
-        funcionario.setSenha(senha);
-        funcionario.setEGerente(eGerente);
+    public void atualizar(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
+        String sql = "UPDATE funcionario SET Matricula=(?), eGerente=(?), Nome=(?), Senha=(?) WHERE CPF=(?)";
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, Funcionario.gerarMatricula(eGerente, cpf));
+            pst.setBoolean(2, eGerente);
+            pst.setString(3, nome);
+            pst.setString(4, senha);
+            pst.setString(5, cpf);
+            
+            pst.executeUpdate();
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     /**
@@ -72,15 +120,36 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public Funcionario buscar(String matricula) throws FuncionarioInexistenteException {
-        Funcionario funcionario;
-        for (int i = 0; i < this.funcionarios.size(); i++) {
-            if (this.funcionarios.get(i).getMatricula().equals(matricula)) {
-                return funcionario = this.funcionarios.get(i);
+        String sql = "SELECT * FROM funcionario WHERE Matricula=(?)";
+        Funcionario funcionario = null;
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, matricula);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                String matriculaAux = rs.getString("Matricula");
+                Boolean eGerente = rs.getBoolean("eGerente");
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String senha = rs.getString("Senha");
+                
+                funcionario = new Funcionario(nome, cpf, eGerente, senha);
+                
             }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
 
-        throw new FuncionarioInexistenteException();
-
+        if(funcionario == null) throw new FuncionarioInexistenteException();
+        else return funcionario;
     }
 
     /**
@@ -91,12 +160,35 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public boolean verificarExistencia(Funcionario funcionario) {
-        for (int i = 0; i < funcionarios.size(); i++) {
-            if (funcionarios.get(i).getMatricula().equals(funcionario.getMatricula()) ||
-                    funcionarios.get(i).getCpf().equals(funcionario.getCpf())) {
+        String sql = "SELECT * FROM funcionario WHERE Matricula=(?)";
+        Funcionario f;
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, funcionario.getMatricula());
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()) {
+                String matriculaAux = rs.getString("Matricula");
+                Boolean eGerente = rs.getBoolean("eGerente");
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String senha = rs.getString("Senha");
+                
+                f = new Funcionario(nome, cpf, eGerente, senha);
+                
                 return true;
             }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
+        
         return false;
     }
 
@@ -106,7 +198,32 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public ArrayList<Funcionario> getFuncionarios() {
-        return this.funcionarios;
+        String sql = "SELECT * FROM funcionario";
+        ArrayList<Funcionario> lista = new ArrayList<Funcionario>();
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()) {
+                String matriculaAux = rs.getString("Matricula");
+                Boolean eGerente = rs.getBoolean("eGerente");
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String senha = rs.getString("Senha");
+                
+                lista.add(new Funcionario(nome, cpf, eGerente, senha));
+            }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+        
+        return lista;
     }
 
     /**
@@ -115,6 +232,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     public ArrayList<Funcionario> getVendedores() {
         ArrayList<Funcionario> vendedores = new ArrayList();
+        ArrayList<Funcionario> funcionarios = this.getFuncionarios();
         for (int i = 0; i < funcionarios.size(); i++) {
             if (!funcionarios.get(i).eGerente()) {
                 vendedores.add(funcionarios.get(i));
@@ -129,50 +247,12 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     public ArrayList<Funcionario> getGerentes() {
         ArrayList<Funcionario> gerentes = new ArrayList();
+        ArrayList<Funcionario> funcionarios = this.getFuncionarios();
         for (int i = 0; i < funcionarios.size(); i++) {
             if (funcionarios.get(i).eGerente()) {
                 gerentes.add(funcionarios.get(i));
             }
         }
         return gerentes;
-    }
-
-    /**
-     * Metodo para gravar o Array de Funcionarios em um arquivo binario
-     *
-     */
-    public void gravar() {
-
-        try {
-            this.arquivoParaGravar = new FileOutputStream("Dados/ArquivoFuncionarios.dat");
-            this.escritor = new ObjectOutputStream(arquivoParaGravar);
-            this.escritor.writeObject(funcionarios);
-            this.escritor.flush();
-            this.escritor.close();
-            this.arquivoParaGravar.flush();
-            this.arquivoParaGravar.close();
-
-        } catch (IOException erro) {
-            erro.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Metodo para recuperar o Array de funcionarios previamente cadastrados e
-     * carrega no repositorio de funcionarios
-     */
-    public void ler() {
-
-        try {
-            recuperadorDeArquivos = new FileInputStream("Dados/ArquivoFuncionarios.dat");
-            this.leitor = new ObjectInputStream(recuperadorDeArquivos);
-            funcionarios = (ArrayList<Funcionario>) leitor.readObject();
-            this.leitor.close();
-            recuperadorDeArquivos.close();
-
-        } catch (IOException | ClassNotFoundException erro) {
-        	System.out.println("Nada nos repositorios!");
-        }
     }
 }

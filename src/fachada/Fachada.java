@@ -97,12 +97,11 @@ public class Fachada {
     }
 
     //FUNCIONARIO
-    public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String matricula, String senha) throws FuncionarioExistenteException, NomeInvalidoException, CPFInvalidoException, SenhaInvalidaException{
+    public void adicionarFuncionario(String nome, String CPF, boolean eGerente, String senha) throws FuncionarioExistenteException, NomeInvalidoException, CPFInvalidoException, SenhaInvalidaException{
         if (nome.equals(""))    throw new NomeInvalidoException();
         if (CPF.contains(" ") || CPF.equals("")) throw new CPFInvalidoException();
         if (senha.equals(""))   throw new SenhaInvalidaException();
-        matricula = matricula.toUpperCase();
-        Funcionario funcionario = new Funcionario(nome, CPF, eGerente, matricula, senha);
+        Funcionario funcionario = new Funcionario(nome, CPF, eGerente, senha);
         funcionarios.adicionar(funcionario);
     }
 
@@ -112,10 +111,10 @@ public class Fachada {
         funcionarios.remover(funcionario);
     }
 
-    public void atualizarFuncionario(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException, NomeInvalidoException, SenhaInvalidaException {
+    public void atualizarFuncionario(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException, NomeInvalidoException, SenhaInvalidaException {
         if (nome.equals(""))    throw new NomeInvalidoException();
         if (senha.equals(""))   throw new SenhaInvalidaException();
-        funcionarios.atualizar(matricula, nome, eGerente, senha);
+        funcionarios.atualizar(cpf, nome, eGerente, senha);
     }
 
     public Funcionario getFuncionario(String matricula) throws FuncionarioInexistenteException {
