@@ -7,7 +7,7 @@ package dados.repositoriobd;
 
 import java.util.ArrayList;
 import negocio.entidades.Carrinho;
-import dados.repositorioInterface.IRepositorioCarrinho;
+import dados.interfacerepositorio.IRepositorioCarrinho;
 import negocio.excecoes.ProdutoInexistenteException;
 
 

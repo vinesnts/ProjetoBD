@@ -12,10 +12,10 @@ public class Funcionario extends Pessoa implements Serializable {
     private boolean eGerente;
     private String senha;
 
-    public Funcionario(String nome, String cpf, boolean eGerente, String matricula, String senha) {
+    public Funcionario(String nome, String cpf, boolean eGerente, String senha) {
         super(nome, cpf);
         this.eGerente = eGerente;
-        this.matricula = matricula;
+        this.matricula = this.gerarMatricula(eGerente, cpf);
         this.senha = senha;
 
     }
@@ -42,6 +42,14 @@ public class Funcionario extends Pessoa implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+    
+    public static String gerarMatricula(boolean eGerente, String cpf) {
+        if (eGerente) {
+            return "G" + cpf;
+        } else {
+            return "V" + cpf;
+        }
     }
 
     @Override

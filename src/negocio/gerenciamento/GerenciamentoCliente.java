@@ -1,23 +1,11 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio.gerenciamento;
 
-import connection.ConexaoMySql;
 import dados.repositoriobd.RepositorioCliente;
 import negocio.entidades.Cliente;
 import negocio.excecoes.ClienteExistenteException;
 import negocio.excecoes.ClienteInexistenteException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -33,12 +21,13 @@ public class GerenciamentoCliente {
      * @param repositorio
      */
     private GerenciamentoCliente() {
-        this.repositorio = new RepositorioCliente();
+        this.repositorio = RepositorioCliente.getInstance();
         // repositorio.ler();
     }
 
     /**
      *
+     * @return Retorna a instancia do GerenciamentoCliente
      */
     public static GerenciamentoCliente getInstance() {
         if (instancia == null) {

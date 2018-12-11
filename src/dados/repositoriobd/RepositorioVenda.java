@@ -5,7 +5,7 @@
  */
 package dados.repositoriobd;
 
-import dados.repositorioInterface.IRepositorioVenda;
+import dados.interfacerepositorio.IRepositorioVenda;
 import negocio.entidades.Venda;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

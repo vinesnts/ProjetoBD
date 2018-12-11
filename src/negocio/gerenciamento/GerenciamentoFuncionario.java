@@ -22,8 +22,8 @@ public class GerenciamentoFuncionario {
     private static GerenciamentoFuncionario instancia;
 
     private GerenciamentoFuncionario() {
-        this.repositorio = new RepositorioFuncionario();
-        this.repositorio.ler();
+        this.repositorio = RepositorioFuncionario.getInstance();
+        //this.repositorio.ler();
 
     }
 
@@ -46,7 +46,7 @@ public class GerenciamentoFuncionario {
             throw new FuncionarioExistenteException();
         } else {
             repositorio.adicionar(funcionario);
-            repositorio.gravar();
+            //repositorio.gravar();
         }
     }
 
@@ -62,7 +62,7 @@ public class GerenciamentoFuncionario {
             throw new FuncionarioInexistenteException();
         } else {
             repositorio.remover(funcionario);
-            repositorio.gravar();
+            //repositorio.gravar();
         }
     }
 
@@ -72,9 +72,9 @@ public class GerenciamentoFuncionario {
      * cadastrado, se sim a atualização é realizada, caso não lança exceção
      * @throws negocio.excecoes.FuncionarioInexistenteException
      */
-    public void atualizar(String matricula, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
-        repositorio.atualizar(matricula, nome, eGerente, senha);
-        repositorio.gravar();
+    public void atualizar(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
+        repositorio.atualizar(cpf, nome, eGerente, senha);
+        //repositorio.gravar();
     }
 
     /**
