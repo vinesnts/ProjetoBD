@@ -106,6 +106,6 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return "Id: " + id + "\tData: " + data.getDayOfMonth() + "/" + data.getMonthValue() + "\nCliente: " + cliente.getNome() + "\nFuncionario: " + funcionario.getNome() + "\tMatricula: " + funcionario.getMatricula() + "\n" + arrayVendaProduto.toString();
+        return "Id: " + id + "\tData: " + data.getDayOfMonth() + "/" + data.getMonthValue() + "\nCliente: " + cliente.getNome() + "\nFuncionario: " + funcionario.getNome() + "\n" + arrayVendaProduto.toString();
     }
 }

@@ -83,8 +83,8 @@ public class GerenciamentoFuncionario {
      * @return Retorna o objeto funcionario se ele ja estiver cadastrado no
      * repositorio, caso não lança exceção
      */
-    public Funcionario buscarFuncionario(String matricula) throws FuncionarioInexistenteException {
-        return repositorio.buscar(matricula);
+    public Funcionario buscarFuncionario(String cpf) throws FuncionarioInexistenteException {
+        return repositorio.buscar(cpf);
     }
 
     /**

@@ -26,8 +26,8 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="17.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="tfMatricula" focusColor="#0080ff" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#tfMatriculaOnKeyReleased" prefHeight="40.0" prefWidth="275.0" promptText="Matrícula" unFocusColor="#0080ff" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <JFXPasswordField fx:id="tfSenha" focusColor="#0080ff" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="275.0" promptText="Senha" unFocusColor="#0080ff" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="txtCampoCPF" focusColor="#0080ff" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#txtCampoCPFOnKeyReleased" prefHeight="40.0" prefWidth="275.0" promptText="CPF" unFocusColor="#0080ff" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <JFXPasswordField fx:id="txtCampoSenha" focusColor="#0080ff" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="275.0" promptText="Senha" unFocusColor="#0080ff" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <image>
                   <Image url="@icons/matricula.png" />

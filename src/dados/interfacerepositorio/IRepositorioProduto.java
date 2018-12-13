@@ -20,7 +20,7 @@ public interface IRepositorioProduto {
 
     public void atualizar(Produto produto);
 
-    public Produto buscar(int id)throws ProdutoInexistenteException;
-
+    public Produto buscar(int id) throws ProdutoInexistenteException;
+    
     public boolean verificarExistencia(Produto produto);
 }

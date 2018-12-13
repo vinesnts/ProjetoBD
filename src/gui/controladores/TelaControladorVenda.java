@@ -58,7 +58,7 @@ public class TelaControladorVenda implements Initializable {
     @FXML
     private Button botaoPesquisarProdutos;
     @FXML
-    private Button BotaoPesuisarCliente;
+    private Button botaoPesquisarCliente;
     @FXML
     private TextField txCampoQuantidade;
     @FXML
@@ -103,11 +103,10 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void botaoSalvar(ActionEvent event) {
-        Funcionario funcionario = funcionario = fachada.getLogado();
         Cliente cliente;
         try {
             cliente = fachada.getCliente(txCampoCliente.getText());
-            adicionarVenda(cliente, funcionario);
+            adicionarVenda(cliente, fachada.getLogado());
             limparLabels();
             limparCampos();
             fachada.getCarrinhos().clear();
@@ -152,7 +151,7 @@ public class TelaControladorVenda implements Initializable {
     }
 
     @FXML
-    private void PesquisarCliente(ActionEvent event) {
+    private void pesquisarCliente(ActionEvent event) {
         try {
             Cliente cliente = fachada.getCliente(txCampoCliente.getText());
             if (cliente.getCpf().equals(txCampoCliente.getText())) {

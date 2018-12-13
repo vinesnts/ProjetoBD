@@ -30,6 +30,14 @@ public class Produto implements Serializable {
         this.marca = marca;
         this.categoria = categoria;
     }
+    
+    public Produto(String nome, double preco, String tamanho, String marca, String categoria) {
+        this.nome = nome;
+        this.preco = preco;
+        this.tamanho = tamanho;
+        this.marca = marca;
+        this.categoria = categoria;
+    }
 
     public int getId() {
         return id;

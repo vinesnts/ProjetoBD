@@ -4,6 +4,7 @@ package gui.controladores;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import fachada.Fachada;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,15 +64,11 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     @FXML
     private PasswordField campoSenha;
     @FXML
-    private Label labelTipo;
-    @FXML
     private GridPane menusGrid;
     @FXML
     private Button botaoCadastrarFuncionario;
     @FXML
     private Button botaoEditarFuncionario;
-    @FXML
-    private TextField txtCampoMatricula;
     @FXML
     private Button botaoProcurarMatricula;
     @FXML
@@ -92,6 +89,8 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     private JFXButton botaoNao;
     @FXML
     private JFXButton botaoSim;
+    @FXML
+    private JFXTextField txtCampoProcurarCPF;
 
     /**
      * Initializes the controller class.
@@ -132,7 +131,7 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
         txtCampoCPF.clear();
         campoSenha.clear();
         labelMsg.setText("");
-        txtCampoMatricula.setText("");
+        txtCampoProcurarCPF.setText("");
         listarFuncionarios();
         listViewFuncionarios.refresh();
         txtCampoCPF.setDisable(false);
@@ -146,25 +145,20 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
 
     @FXML
     private void botaoSalvarFuncionario(ActionEvent event) {
-        String matricula;
         try {
             if (funcionario == null) {
                 fachada.adicionarFuncionario(txtCampoNome.getText(),
                         txtCampoCPF.getText(),
                         eGerente,
                         campoSenha.getText());
-                
-                if (eGerente) matricula = "G" + txtCampoCPF.getText();
-                else matricula = "V" + txtCampoCPF.getText();
-                
-                labelMsg.setText("Cadastrado com ID: " + matricula);
+                labelMsg.setText("Funcionario cadastrado");
                 limparCampos();
             } else {
                 fachada.atualizarFuncionario(funcionario.getCpf(), txtCampoNome.getText(),
                         eGerente,
                         campoSenha.getText());
                 limparCampos();
-                labelMsg.setText("Funcionario Atualizado.");
+                labelMsg.setText("Funcionario atualizado.");
             }
         } catch (FuncionarioExistenteException
                 | FuncionarioInexistenteException
@@ -177,8 +171,8 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
 
     @FXML
     private void botaoRemoverFuncionario(ActionEvent event) {
-        if (txtCampoMatricula.getText().equals("")) {
-            labelMsg.setText("Campo matricula invalido");
+        if (txtCampoProcurarCPF.getText().equals("")) {
+            labelMsg.setText("Campo CPF invalido");
         } else {
             JFXDialogLayout content = new JFXDialogLayout();
             content.setHeading(new ImageView("gui/icons/pergunta.png"));
@@ -202,8 +196,8 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     try {
-                        fachada.getFuncionario(txtCampoMatricula.getText());
-                        fachada.removerFuncionario(txtCampoMatricula.getText());
+                        fachada.getFuncionario(txtCampoProcurarCPF.getText());
+                        fachada.removerFuncionario(txtCampoProcurarCPF.getText());
                         labelMsg.setText("Funcionario removido");
                         limparCampos();
                         dialogo.close();
@@ -211,7 +205,7 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
                         botaoSim.setVisible(false);
                         stackPane.setVisible(false);
                     } catch (FuncionarioInexistenteException ex) {
-                        txtCampoMatricula.clear();
+                        txtCampoProcurarCPF.clear();
                         labelMsg.setText(ex.getMessage());
                         limparCampos();
                         dialogo.close();
@@ -239,7 +233,7 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     private void botaoEditarFuncionario(ActionEvent event) {
         try {
             funcionario = listViewFuncionarios.getSelectionModel().selectedItemProperty().getValue();
-            txtCampoMatricula.setText(String.valueOf(funcionario.getMatricula()));
+            txtCampoProcurarCPF.setText(String.valueOf(funcionario.getCpf()));
             txtCampoNome.setText(funcionario.getNome());
             txtCampoCPF.setText(String.valueOf(funcionario.getCpf()));
             if (funcionario.eGerente()) {
@@ -265,11 +259,11 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
     private void botaoProcurarMatricula(ActionEvent event) {
         labelMsg.setText("");
         try {
-            if (txtCampoMatricula.getText().equals("")) {
+            if (txtCampoProcurarCPF.getText().equals("")) {
                 labelMsg.setText("Digite a matricula");
             } else {
                 labelMsg.setText("");
-                funcionario = fachada.getFuncionario(txtCampoMatricula.getText());
+                funcionario = fachada.getFuncionario(txtCampoProcurarCPF.getText());
                 txtCampoNome.setText(funcionario.getNome());
                 txtCampoCPF.setText(funcionario.getCpf());
                 campoSenha.setText(campoSenha.getText());
@@ -317,14 +311,18 @@ public class TelaControladorGerenciaFuncionario implements Initializable {
             txtCampoCPF.setStyle("-jfx-focus-color: #0080ff;");
         }
     }
-
+    
     @FXML
-    private void txtCampoMatriculaOnKeyReleased(KeyEvent event) {
+    private void txtCampoProcurarCPFOnKeyReleased(KeyEvent event) {
         TextFieldFormatter tff = new TextFieldFormatter();
-        tff.setMask("?###.###.###-##");
-        tff.setCaracteresValidos("GVgv0123456789");
-        tff.setTf(txtCampoMatricula);
+        tff.setMask("###.###.###-##");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txtCampoProcurarCPF);
         tff.formatter();
+        if (txtCampoProcurarCPF.getText().contains(" ")) {
+            txtCampoProcurarCPF.setStyle("-jfx-focus-color: red;");
+        } else {
+            txtCampoProcurarCPF.setStyle("-jfx-focus-color: #0080ff;");
+        }
     }
-
 }

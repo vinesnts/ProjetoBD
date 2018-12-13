@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.controladores;
 
 import com.jfoenix.controls.JFXButton;
@@ -19,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -37,17 +32,15 @@ public class TelaControladorLogin implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
-    private PasswordField txCampoSenha;
+    private Fachada fachada;
     @FXML
     private Label labelMsg;
-
-    private Fachada fachada;
     @FXML
     private JFXButton bEntrar;
     @FXML
-    private JFXTextField tfMatricula;
+    private JFXPasswordField txtCampoSenha;
     @FXML
-    private JFXPasswordField tfSenha;
+    private JFXTextField txtCampoCPF;
 
     /**
      * Initializes the controller class.
@@ -61,9 +54,9 @@ public class TelaControladorLogin implements Initializable {
     private void acaoBotaoEntrar(ActionEvent event) throws IOException {
 
         try {
-            Funcionario funcionario = fachada.getFuncionario(tfMatricula.getText());
-            if (funcionario.getMatricula().equals(tfMatricula.getText().toUpperCase())
-                    && funcionario.getSenha().equals(tfSenha.getText())) {
+            Funcionario funcionario = fachada.getFuncionario(txtCampoCPF.getText());
+            if (funcionario.getCpf().equals(txtCampoCPF.getText())
+                    && funcionario.getSenha().equals(txtCampoSenha.getText())) {
                 fachada.setLogado(funcionario);
                 System.out.println(fachada.getLogado().getNome());
                 limparCampo();
@@ -90,38 +83,30 @@ public class TelaControladorLogin implements Initializable {
             } else {
                 limparCampo();
                 labelMsg.setText("Senha invalida");
-                tfSenha.setStyle("-jfx-unfocus-color: red;");
+                txtCampoSenha.setStyle("-jfx-unfocus-color: red;");
             }
 
         } catch (FuncionarioInexistenteException erro) {
             limparCampo();
-            labelMsg.setText("Matricula inexistente");
-            tfMatricula.setStyle("-jfx-unfocus-color: red;");
+            labelMsg.setText("Funcionario inexistente");
+            txtCampoCPF.setStyle("-jfx-unfocus-color: red;");
         }
 
     }
 
     private void limparCampo() {
-        tfSenha.clear();
+        txtCampoSenha.clear();
         labelMsg.setText("");
-        tfSenha.setStyle("-jfx-unfocus-color: #0080ff;");
-        tfMatricula.setStyle("-jfx-unfocus-color: #0080ff;");
-    }
-
-    private void txCampoMatriculaOnKeyReleased(KeyEvent event) {
-        TextFieldFormatter tff = new TextFieldFormatter();
-        tff.setMask("?###.###.###-##");
-        tff.setCaracteresValidos("GVgv0123456789");
-        tff.setTf(tfMatricula);
-        tff.formatter();
+        txtCampoSenha.setStyle("-jfx-unfocus-color: #0080ff;");
+        txtCampoCPF.setStyle("-jfx-unfocus-color: #0080ff;");
     }
 
     @FXML
-    private void tfMatriculaOnKeyReleased(KeyEvent event) {
+    private void txtCampoCPFOnKeyReleased(KeyEvent event) {
         TextFieldFormatter tff = new TextFieldFormatter();
-        tff.setMask("?###.###.###-##");
-        tff.setCaracteresValidos("GVgv0123456789");
-        tff.setTf(tfMatricula);
+        tff.setMask("###.###.###-##");
+        tff.setCaracteresValidos("0123456789");
+        tff.setTf(txtCampoCPF);
         tff.formatter();
     }
 }

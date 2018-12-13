@@ -34,17 +34,16 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public void adicionar(Funcionario funcionario) {
-        String sql = "INSERT INTO funcionario VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO funcionario VALUES (?,?,?,?)";
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setString(1, funcionario.getMatricula());
-            pst.setBoolean(2, funcionario.eGerente());
-            pst.setString(3, funcionario.getCpf());
-            pst.setString(4, funcionario.getNome());
-            pst.setString(5, funcionario.getSenha());
+            pst.setBoolean(1, funcionario.eGerente());
+            pst.setString(2, funcionario.getCpf());
+            pst.setString(3, funcionario.getNome());
+            pst.setString(4, funcionario.getSenha());
             
             pst.execute();
             pst.close();
@@ -62,13 +61,13 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public void remover(Funcionario funcionario) {
-        String sql = "DELETE FROM funcionario WHERE Matricula=(?) AND Senha=(?)";
+        String sql = "DELETE FROM funcionario WHERE CPF=(?) AND Senha=(?)";
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setString(1, funcionario.getMatricula());
+            pst.setString(1, funcionario.getCpf());
             pst.setString(2, funcionario.getSenha());
             
             pst.execute();
@@ -82,8 +81,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
 
     /**
      *
-     * @param matricula Atualiza os dados do funcionario ja existente com os
-     * novos dados passados.
+     * @param cpf Cpf do funcionario
      * @param nome Nome novo do funcionario
      * @param eGerente Cargo novo do funcionario
      * @param senha Senha nova do funcionario
@@ -91,17 +89,16 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public void atualizar(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
-        String sql = "UPDATE funcionario SET Matricula=(?), eGerente=(?), Nome=(?), Senha=(?) WHERE CPF=(?)";
+        String sql = "UPDATE funcionario SET eGerente=(?), Nome=(?), Senha=(?) WHERE CPF=(?)";
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setString(1, Funcionario.gerarMatricula(eGerente, cpf));
-            pst.setBoolean(2, eGerente);
-            pst.setString(3, nome);
-            pst.setString(4, senha);
-            pst.setString(5, cpf);
+            pst.setBoolean(1, eGerente);
+            pst.setString(2, nome);
+            pst.setString(3, senha);
+            pst.setString(4, cpf);
             
             pst.executeUpdate();
             pst.close();
@@ -119,25 +116,24 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      * @throws negocio.excecoes.FuncionarioInexistenteException
      */
     @Override
-    public Funcionario buscar(String matricula) throws FuncionarioInexistenteException {
-        String sql = "SELECT * FROM funcionario WHERE Matricula=(?)";
+    public Funcionario buscar(String cpf) throws FuncionarioInexistenteException {
+        String sql = "SELECT * FROM funcionario WHERE CPF=(?)";
         Funcionario funcionario = null;
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setString(1, matricula);
+            pst.setString(1, cpf);
             ResultSet rs = pst.executeQuery();
             
             while (rs.next()) {
-                String matriculaAux = rs.getString("Matricula");
                 Boolean eGerente = rs.getBoolean("eGerente");
-                String cpf = rs.getString("CPF");
+                String cpfAux = rs.getString("CPF");
                 String nome = rs.getString("Nome");
                 String senha = rs.getString("Senha");
                 
-                funcionario = new Funcionario(nome, cpf, eGerente, senha);
+                funcionario = new Funcionario(nome, cpfAux, eGerente, senha);
                 
             }
             
@@ -160,18 +156,17 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public boolean verificarExistencia(Funcionario funcionario) {
-        String sql = "SELECT * FROM funcionario WHERE Matricula=(?)";
+        String sql = "SELECT * FROM funcionario WHERE CPF=(?)";
         Funcionario f;
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setString(1, funcionario.getMatricula());
+            pst.setString(1, funcionario.getCpf());
             ResultSet rs = pst.executeQuery();
             
             while(rs.next()) {
-                String matriculaAux = rs.getString("Matricula");
                 Boolean eGerente = rs.getBoolean("eGerente");
                 String cpf = rs.getString("CPF");
                 String nome = rs.getString("Nome");
@@ -207,7 +202,6 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
             ResultSet rs = pst.executeQuery();
             
             while(rs.next()) {
-                String matriculaAux = rs.getString("Matricula");
                 Boolean eGerente = rs.getBoolean("eGerente");
                 String cpf = rs.getString("CPF");
                 String nome = rs.getString("Nome");

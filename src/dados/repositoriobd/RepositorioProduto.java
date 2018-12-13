@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dados.repositoriobd;
 
+import connection.ConexaoMySql;
 import dados.interfacerepositorio.IRepositorioProduto;
 import negocio.entidades.Produto;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import negocio.excecoes.ProdutoInexistenteException;
 
@@ -20,21 +16,17 @@ import negocio.excecoes.ProdutoInexistenteException;
  * @author Raquell Vieira, Adilson Junior
  */
 public class RepositorioProduto implements IRepositorioProduto {
+    
+    private static RepositorioProduto instancia;
 
-    private ArrayList<Produto> produtos;
-    private int id;
-    FileOutputStream arquivoParaGravar;
-    FileInputStream recuperadorDeArquivos;
-    ObjectOutputStream escritor;
-    ObjectInputStream leitor;
-
-    /**
-     * Construtor de Repositorio Produto
-     */
-    public RepositorioProduto() {
-        produtos = new ArrayList();
-        this.id = 1;
+    public static RepositorioProduto getInstance() {
+        if(instancia == null) {
+            instancia = new RepositorioProduto();
+        }
+        return instancia;
     }
+    
+    public RepositorioProduto() {}
 
     /**
      *
@@ -42,9 +34,25 @@ public class RepositorioProduto implements IRepositorioProduto {
      */
     @Override
     public void adicionar(Produto produto) {
-        id++;
-        produtos.add(produto);
-
+        String sql = "INSERT INTO produto(Nome, Preco, Tamanho, Marca, Categoria) VALUES (?,?,?,?,?)";
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, produto.getNome());
+            pst.setDouble(2, produto.getPreco());
+            pst.setString(3, produto.getTamanho());
+            pst.setString(4, produto.getMarca());
+            pst.setString(5, produto.getCategoria());
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     /**
@@ -53,7 +61,21 @@ public class RepositorioProduto implements IRepositorioProduto {
      */
     @Override
     public void remover(Produto produto) {
-        produtos.remove(produto);
+        String sql = "DELETE FROM produto WHERE IdProduto=(?)";
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setInt(1, produto.getId());
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
     }
 
     /**
@@ -63,14 +85,25 @@ public class RepositorioProduto implements IRepositorioProduto {
      */
     @Override
     public void atualizar(Produto produto) {
-        for (int i = 0; i < produtos.size(); i++) {
-            if (produtos.get(i).getId() == produto.getId()) {
-                produtos.get(i).setNome(produto.getNome());
-                produtos.get(i).setPreco(produto.getPreco());
-                produtos.get(i).setTamanho(produto.getTamanho());
-                produtos.get(i).setMarca(produto.getMarca());
-                produtos.get(i).setCategoria(produto.getCategoria());
-            }
+        String sql = "UPDATE produto SET Nome=(?), Preco=(?), Tamanho=(?), Marca=(?), Categoria=(?) WHERE IdProduto=(?)";
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, produto.getNome());
+            pst.setDouble(2, produto.getPreco());
+            pst.setString(3, produto.getTamanho());
+            pst.setString(4, produto.getMarca());
+            pst.setString(5, produto.getCategoria());
+            pst.setInt(6, produto.getId());
+            
+            pst.executeUpdate();
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -82,32 +115,38 @@ public class RepositorioProduto implements IRepositorioProduto {
      */
     @Override
     public Produto buscar(int id) throws ProdutoInexistenteException {
+        String sql = "SELECT * FROM produto WHERE IdProduto=(?)";
+        Produto produto = null;
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                int idAux = rs.getInt("IdProduto");
+                String nome = rs.getString("Nome");
+                Double preco = rs.getDouble("Preco");
+                String tamanho = rs.getString("Tamanho");
+                String marca = rs.getString("Marca");
+                String categoria = rs.getString("Categoria");
 
-        for (int i = 0; i < produtos.size(); i++) {
-            if (produtos.get(i).getId() == id) {
-                return produtos.get(i);
-
+                
+                produto = new Produto(idAux, nome, preco, tamanho, marca, categoria);
+                
             }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
-        throw new ProdutoInexistenteException();
 
-    }
-
-    /**
-     *
-     * @param nome
-     * @return Verifica se o produto existe, se sim retorna o objeto Produto,
-     * caso não retorna null.
-     * @throws negocio.excecoes.ProdutoInexistenteException
-     */
-    public Produto buscarPeloNome(String nome) throws ProdutoInexistenteException {
-
-        for (int i = 0; i < produtos.size(); i++) {
-            if (produtos.get(i).getNome().equals(nome)) {
-                return produtos.get(i);
-            }
-        }
-        throw new ProdutoInexistenteException();
+        if(produto == null) throw new ProdutoInexistenteException();
+        else return produto;
     }
 
     /**
@@ -117,69 +156,70 @@ public class RepositorioProduto implements IRepositorioProduto {
      */
     @Override
     public boolean verificarExistencia(Produto produto) {
-        boolean existe = false;
-        for (int i = 0; i < produtos.size(); i++) {
-            if (produtos.get(i).getId() == produto.getId()) {
-                existe = true;
+        String sql = "SELECT * FROM produto WHERE Nome=(?), Tamanho=(?), Marca=(?)";
+        Produto p;
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, produto.getNome());
+            pst.setString(2, produto.getTamanho());
+            pst.setString(3, produto.getMarca());
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                String nome = rs.getString("Nome");
+                Double preco = rs.getDouble("Preco");
+                String tamanho = rs.getString("Tamanho");
+                String marca = rs.getString("Marca");
+                String categoria = rs.getString("Categoria");
+
+                
+                p = new Produto(nome, preco, tamanho, marca, categoria);
+                
+                return true;
             }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
-        return existe;
+
+        return false;
     }
     //Retorna o Array de Produtos.
 
     public ArrayList<Produto> getProdutos() {
-        return produtos;
-    }
-
-    /**
-     * @return Id que sera colocado no produto durante cadastro
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Metodo para gravar o array de produtos cadastrados no repositorio de
-     * produtos emum arquivo binario
-     */
-    public void gravar() {
-
+        String sql = "SELECT * FROM produto";
+        ArrayList<Produto> lista = new ArrayList<Produto>();
+        
         try {
-            this.arquivoParaGravar = new FileOutputStream("Dados/ArquivoProdutos.dat");
-            this.escritor = new ObjectOutputStream(arquivoParaGravar);
-            this.escritor.writeObject(produtos);
-            this.escritor.flush();
-            this.escritor.close();
-            this.arquivoParaGravar.flush();
-            this.arquivoParaGravar.close();
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                int idAux = rs.getInt("IdProduto");
+                String nome = rs.getString("Nome");
+                Double preco = rs.getDouble("Preco");
+                String tamanho = rs.getString("Tamanho");
+                String marca = rs.getString("Marca");
+                String categoria = rs.getString("Categoria");
 
-        } catch (IOException erro) {
-            erro.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Metodo para leitura de arquivo, ira ler o array de produto guardado em
-     * binario no arquivo e carrega-os no repositorio de produtos
-     */
-    public void ler() {
-
-        try {
-            recuperadorDeArquivos = new FileInputStream("Dados/ArquivoProdutos.dat");
-            this.leitor = new ObjectInputStream(recuperadorDeArquivos);
-            produtos = (ArrayList<Produto>) leitor.readObject();
-            if(produtos!=null){
-            	this.id = produtos.get(produtos.size() - 1).getId() + 1;
+                
+                lista.add(new Produto(idAux, nome, preco, tamanho, marca, categoria));
             }
-            this.leitor.close();
-            recuperadorDeArquivos.close();
-
-        } catch (IOException | ClassNotFoundException erro) {
-            System.out.println("Nada nos repositorios!");
-
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
 
+        return lista;
     }
-
 }

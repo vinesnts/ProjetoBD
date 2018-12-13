@@ -25,7 +25,7 @@ import negocio.entidades.Venda;
  */
 public class GraficoVendedor extends Application {
 
-    private String matricula = "";
+    private String cpf = "";
     Fachada fachada = Fachada.getInstance();
     
 
@@ -50,7 +50,7 @@ public class GraficoVendedor extends Application {
         ArrayList<Venda> vendas = fachada.getVendas();
         for (int i = 0; i < vendas.size(); i++) {
             int mes = vendas.get(i).getData().getMonthValue();
-            quantidade.getData().add(new XYChart.Data("" + vendas.get(i).getData().getMonth(), getValorTotalDasVendasMesFuncionario(mes, matricula)));
+            quantidade.getData().add(new XYChart.Data("" + vendas.get(i).getData().getMonth(), getValorTotalDasVendasMesFuncionario(mes, cpf)));
 
         }
        
@@ -59,18 +59,18 @@ public class GraficoVendedor extends Application {
         return graficoLinha;
     }
 
-    private double getValorTotalDasVendasMesFuncionario(int mes, String matricula) {
+    private double getValorTotalDasVendasMesFuncionario(int mes, String cpf) {
         double valorVenda = 0.0;
         ArrayList<Venda> vendas = fachada.getVendas();
         for (int i = 0; i < vendas.size(); i++) {
-            if (mes == vendas.get(i).getData().getMonthValue() && matricula.equals(vendas.get(i).getFuncionario().getMatricula())) {
+            if (mes == vendas.get(i).getData().getMonthValue() && cpf.equals(vendas.get(i).getFuncionario().getCpf())) {
                 valorVenda = vendas.get(i).getPrecoTotal();
             }
         }
 
         return valorVenda;
     }
-    public void setMatricula(String matricula){
-        this.matricula = matricula;
+    public void setCpf(String cpf){
+        this.cpf = cpf;
     }
 }

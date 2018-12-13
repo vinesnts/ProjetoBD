@@ -23,7 +23,7 @@ public class GerenciamentoProduto {
 
     private GerenciamentoProduto() {
         this.repositorio = new RepositorioProduto();
-        repositorio.ler();
+        // repositorio.ler();
 
     }
 
@@ -46,7 +46,7 @@ public class GerenciamentoProduto {
             throw new ProdutoExistenteException();
         } else {
             repositorio.adicionar(produto);
-            repositorio.gravar();
+            // repositorio.gravar();
         }
     }
 
@@ -57,12 +57,12 @@ public class GerenciamentoProduto {
      * @throws ProdutoInexistenteException
      */
     public void remover(Produto produto) throws ProdutoInexistenteException {
-        boolean existe = repositorio.verificarExistencia(produto);
-        if (existe == false) {
+        Produto existe = repositorio.buscar(produto.getId());
+        if (existe == null) {
             throw new ProdutoInexistenteException();
         } else {
             repositorio.remover(produto);
-            repositorio.gravar();
+            // repositorio.gravar();
 
         }
     }
@@ -80,7 +80,7 @@ public class GerenciamentoProduto {
             throw new ProdutoInexistenteException();
         } else {
             repositorio.atualizar(produto);
-            repositorio.gravar();
+            // repositorio.gravar();
         }
     }
 
@@ -97,28 +97,9 @@ public class GerenciamentoProduto {
 
     /**
      *
-     * @param nome
-     * @return O produto com o mesmo nome se ele existir no repositorio, caso
-     * não uma
-     * @throws negocio.excecoes.ProdutoInexistenteException
-     */
-    public Produto buscaPeloNome(String nome) throws ProdutoInexistenteException {
-        return repositorio.buscarPeloNome(nome);
-    }
-
-    /**
-     *
      * @return Array com todos os produtos cadastrados no repositorio
      */
     public ArrayList<Produto> getProdutos() {
         return repositorio.getProdutos();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getIdProduto() {
-        return repositorio.getId();
     }
 }

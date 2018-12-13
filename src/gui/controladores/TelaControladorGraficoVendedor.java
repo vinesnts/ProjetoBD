@@ -5,6 +5,7 @@
  */
 package gui.controladores;
 
+import com.jfoenix.controls.JFXTextField;
 import grafico.GraficoVendedor;
 import fachada.Fachada;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import negocio.entidades.Funcionario;
@@ -32,19 +32,17 @@ public class TelaControladorGraficoVendedor implements Initializable {
     @FXML
     private Button botaoCancelar;
     @FXML
-    private Label labelMatricula;
-    @FXML
-    private TextField txCampoMatricula;
-    @FXML
     private AnchorPane anchorPaneGrafico;
     @FXML
-    private Label labelMsgErro;
-    @FXML
     private Button botaoMostrarGrafico;
-
-    private Fachada fachada;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private JFXTextField txCampoCPF;
+    @FXML
+    private Label labelMsgErro;
+    
+    private Fachada fachada;
 
     /**
      * Initializes the controller class.
@@ -52,7 +50,7 @@ public class TelaControladorGraficoVendedor implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	fachada = Fachada.getInstance();
-    	txCampoMatricula.setText(fachada.getLogado().getMatricula());
+    	txCampoCPF.setText(fachada.getLogado().getCpf());
     }
     // s.setScene(new Scene(new FlowPane(criarGraficoLinha())));
 
@@ -66,14 +64,14 @@ public class TelaControladorGraficoVendedor implements Initializable {
     @FXML
     private void acaoMostrarGrafico(ActionEvent event) {
         try {
-            if (txCampoMatricula.getText().equals("")) {
+            if (txCampoCPF.getText().equals("")) {
                // txCampoMatricula.clear();
                 //labelMsgErro.setText("Campo Inválido.");
             } else {
-                Funcionario funcionario = fachada.getFuncionario(txCampoMatricula.getText());
-                if (funcionario.getMatricula().equals(txCampoMatricula.getText())) {
+                Funcionario funcionario = fachada.getFuncionario(txCampoCPF.getText());
+                if (funcionario.getSenha().equals(txCampoCPF.getText())) {
                     GraficoVendedor graficoVendedor = new GraficoVendedor();
-                    graficoVendedor.setMatricula(txCampoMatricula.getText());
+                    graficoVendedor.setCpf(txCampoCPF.getText());
                     FlowPane flow = new FlowPane(graficoVendedor.criarGraficoLinha());
                     anchorPaneGrafico.getChildren().setAll(flow);
 
