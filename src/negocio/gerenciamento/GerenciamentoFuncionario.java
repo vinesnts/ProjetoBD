@@ -72,8 +72,8 @@ public class GerenciamentoFuncionario {
      * cadastrado, se sim a atualização é realizada, caso não lança exceção
      * @throws negocio.excecoes.FuncionarioInexistenteException
      */
-    public void atualizar(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
-        repositorio.atualizar(cpf, nome, eGerente, senha);
+    public void atualizar(Funcionario funcionario) throws FuncionarioInexistenteException {
+        repositorio.atualizar(funcionario);
         //repositorio.gravar();
     }
 

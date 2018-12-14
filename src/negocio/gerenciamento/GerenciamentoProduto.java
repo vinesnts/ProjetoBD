@@ -41,13 +41,13 @@ public class GerenciamentoProduto {
      * lança exceção, caso não o cadastro é realizado
      */
     public void adicionar(Produto produto) throws ProdutoExistenteException {
-        boolean existe = repositorio.verificarExistencia(produto);
-        if (existe == true) {
-            throw new ProdutoExistenteException();
-        } else {
+        //boolean existe = repositorio.verificarExistencia(produto);
+        //if (existe == true) {
+        //    throw new ProdutoExistenteException();
+        //} else {
             repositorio.adicionar(produto);
             // repositorio.gravar();
-        }
+        //}
     }
 
     /**

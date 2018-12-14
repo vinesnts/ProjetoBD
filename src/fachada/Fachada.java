@@ -16,7 +16,7 @@ import negocio.gerenciamento.GerenciamentoProduto;
 import negocio.gerenciamento.GerenciamentoVenda;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import negocio.entidades.Carrinho;
+import negocio.entidades.Pacote;
 import negocio.excecoes.CPFInvalidoException;
 import negocio.excecoes.DataInvalidaException;
 import negocio.excecoes.FuncionarioExistenteException;
@@ -25,7 +25,7 @@ import negocio.excecoes.NomeInvalidoException;
 import negocio.excecoes.ProdutosInsuficientesException;
 import negocio.excecoes.QuantidadeInsuficienteException;
 import negocio.excecoes.SenhaInvalidaException;
-import negocio.gerenciamento.GerenciamentoCarrinho;
+import negocio.gerenciamento.GerenciamentoPacote;
 
 /**
  *
@@ -39,14 +39,14 @@ public class Fachada {
     private GerenciamentoFuncionario funcionarios;
     private GerenciamentoProduto produtos;
     private GerenciamentoVenda vendas;
-    private GerenciamentoCarrinho carrinhos;
+    private GerenciamentoPacote pacotes;
 
     private Fachada() {
         clientes = GerenciamentoCliente.getInstance();
         funcionarios = GerenciamentoFuncionario.getInstance();
         produtos = GerenciamentoProduto.getInstance();
         vendas = GerenciamentoVenda.getInstance();
-        carrinhos = GerenciamentoCarrinho.getInstancia();
+        pacotes = GerenciamentoPacote.getInstancia();
     }
     
     public static Fachada getInstance() {
@@ -108,7 +108,8 @@ public class Fachada {
     public void atualizarFuncionario(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException, NomeInvalidoException, SenhaInvalidaException {
         if (nome.equals(""))    throw new NomeInvalidoException();
         if (senha.equals(""))   throw new SenhaInvalidaException();
-        funcionarios.atualizar(cpf, nome, eGerente, senha);
+        Funcionario funcionario = new Funcionario(nome, cpf, eGerente, senha);
+        funcionarios.atualizar(funcionario);
     }
 
     public Funcionario getFuncionario(String cpf) throws FuncionarioInexistenteException {
@@ -156,17 +157,15 @@ public class Fachada {
     }
 
     //Venda
-    public Venda adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Carrinho> carrinho) throws DataInvalidaException, ProdutosInsuficientesException {
+    public Venda adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Pacote> pacotes) throws DataInvalidaException, ProdutosInsuficientesException {
         if (data == null) {
             throw new DataInvalidaException();
         }
-        if (this.getCarrinhos() == null) {
-                throw new ProdutosInsuficientesException();
-        } else if (this.getCarrinhos().isEmpty()) {
+        if (pacotes.isEmpty()) {
                 throw new ProdutosInsuficientesException();
         }
             
-        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, desconto, carrinho);
+        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, desconto, pacotes);
         return vendas.adicionar(venda);
 
     }
@@ -205,28 +204,15 @@ public class Fachada {
         return vendas.buscar(id);
     }
 
-    //CARRINHO
+    //Pacote
     /**
      *
-     * @param produto
-     * @param quantidade Recebe um produto e sua quantidade e adiciona num
-     * carrinho Adiciona-o ao repositorio de carrinho durante uma venda
+     * @param pacotes recebe os pacotes refenrentes a uma venda a serem salvos no repositorio
      */
-    public void adicionarCarrinho(Produto produto, int quantidade) {
-        Carrinho carrinho = new Carrinho(produto, quantidade);
-        carrinhos.adicionar(carrinho);
-    }/**
-     * 
-     * @param carrinho
-     * @throws ProdutoInexistenteException
-     * @throws QuantidadeInsuficienteException 
-     */
-    public void removerCarrinho(Carrinho carrinho)throws ProdutoInexistenteException,QuantidadeInsuficienteException{
-        carrinhos.remover(carrinho);
-    
-    }
-
-    public ArrayList<Carrinho> getCarrinhos() {
-        return carrinhos.getCarrinhos();
+    public void adicionarPacotes(ArrayList<Pacote> pacotes) {
+        for(int i = 0; i < pacotes.size(); i++) {
+            Pacote pacote = pacotes.get(i);
+            this.pacotes.adicionar(pacote);
+        }
     }
 }

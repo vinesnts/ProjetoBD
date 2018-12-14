@@ -1,9 +1,4 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio.entidades;
 
 import java.io.Serializable;
@@ -12,12 +7,12 @@ import java.io.Serializable;
  *
  * @author Raquell Vieira, Adilson Júnior
  */
-public class Carrinho implements Comparable<Carrinho>, Serializable{
+public class Pacote implements Comparable<Pacote>, Serializable {
 
     private Produto produto;
     private int quantidade;
 
-    public Carrinho(Produto produto, int quantidade) {
+    public Pacote(Produto produto, int quantidade) {
         this.produto = produto;
         this.quantidade = quantidade;
     }
@@ -40,11 +35,11 @@ public class Carrinho implements Comparable<Carrinho>, Serializable{
 
     @Override
     public String toString() {
-        return "Quant: " + quantidade + " | " + produto.toString();
+        return "Quant: " + quantidade + " | " + produto;
     }
 
     @Override
-    public int compareTo(Carrinho o2) {
+    public int compareTo(Pacote o2) {
         int comparacao = 0;
         if(this.getQuantidade() > o2.getQuantidade()){
             comparacao = 1;

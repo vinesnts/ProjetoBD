@@ -100,24 +100,21 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
 
     /**
      *
-     * @param cpf Cpf do funcionario
-     * @param nome Nome novo do funcionario
-     * @param eGerente Cargo novo do funcionario
-     * @param senha Senha nova do funcionario
+     * @param funcionario funcionario a ser atualizado
      * @throws negocio.excecoes.FuncionarioInexistenteException Se o funcionario nao existe, lanca erro
      */
     @Override
-    public void atualizar(String cpf, String nome, boolean eGerente, String senha) throws FuncionarioInexistenteException {
+    public void atualizar(Funcionario funcionario) throws FuncionarioInexistenteException {
         String sql = "UPDATE funcionario SET eGerente=(?), Nome=(?), Senha=(?) WHERE CPF=(?)";
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setBoolean(1, eGerente);
-            pst.setString(2, nome);
-            pst.setString(3, senha);
-            pst.setString(4, cpf);
+            pst.setBoolean(1, funcionario.eGerente());
+            pst.setString(2, funcionario.getNome());
+            pst.setString(3, funcionario.getSenha());
+            pst.setString(4, funcionario.getCpf());
             
             pst.executeUpdate();
             pst.close();

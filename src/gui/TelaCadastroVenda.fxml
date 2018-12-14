@@ -90,7 +90,7 @@
          </effect>
       </JFXListView>
       <JFXTextArea fx:id="txAreaInformativa" editable="false" layoutX="100.0" layoutY="394.0" prefHeight="100.0" prefWidth="342.0" />
-      <Label fx:id="labelMsgCarrinho" layoutX="104.0" layoutY="541.0" prefHeight="21.0" prefWidth="289.0" stylesheets="@novo_tema_avisos.css" textFill="#e81010" />
+      <Label fx:id="labelMsgPacote" layoutX="104.0" layoutY="541.0" prefHeight="21.0" prefWidth="289.0" stylesheets="@novo_tema_avisos.css" textFill="#e81010" />
       <JFXButton fx:id="botaoSalvar" alignment="BASELINE_LEFT" layoutX="598.0" layoutY="454.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#botaoSalvar" prefHeight="40.0" prefWidth="110.0" text="Comprar">
          <effect>
             <Glow />

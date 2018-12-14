@@ -1,13 +1,7 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio.entidades;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -23,9 +17,9 @@ public class Venda implements Serializable {
     private Funcionario funcionario;
     private double precoTotal;
     private double desconto;
-    private ArrayList<Carrinho> arrayVendaProduto;
+    private ArrayList<Pacote> arrayVendaProduto;
 
-    public Venda(int id, LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Carrinho> arrayVendaProduto) throws NumberFormatException {
+    public Venda(int id, LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Pacote> arrayVendaProduto) throws NumberFormatException {
         this.id = id;
         this.data = data;
         this.cliente = cliente;
@@ -63,11 +57,11 @@ public class Venda implements Serializable {
         this.funcionario = funcionario;
     }
 
-    public ArrayList<Carrinho> getArrayVendaProduto() {
+    public ArrayList<Pacote> getArrayVendaProduto() {
         return arrayVendaProduto;
     }
 
-    public void setArrayVendaProduto(ArrayList<Carrinho> arrayVendaProduto) {
+    public void setArrayVendaProduto(ArrayList<Pacote> arrayVendaProduto) {
         this.arrayVendaProduto = arrayVendaProduto;
     }
 
