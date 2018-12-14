@@ -26,7 +26,28 @@ public class RepositorioProduto implements IRepositorioProduto {
         return instancia;
     }
     
-    public RepositorioProduto() {}
+    public RepositorioProduto() {
+    String sql = "CREATE TABLE IF NOT EXISTS `produto` (\n" +
+                "  `IdProduto` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                "  `Nome` varchar(45) NOT NULL,\n" +
+                "  `Preco` double NOT NULL,\n" +
+                "  `Tamanho` varchar(10) NOT NULL,\n" +
+                "  `Marca` varchar(20) NOT NULL,\n" +
+                "  `Categoria` varchar(20) NOT NULL,\n" +
+                "  PRIMARY KEY (`IdProduto`))";
+
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
 
     /**
      *

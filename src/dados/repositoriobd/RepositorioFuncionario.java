@@ -25,7 +25,26 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
         return instancia;
     }
     
-    private RepositorioFuncionario() {}
+    private RepositorioFuncionario() {
+        String sql = "CREATE TABLE IF NOT EXISTS `funcionario` (\n" +
+                    "  `eGerente` tinyint(4) DEFAULT 0,\n" +
+                    "  `CPF` varchar(14) NOT NULL,\n" +
+                    "  `Nome` varchar(45) NOT NULL,\n" +
+                    "  `Senha` varchar(45) NOT NULL,\n" +
+                    "  PRIMARY KEY (`CPF`))";
+
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
 
     /**
      *
