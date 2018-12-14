@@ -1,4 +1,3 @@
-
 package gui.controladores;
 
 import fachada.Fachada;
@@ -7,7 +6,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import negocio.TextFieldFormatter;
-import negocio.entidades.Carrinho;
+import negocio.entidades.Pacote;
 import negocio.entidades.Cliente;
 import negocio.entidades.Funcionario;
 import negocio.entidades.Produto;
@@ -42,17 +40,17 @@ import negocio.excecoes.QuantidadeInsuficienteException;
  */
 public class TelaControladorVenda implements Initializable {
 
-    
-    private List<Carrinho> lista = new ArrayList();
-    private ObservableList<Carrinho> observableList;
+    private Fachada fachada;
+    private ArrayList<Pacote> pacotes = new ArrayList();
+    private ObservableList<Pacote> observableList;
     private double desconto;
-    
+
     @FXML
     private Button botaoSalvar;
     @FXML
     private Button botaoCancelar;
     @FXML
-    private ListView<Carrinho> listProdutos;
+    private ListView<Pacote> listProdutos;
     @FXML
     private TextField txCampoCliente;
     @FXML
@@ -67,7 +65,6 @@ public class TelaControladorVenda implements Initializable {
     private Button botaoAdicionarProdutos;
     @FXML
     private TextField txCampoProduto;
-    private Fachada fachada;
     @FXML
     private DatePicker data;
     @FXML
@@ -81,7 +78,7 @@ public class TelaControladorVenda implements Initializable {
     @FXML
     private Label labelMsgData;
     @FXML
-    private Label labelMsgCarrinho;
+    private Label labelMsgPacote;
     @FXML
     private Button botaoRemoverProduto;
     @FXML
@@ -98,6 +95,7 @@ public class TelaControladorVenda implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fachada = Fachada.getInstance();
+        pacotes = new ArrayList();
         data.setValue(LocalDate.now());
     }
 
@@ -109,14 +107,15 @@ public class TelaControladorVenda implements Initializable {
             adicionarVenda(cliente, fachada.getLogado());
             limparLabels();
             limparCampos();
-            fachada.getCarrinhos().clear();
+            fachada.adicionarPacotes(pacotes);
+            pacotes.clear();
             listarProdutosAdicionados();
         } catch (ClienteInexistenteException error) {
             labelMsgCliente.setText(error.getMessage());
         } catch (NumberFormatException error) {
             labelMsgDesconto.setText("Desconto invalido");
         } catch (ProdutosInsuficientesException error) {
-            labelMsgCarrinho.setText(error.getMessage());
+            labelMsgPacote.setText(error.getMessage());
         } catch (DataInvalidaException error) {
             labelMsgData.setText(error.getMessage());
         } catch (ProdutoInexistenteException ex) {
@@ -126,7 +125,7 @@ public class TelaControladorVenda implements Initializable {
     }
 
     private void adicionarVenda(Cliente cliente, Funcionario funcionario) throws DataInvalidaException, ProdutosInsuficientesException {
-        Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, fachada.getCarrinhos());
+        Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, pacotes);
         txAreaInformativa.setText("Valor Total da venda: \t" + new DecimalFormat(".00").format(venda.getPrecoSemDesconto())
                 + "\nDesconto: " + venda.getDesconto()
                 + "\nValor Com Desconto: " + new DecimalFormat(".00").format(venda.getPrecoTotal()));
@@ -134,7 +133,7 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void botaoCancelar(ActionEvent event) throws IOException {
-        fachada.getCarrinhos().clear();
+        pacotes.clear();
         ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
@@ -165,24 +164,15 @@ public class TelaControladorVenda implements Initializable {
 
     private void listarProdutosAdicionados() throws ProdutoInexistenteException {
         listProdutos.setItems(null);
-        lista = lista = new ArrayList();
         txCampoProduto.clear();
         txCampoQuantidade.clear();
         limparLabels();
         int x = 0;
         try {
-            if (fachada.getCarrinhos().size() > 0) {
-                for (int i = 0; i < fachada.getCarrinhos().size(); i++) {
-                    lista.add(fachada.getCarrinhos().get(i));
-                }
-                txAreaInformativa.setText("Valor dos produtos ja adicionados\t" + calcularValorCarrinho());
-                observableList = FXCollections.observableArrayList(lista);
-                listProdutos.setItems(observableList);
-            } else {
-                throw new QuantidadeInsuficienteException();
-            }
-        } catch (QuantidadeInsuficienteException error) {
-            System.out.println("Carrinho limpo");
+            txAreaInformativa.setText("Valor dos produtos ja adicionados\t" + calcularValorPacote());
+            observableList = FXCollections.observableArrayList(pacotes);
+            listProdutos.setItems(observableList);
+
         } catch (NumberFormatException error) {
             labelMsgDesconto.setText("Desconto invalido");
         }
@@ -190,20 +180,23 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void adicionarProdutos(ActionEvent event) {
-        int quantidade;
+        Pacote pacote;
+        Boolean existe = false;
         labelMsg.setText("");
         try {
-            quantidade = Integer.parseInt(txCampoQuantidade.getText());
-            if (quantidade < 1) {
-                throw new QuantidadeInsuficienteException();
-            }
-            Produto produto = fachada.buscarProdutoId(Integer.parseInt(txCampoProduto.getText()));
+            pacote = gerarPacote();
             limparLabels();
-            labelMsg.setText("Produto adicionado");
-            if (produto != null) {
-                fachada.adicionarCarrinho(produto, quantidade);
+            for (int i = 0; i < pacotes.size(); i++) {
+                if (pacotes.get(i).getProduto().getId() == pacote.getProduto().getId()) {
+                    pacotes.get(i).setQuantidade(pacotes.get(i).getQuantidade() + pacote.getQuantidade());
+                    existe = true;
+                }
+            }
+            if (!existe) {
+                pacotes.add(pacote);
             }
             listarProdutosAdicionados();
+            labelMsg.setText("Produto adicionado");
         } catch (ProdutoInexistenteException | QuantidadeInsuficienteException error) {
             labelMsg.setText(error.getMessage());
         } catch (NumberFormatException error) {
@@ -211,37 +204,93 @@ public class TelaControladorVenda implements Initializable {
         }
     }
 
+    private Pacote gerarPacote() throws QuantidadeInsuficienteException, NumberFormatException, ProdutoInexistenteException {
+        Produto produto = fachada.buscarProdutoId(Integer.parseInt(txCampoProduto.getText()));
+        if (produto == null) {
+            throw new ProdutoInexistenteException();
+        }
+
+        int quantidade = verificarQuantidade();
+        Pacote pacote = new Pacote(produto, quantidade);
+        return pacote;
+    }
+
+    private int verificarQuantidade() throws QuantidadeInsuficienteException, NumberFormatException {
+        int quantidade;
+        quantidade = Integer.parseInt(txCampoQuantidade.getText());
+        if (quantidade < 1) {
+            throw new QuantidadeInsuficienteException();
+        }
+        return quantidade;
+    }
+
     @FXML
-    private void removerProduto(ActionEvent event
-    ) {
-        Carrinho carrinho;
-        boolean existe = false;
+    private void removerProduto(ActionEvent event) {
+        Pacote pacote;
+        boolean removeu = false;
         labelMsg.setText("");
         try {
-            if (fachada.getCarrinhos().size() > 0) {
-                for (int i = 0; i < fachada.getCarrinhos().size(); i++) {
-                    if (fachada.getCarrinhos().get(i).getProduto().getId() == (Integer.parseInt(txCampoProduto.getText()))) {
-                        carrinho = new Carrinho(fachada.getCarrinhos().get(i).getProduto(),
+            if (pacotes.size() > 0) {
+                for (int i = 0; i < pacotes.size(); i++) {
+                    if (pacotes.get(i).getProduto().getId() == (Integer.parseInt(txCampoProduto.getText()))) {
+                        pacote = new Pacote(pacotes.get(i).getProduto(),
                                 Integer.parseInt(txCampoQuantidade.getText()));
-                        fachada.removerCarrinho(carrinho);
-                        labelMsg.setText("Produto Removido");
+                        removeu = removerPacote(pacote);
+                        labelMsg.setText("Produto removido");
                         listarProdutosAdicionados();
                     }
                 }
-                if (existe == true) {
-                    throw new ProdutoInexistenteException();
-                }
-
+                
+                if (!removeu) throw new ProdutoInexistenteException();
+                
             } else {
-                throw new ProdutosInsuficientesException();
+                throw new ProdutosInsuficientesException("Nao ha produtos no carrinho");
             }
-        } catch (ProdutosInsuficientesException |
-                ProdutoInexistenteException |
-                QuantidadeInsuficienteException error) {
+        } catch (ProdutosInsuficientesException
+                | ProdutoInexistenteException error) {
             labelMsg.setText(error.getMessage());
         } catch (NumberFormatException error) {
             labelMsg.setText("Quantidade insuficiente");
         }
+    }
+
+    private boolean removerPacote(Pacote pacote) {
+        Boolean removeu = false;
+        for (int j = 0; j < pacotes.size(); j++) {
+            if (pacotes.get(j).getProduto().getId() == pacote.getProduto().getId()) {
+                pacotes.get(j).setQuantidade(pacotes.get(j).getQuantidade() - pacote.getQuantidade());
+                removeu = true;
+            }
+        }
+        return removeu;
+    }
+
+    public double calcularValorPacote() {
+        double valor = 0;
+        if (pacotes != null) {
+            for (int i = 0; i < pacotes.size(); i++) {
+                valor += pacotes.get(i).getProduto().getPreco() * pacotes.get(i).getQuantidade();
+
+            }
+        }
+        return valor;
+    }
+
+    @FXML
+    private void botaoAplicarDesconto(ActionEvent event) {
+        String descontoTexto = txCampoDesconto.getText();
+        if (descontoTexto.equals("")) {
+            descontoTexto = "0";
+        }
+        desconto = Integer.parseInt(descontoTexto);
+        double valor = calcularValorPacote();
+        if (desconto < 0 || desconto > 15) {
+            labelMsgDesconto.setText("Desconto invalido!");
+            return;
+        }
+        valor -= (valor * desconto) / 100;
+        txAreaInformativa.setText("Valor dos produtos com desconto: \t" + new DecimalFormat(".00").format(valor));
+        labelMsgDesconto.setText("Desconto aplicado");
     }
 
     private void limparCampos() {
@@ -258,35 +307,7 @@ public class TelaControladorVenda implements Initializable {
         labelMsgCliente.setText("");
         labelMsgData.setText("");
         labelMsg.setText("");
-        labelMsgCarrinho.setText("");
-    }
-
-    public double calcularValorCarrinho() {
-        double valor = 0;
-        if (fachada.getCarrinhos() != null) {
-            for (int i = 0; i < fachada.getCarrinhos().size(); i++) {
-                valor += fachada.getCarrinhos().get(i).getProduto().getPreco() * fachada.getCarrinhos().get(i).getQuantidade();
-
-            }
-        }
-        return valor;
-    }
-
-    @FXML
-    private void botaoAplicarDesconto(ActionEvent event) {
-        String descontoTexto = txCampoDesconto.getText();
-        if(descontoTexto.equals("")) {
-            descontoTexto = "0";
-        }
-        desconto = Integer.parseInt(descontoTexto);
-        double valor = calcularValorCarrinho();
-        if (desconto < 0 || desconto > 15) {
-                labelMsgDesconto.setText("Desconto invalido!");
-                return;
-        }
-        valor -= (valor * desconto) / 100;
-        txAreaInformativa.setText("Valor dos produtos com desconto: \t" + new DecimalFormat(".00").format(valor));
-        labelMsgDesconto.setText("Desconto aplicado");
+        labelMsgPacote.setText("");
     }
 
     @FXML
@@ -300,20 +321,29 @@ public class TelaControladorVenda implements Initializable {
 
     @FXML
     private void txCampoProdutoOnKeyReleased(KeyEvent event) {
-        if(!txCampoProduto.getText().matches("[0-9]+"))    txCampoProduto.setStyle("-fx-border-color: red;");
-        else    txCampoProduto.setStyle("-fx-border-color: black;");
+        if (!txCampoProduto.getText().matches("[0-9]+")) {
+            txCampoProduto.setStyle("-fx-border-color: red;");
+        } else {
+            txCampoProduto.setStyle("-fx-border-color: black;");
+        }
     }
 
     @FXML
     private void txCampoQuantidadeOnKeyReleased(KeyEvent event) {
-        if(!txCampoQuantidade.getText().matches("[0-9]+"))    txCampoQuantidade.setStyle("-fx-border-color: red;");
-        else    txCampoQuantidade.setStyle("-fx-border-color: black;");
+        if (!txCampoQuantidade.getText().matches("[0-9]+")) {
+            txCampoQuantidade.setStyle("-fx-border-color: red;");
+        } else {
+            txCampoQuantidade.setStyle("-fx-border-color: black;");
+        }
     }
 
     @FXML
     private void txCampoDescontoOnKeyReleased(KeyEvent event) {
-        if(!txCampoDesconto.getText().matches("[0-9]+"))    txCampoDesconto.setStyle("-fx-border-color: red;");
-        else    txCampoDesconto.setStyle("-fx-border-color: black;");
+        if (!txCampoDesconto.getText().matches("[0-9]+")) {
+            txCampoDesconto.setStyle("-fx-border-color: red;");
+        } else {
+            txCampoDesconto.setStyle("-fx-border-color: black;");
+        }
     }
 
 }

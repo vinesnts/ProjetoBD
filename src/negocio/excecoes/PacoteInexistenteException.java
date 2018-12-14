@@ -7,18 +7,16 @@ package negocio.excecoes;
 
 /**
  *
- * @author Raquell Vieira
+ * @author vinesnts
  */
-public class ProdutosInsuficientesException extends Exception{
+public class PacoteInexistenteException extends Exception {
 
-    public ProdutosInsuficientesException() {
-        super("Quantidade de produtos insuficiente");
-    }
-
-    public ProdutosInsuficientesException(String msg) {
+    public PacoteInexistenteException(String msg) {
         super(msg);
     }
     
-    
+    public PacoteInexistenteException() {
+        super("Pacote nao existe");
+    }
     
 }
