@@ -114,7 +114,7 @@
                   <InnerShadow />
                </effect>
             </JFXTextField>
-            <JFXButton fx:id="BotaoPesuisarCliente" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#PesquisarCliente" prefHeight="40.0" prefWidth="58.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+            <JFXButton fx:id="botaoPesquisarCliente" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pesquisarCliente" prefHeight="40.0" prefWidth="58.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                <effect>
                   <Glow />
                </effect>

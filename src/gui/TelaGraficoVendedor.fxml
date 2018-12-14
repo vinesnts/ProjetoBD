@@ -32,7 +32,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXTextField fx:id="txCampoMatricula" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" GridPane.valignment="TOP">
+            <JFXTextField fx:id="txCampoCPF" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" GridPane.valignment="TOP">
                <effect>
                   <InnerShadow />
                </effect>
@@ -56,5 +56,6 @@
             <AnchorPane fx:id="anchorPaneGrafico" prefHeight="302.0" prefWidth="500.0" GridPane.rowIndex="1" />
          </children>
       </GridPane>
+      <Label fx:id="labelMsgErro" alignment="CENTER" contentDisplay="CENTER" layoutX="155.0" layoutY="522.0" prefHeight="34.0" prefWidth="500.0" />
    </children>
 </AnchorPane>

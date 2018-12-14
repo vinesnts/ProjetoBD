@@ -1,9 +1,4 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fachada;
 
 import negocio.entidades.Cliente;
@@ -105,9 +100,8 @@ public class Fachada {
         funcionarios.adicionar(funcionario);
     }
 
-    public void removerFuncionario(String matricula) throws FuncionarioInexistenteException {
-        matricula = matricula.toUpperCase();
-        Funcionario funcionario = funcionarios.buscarFuncionario(matricula);
+    public void removerFuncionario(String cpf) throws FuncionarioInexistenteException {
+        Funcionario funcionario = funcionarios.buscarFuncionario(cpf);
         funcionarios.remover(funcionario);
     }
 
@@ -117,9 +111,8 @@ public class Fachada {
         funcionarios.atualizar(cpf, nome, eGerente, senha);
     }
 
-    public Funcionario getFuncionario(String matricula) throws FuncionarioInexistenteException {
-        matricula = matricula.toUpperCase();
-        return funcionarios.buscarFuncionario(matricula);
+    public Funcionario getFuncionario(String cpf) throws FuncionarioInexistenteException {
+        return funcionarios.buscarFuncionario(cpf);
     }
 
     public Funcionario getMelhorFunc() {
@@ -132,7 +125,7 @@ public class Fachada {
 
     //PRODUTO
     public void adicionarProduto(String nome, double preco, String tamanho, String marca, String categoria) throws ProdutoExistenteException {
-        Produto produto = new Produto(produtos.getIdProduto(), nome, preco, tamanho, marca, categoria);
+        Produto produto = new Produto(nome, preco, tamanho, marca, categoria);
         produtos.adicionar(produto);
 
     }
@@ -156,14 +149,6 @@ public class Fachada {
      */
     public Produto buscarProdutoId(int id) throws ProdutoInexistenteException {
         return produtos.buscar(id);
-    }
-
-    public Produto getProdutoBuscarPeloNome(String nome) throws ProdutoInexistenteException {
-        return produtos.buscaPeloNome(nome);
-    }
-
-    public int getIdProduto() {
-        return produtos.getIdProduto();
     }
 
     public ArrayList<Produto> getProdutos() {

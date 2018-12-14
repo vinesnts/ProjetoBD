@@ -16,8 +16,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import negocio.excecoes.ClienteInexistenteException;
 
 /**
@@ -36,7 +34,25 @@ public class RepositorioCliente implements IRepositorioCliente {
         return instancia;
     }
 
-    private RepositorioCliente() {}
+    private RepositorioCliente() {
+        String sql = "CREATE TABLE IF NOT EXISTS `cliente` (\n" +
+                    "  `CPF` varchar(14) NOT NULL,\n" +
+                    "  `Nome` varchar(45) DEFAULT NULL,\n" +
+                    "  `DataAniversario` date DEFAULT NULL,\n" +
+                    "  PRIMARY KEY (`CPF`))";
+
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.execute();
+            pst.close();
+            conexao.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
     
     @Override
     public void adicionar(Cliente cliente) {

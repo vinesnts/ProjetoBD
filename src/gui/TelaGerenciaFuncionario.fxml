@@ -135,7 +135,7 @@
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin></JFXButton>
-            <JFXTextField fx:id="txtCampoMatricula" maxWidth="-Infinity" onKeyReleased="#txtCampoMatriculaOnKeyReleased" prefHeight="40.0" prefWidth="200.0" promptText="Matrícula" GridPane.halignment="LEFT" />
+            <JFXTextField fx:id="txtCampoProcurarCPF" maxWidth="-Infinity" onKeyReleased="#txtCampoProcurarCPFOnKeyReleased" prefHeight="40.0" prefWidth="200.0" promptText="CPF" GridPane.halignment="LEFT" />
             <JFXButton fx:id="botaoCancelar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#botaoCancelar" prefHeight="40.0" prefWidth="110.0" stylesheets="@novo_tema.css" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
          </children>
       </GridPane>
