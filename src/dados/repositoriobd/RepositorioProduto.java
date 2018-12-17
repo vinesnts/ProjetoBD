@@ -178,7 +178,7 @@ public class RepositorioProduto implements IRepositorioProduto {
     @Override
     public boolean verificarExistencia(Produto produto) {
         String sql = "SELECT * FROM produto WHERE Nome=(?), Tamanho=(?), Marca=(?)";
-        Produto p;
+        Produto p = null;
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -198,8 +198,6 @@ public class RepositorioProduto implements IRepositorioProduto {
 
                 
                 p = new Produto(nome, preco, tamanho, marca, categoria);
-                
-                return true;
             }
             
             pst.close();
@@ -208,8 +206,7 @@ public class RepositorioProduto implements IRepositorioProduto {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         }
-
-        return false;
+        return p != null;
     }
     //Retorna o Array de Produtos.
 

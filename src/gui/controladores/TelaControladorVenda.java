@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -107,9 +108,7 @@ public class TelaControladorVenda implements Initializable {
             adicionarVenda(cliente, fachada.getLogado());
             limparLabels();
             limparCampos();
-            fachada.adicionarPacotes(pacotes);
             pacotes.clear();
-            listarProdutosAdicionados();
         } catch (ClienteInexistenteException error) {
             labelMsgCliente.setText(error.getMessage());
         } catch (NumberFormatException error) {
@@ -118,14 +117,12 @@ public class TelaControladorVenda implements Initializable {
             labelMsgPacote.setText(error.getMessage());
         } catch (DataInvalidaException error) {
             labelMsgData.setText(error.getMessage());
-        } catch (ProdutoInexistenteException ex) {
-            labelMsg.setText(ex.getMessage());
         }
 
     }
 
     private void adicionarVenda(Cliente cliente, Funcionario funcionario) throws DataInvalidaException, ProdutosInsuficientesException {
-        Venda venda = fachada.adicionarVenda(data.getValue(), cliente, funcionario, desconto, pacotes);
+        Venda venda = fachada.adicionarVenda(data.getValue().atTime(LocalTime.now()), cliente, funcionario, desconto, pacotes);
         txAreaInformativa.setText("Valor Total da venda: \t" + new DecimalFormat(".00").format(venda.getPrecoSemDesconto())
                 + "\nDesconto: " + venda.getDesconto()
                 + "\nValor Com Desconto: " + new DecimalFormat(".00").format(venda.getPrecoTotal()));

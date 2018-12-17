@@ -1,15 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.controladores;
 
+import com.itextpdf.text.DocumentException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import fachada.Fachada;
 import grafico.GerarRelatorioPDF;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -138,25 +136,46 @@ public class TelaControladorMenuPrincipal implements Initializable {
     @FXML
     private void redirecionaTelaRelatorioVendas(ActionEvent event) {
         GerarRelatorioPDF gr = new GerarRelatorioPDF();
-        gr.criarRelatorio();
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new ImageView("gui/icons/okay.png"));
-        content.setBody(new Label("Relatório gerado com sucesso"));
-        JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-        dialogo.setOverlayClose(false);
-        dialogo.setFocusTraversable(true);
-        stackPane.setVisible(true);
-        botaoOkay.setVisible(true);
-        botaoOkay.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dialogo.close();
-                botaoOkay.setVisible(false);
-                stackPane.setVisible(false);
-            }
-        });
-        content.setActions(botaoOkay);
-        dialogo.show();
+        try {
+            gr.criarRelatorio();
+            JFXDialogLayout content = new JFXDialogLayout();
+            content.setHeading(new ImageView("gui/icons/okay.png"));
+            content.setBody(new Label("Relatório gerado com sucesso"));
+            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+            dialogo.setOverlayClose(false);
+            dialogo.setFocusTraversable(true);
+            stackPane.setVisible(true);
+            botaoOkay.setVisible(true);
+            botaoOkay.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    dialogo.close();
+                    botaoOkay.setVisible(false);
+                    stackPane.setVisible(false);
+                }
+            });
+            content.setActions(botaoOkay);
+            dialogo.show();
+        } catch (DocumentException | FileNotFoundException ex) {
+            JFXDialogLayout content = new JFXDialogLayout();
+            content.setHeading(new ImageView("gui/icons/erro.png"));
+            content.setBody(new Label("Erro ao gerar relatorio de vendas"));
+            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+            dialogo.setOverlayClose(false);
+            dialogo.setFocusTraversable(true);
+            stackPane.setVisible(true);
+            botaoOkay.setVisible(true);
+            botaoOkay.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    dialogo.close();
+                    botaoOkay.setVisible(false);
+                    stackPane.setVisible(false);
+                }
+            });
+            content.setActions(botaoOkay);
+            dialogo.show();
+        }
     }
 
     @FXML

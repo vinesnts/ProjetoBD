@@ -6,6 +6,7 @@
 package grafico;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
@@ -14,6 +15,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import fachada.Fachada;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -33,74 +35,65 @@ public class GerarRelatorioPDF {
 
     }
 
-    public void criarRelatorio() {
+    public void criarRelatorio() throws DocumentException, FileNotFoundException {
         Fachada fachada = Fachada.getInstance();
         ArrayList<Venda> vendas;
-        try {
+        // Criação do objeto que será um documento PDF
+        Document documento = new Document();
+        // Faz o apontamento para o arquivo de destino
+        PdfWriter.getInstance(documento, new FileOutputStream("Dados/Relatorio.Pdf"));
+        // Realiza a abertura do arquivo para escrita
+        documento.open();
 
-            // Criação do objeto que será um documento PDF
-            Document documento = new Document();
-            // Faz o apontamento para o arquivo de destino
-            PdfWriter.getInstance(documento, new FileOutputStream("Dados/Relatorio.Pdf"));
-            // Realiza a abertura do arquivo para escrita
-            documento.open();
+        Paragraph paragrafo = new Paragraph("Relatório de Vendas\n\n", fontePadrao);
+        paragrafo.setAlignment(Element.ALIGN_CENTER);
+        documento.add(paragrafo);
 
-            Paragraph paragrafo = new Paragraph("Relatório de Vendas.\n\n", fontePadrao);
-            paragrafo.setAlignment(Element.ALIGN_CENTER);
-            documento.add(paragrafo);
-            
-           
-                    
-            PdfPTable table = new PdfPTable(new float[]{2f, 5f, 5f, 3f, 4f});
+        PdfPTable table = new PdfPTable(new float[]{2f, 5f, 5f, 3f, 4f});
 
-            PdfPCell celulaId = new PdfPCell(new Phrase("Id", fonteTable));
-            celulaId.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell celulaId = new PdfPCell(new Phrase("Id", fonteTable));
+        celulaId.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            PdfPCell celulaClienteNome = new PdfPCell(new Phrase("Cliente", fonteTable));
-            celulaClienteNome.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell celulaClienteNome = new PdfPCell(new Phrase("Cliente", fonteTable));
+        celulaClienteNome.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            PdfPCell celulaFuncionarioNome = new PdfPCell(new Phrase("Funcionário", fonteTable));
-            celulaFuncionarioNome.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell celulaFuncionarioNome = new PdfPCell(new Phrase("Funcionário", fonteTable));
+        celulaFuncionarioNome.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            PdfPCell celulaValor = new PdfPCell(new Phrase("Valor", fonteTable));
-            celulaValor.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell celulaValor = new PdfPCell(new Phrase("Valor", fonteTable));
+        celulaValor.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            PdfPCell celulaData = new PdfPCell(new Phrase("Data", fonteTable));
-            celulaData.setHorizontalAlignment(Element.ALIGN_CENTER);
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
+        PdfPCell celulaData = new PdfPCell(new Phrase("Data", fonteTable));
+        celulaData.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            table.addCell(celulaId);
-            table.addCell(celulaClienteNome);
-            table.addCell(celulaFuncionarioNome);
-            table.addCell(celulaValor);
-            table.addCell(celulaData);
+        table.addCell(celulaId);
+        table.addCell(celulaClienteNome);
+        table.addCell(celulaFuncionarioNome);
+        table.addCell(celulaValor);
+        table.addCell(celulaData);
 
-            vendas = fachada.getVendas();
+        vendas = fachada.getVendas();
 
-            for (int i = 0; i < vendas.size(); i++) {
-                
-                PdfPCell celula1 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).getId())));
-                PdfPCell celula2 = new PdfPCell(new Phrase(vendas.get(i).getCliente().getNome()));
-                PdfPCell celula3 = new PdfPCell(new Phrase(vendas.get(i).getFuncionario().getNome()));
-                PdfPCell celula4 = new PdfPCell( new Phrase( String.valueOf( new DecimalFormat(".00").format(vendas.get(i).getPrecoTotal()) ) ) );
-                PdfPCell celula5 = new PdfPCell(new Phrase(vendas.get(i).getData().format(formatador)));
-                
-               
-                table.addCell(celula1);
-                table.addCell(celula2);
-                table.addCell(celula3);
-                table.addCell(celula4);
-                table.addCell(celula5);
+        for (int i = 0; i < vendas.size(); i++) {
 
-            }
-            
-            documento.add(table);
+            PdfPCell celula1 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).getId())));
+            PdfPCell celula2 = new PdfPCell(new Phrase(vendas.get(i).getCliente().getNome()));
+            PdfPCell celula3 = new PdfPCell(new Phrase(vendas.get(i).getFuncionario().getNome()));
+            PdfPCell celula4 = new PdfPCell(new Phrase(String.valueOf(new DecimalFormat(".00").format(vendas.get(i).getPrecoTotal()))));
+            PdfPCell celula5 = new PdfPCell(new Phrase(vendas.get(i).getData().format(formatador)));
 
-            documento.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            table.addCell(celula1);
+            table.addCell(celula2);
+            table.addCell(celula3);
+            table.addCell(celula4);
+            table.addCell(celula5);
+
         }
 
+        documento.add(table);
+
+        documento.close();
     }
 
 }
