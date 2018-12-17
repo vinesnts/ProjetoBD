@@ -18,6 +18,10 @@ public class Funcionario extends Pessoa implements Serializable {
 
     }
 
+    public Funcionario(String nome, String cpf) {
+        super(nome, cpf);
+    }
+
     public void setEGerente(boolean eGerente) {
         this.eGerente = eGerente;
     }

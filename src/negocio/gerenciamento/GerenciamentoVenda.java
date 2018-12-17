@@ -1,9 +1,4 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio.gerenciamento;
 
 import dados.repositoriobd.RepositorioVenda;
@@ -23,9 +18,7 @@ public class GerenciamentoVenda {
     private static GerenciamentoVenda instancia;
 
     private GerenciamentoVenda() {
-        this.repositorio = new RepositorioVenda();
-        repositorio.ler();
-        
+        this.repositorio = RepositorioVenda.getInstance();        
     }
 
     public static GerenciamentoVenda getInstance() {
@@ -41,7 +34,7 @@ public class GerenciamentoVenda {
      */
     public Venda adicionar(Venda venda) {
         repositorio.adicionar(venda);
-        repositorio.gravar();
+        //repositorio.gravar();
         return venda;
     }
 
@@ -57,7 +50,7 @@ public class GerenciamentoVenda {
             throw new VendaInexistenteException();
         } else {
             repositorio.remover(venda);
-            repositorio.gravar();
+            // repositorio.gravar();
         }
     }
 
@@ -73,7 +66,7 @@ public class GerenciamentoVenda {
             throw new VendaInexistenteException();
         } else {
             repositorio.atualizar(venda);
-            repositorio.gravar();
+            // repositorio.gravar();
         }
     }
 
@@ -92,14 +85,6 @@ public class GerenciamentoVenda {
      */
     public ArrayList<Venda> getVendas() {
         return repositorio.getVendas();
-    }
-
-    /**
-     *
-     * @return o indice que sera gerado no repositorioVenda para a venda.
-     */
-    public int getId() {
-        return repositorio.getId();
     }
 
     /**

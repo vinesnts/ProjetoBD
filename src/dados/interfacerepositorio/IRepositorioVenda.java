@@ -23,4 +23,5 @@ public interface IRepositorioVenda {
     public Venda buscar(int id)throws VendaInexistenteException;
 
     public boolean verificarExistencia(Venda venda);
+
 }

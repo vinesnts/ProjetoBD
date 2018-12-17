@@ -15,6 +15,7 @@ import negocio.gerenciamento.GerenciamentoFuncionario;
 import negocio.gerenciamento.GerenciamentoProduto;
 import negocio.gerenciamento.GerenciamentoVenda;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import negocio.entidades.Pacote;
 import negocio.excecoes.CPFInvalidoException;
@@ -23,7 +24,6 @@ import negocio.excecoes.FuncionarioExistenteException;
 import negocio.excecoes.FuncionarioInexistenteException;
 import negocio.excecoes.NomeInvalidoException;
 import negocio.excecoes.ProdutosInsuficientesException;
-import negocio.excecoes.QuantidadeInsuficienteException;
 import negocio.excecoes.SenhaInvalidaException;
 import negocio.gerenciamento.GerenciamentoPacote;
 
@@ -157,15 +157,14 @@ public class Fachada {
     }
 
     //Venda
-    public Venda adicionarVenda(LocalDate data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Pacote> pacotes) throws DataInvalidaException, ProdutosInsuficientesException {
+    public Venda adicionarVenda(LocalDateTime data, Cliente cliente, Funcionario funcionario, double desconto, ArrayList<Pacote> pacotes) throws DataInvalidaException, ProdutosInsuficientesException {
         if (data == null) {
             throw new DataInvalidaException();
         }
         if (pacotes.isEmpty()) {
                 throw new ProdutosInsuficientesException();
         }
-            
-        Venda venda = new Venda(vendas.getId(), data, cliente, funcionario, desconto, pacotes);
+        Venda venda = new Venda(data, cliente, funcionario, desconto, pacotes);
         return vendas.adicionar(venda);
 
     }
@@ -202,17 +201,5 @@ public class Fachada {
      */
     public Venda buscarVenda(int id) throws VendaInexistenteException {
         return vendas.buscar(id);
-    }
-
-    //Pacote
-    /**
-     *
-     * @param pacotes recebe os pacotes refenrentes a uma venda a serem salvos no repositorio
-     */
-    public void adicionarPacotes(ArrayList<Pacote> pacotes) {
-        for(int i = 0; i < pacotes.size(); i++) {
-            Pacote pacote = pacotes.get(i);
-            this.pacotes.adicionar(pacote);
-        }
     }
 }

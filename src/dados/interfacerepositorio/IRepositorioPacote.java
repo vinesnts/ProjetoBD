@@ -1,6 +1,7 @@
 
 package dados.interfacerepositorio;
 
+import java.util.ArrayList;
 import negocio.entidades.Pacote;
 
 
@@ -13,7 +14,7 @@ public interface IRepositorioPacote {
      * 
      * @param carrinho Adiciona um carrinho ao repositorio enquanto uma venda esta sendo realizada
      */
-    public void adicionar(Pacote carrinho);
+    public int adicionar(Pacote carrinho);
     /**
      * 
      * @param carrinho remove um carrinho do repositorio enquanto uma venda esta sendo realizada
@@ -31,4 +32,5 @@ public interface IRepositorioPacote {
      */
     public void atualizar(Pacote carrinho);
     
+    public ArrayList<Pacote> getPacotes(int idVenda);
 }
