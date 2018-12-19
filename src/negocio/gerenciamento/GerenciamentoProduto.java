@@ -1,11 +1,7 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio.gerenciamento;
 
+import dados.interfacerepositorio.IRepositorioProduto;
 import dados.repositoriobd.RepositorioProduto;
 import negocio.entidades.Produto;
 import negocio.excecoes.ProdutoExistenteException;
@@ -18,7 +14,7 @@ import java.util.ArrayList;
  */
 public class GerenciamentoProduto {
 
-    private RepositorioProduto repositorio;
+    private IRepositorioProduto repositorio;
     private static GerenciamentoProduto instancia;
 
     private GerenciamentoProduto() {

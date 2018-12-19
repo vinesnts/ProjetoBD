@@ -1,5 +1,6 @@
 package negocio.gerenciamento;
 
+import dados.interfacerepositorio.IRepositorioPacote;
 import dados.repositoriobd.RepositorioPacote;
 import java.util.ArrayList;
 import negocio.entidades.Pacote;
@@ -12,7 +13,7 @@ import negocio.excecoes.QuantidadeInsuficienteException;
  */
 public class GerenciamentoPacote {
 
-    private RepositorioPacote repositorio;
+    private IRepositorioPacote repositorio;
     private static GerenciamentoPacote instancia;
 
     private GerenciamentoPacote() {
@@ -76,4 +77,7 @@ public class GerenciamentoPacote {
         return repositorio.buscar(id);
     }
 
+    public ArrayList<Pacote> getQuantidadeVendasProdutos() {
+        return repositorio.getQuantidadeVendasProdutos();
+    }
 }

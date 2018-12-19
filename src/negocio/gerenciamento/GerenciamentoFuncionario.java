@@ -1,11 +1,7 @@
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio.gerenciamento;
 
+import dados.interfacerepositorio.IRepositorioFuncionario;
 import dados.repositoriobd.RepositorioFuncionario;
 import negocio.entidades.Funcionario;
 import java.util.ArrayList;
@@ -18,7 +14,7 @@ import negocio.excecoes.FuncionarioInexistenteException;
  */
 public class GerenciamentoFuncionario {
 
-    private RepositorioFuncionario repositorio;
+    private IRepositorioFuncionario repositorio;
     private static GerenciamentoFuncionario instancia;
 
     private GerenciamentoFuncionario() {
@@ -79,9 +75,10 @@ public class GerenciamentoFuncionario {
 
     /**
      *
-     * @param matricula
+     * @param cpf
      * @return Retorna o objeto funcionario se ele ja estiver cadastrado no
      * repositorio, caso não lança exceção
+     * @throws negocio.excecoes.FuncionarioInexistenteException
      */
     public Funcionario buscarFuncionario(String cpf) throws FuncionarioInexistenteException {
         return repositorio.buscar(cpf);

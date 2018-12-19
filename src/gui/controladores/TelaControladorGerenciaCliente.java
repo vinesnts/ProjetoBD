@@ -58,7 +58,6 @@ public class TelaControladorGerenciaCliente implements Initializable {
     private GridPane menusGrid;
     @FXML
     private Label labelMsg;
-    private TextField txtCampoProcurarCPF;
     @FXML
     private JFXTextField tfProcurarCPF;
     @FXML
@@ -95,7 +94,6 @@ public class TelaControladorGerenciaCliente implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         fachada = Fachada.getInstance();
         listarClientes();
-        //dpAniversario.getEditor().setDisable(true);
     }
 
     @FXML

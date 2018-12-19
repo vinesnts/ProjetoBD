@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<JFXTabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controladores.TelaControladorRelatorios">
+   <tabs>
+      <Tab fx:id="totalVendas" closable="false" text="Total de vendas">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ListView fx:id="totalVendasListView" layoutX="155.0" layoutY="133.0" prefHeight="300.0" prefWidth="500.0" />
+                  <Button contentDisplay="RIGHT" layoutX="155.0" layoutY="441.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gerarPDFAction" prefHeight="40.0" text="Gerar PDF">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/relatorios.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label layoutX="314.0" layoutY="47.0" text="Total de Vendas">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <StackPane fx:id="stackPane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="810.0" stylesheets="@novo_tema_stackpane.css" visible="false">
+                     <children>
+                        <JFXButton fx:id="botaoOkay" text="Okay" visible="false" />
+                        <JFXButton fx:id="botaoNao" text="Não" visible="false" />
+                        <JFXButton fx:id="botaoSim" text="Sim" visible="false" />
+                     </children>
+                  </StackPane>
+                  <JFXButton alignment="CENTER" layoutX="570.0" layoutY="441.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#botaoCancelar" prefHeight="40.0" prefWidth="85.0" text="Voltar" />
+               </children></AnchorPane>
+         </content>
+      </Tab>
+      <Tab fx:id="produtosVendidosTab" closable="false" text="Produtos vendidos">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ListView fx:id="produtosVendidosListView" layoutX="155.0" layoutY="133.0" prefHeight="300.0" prefWidth="500.0" />
+                  <Label layoutX="298.0" layoutY="57.0" text="Produtos Vendidos">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXButton alignment="CENTER" layoutX="570.0" layoutY="440.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#botaoCancelar" prefHeight="40.0" prefWidth="85.0" text="Voltar" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+   </tabs>
+</JFXTabPane>

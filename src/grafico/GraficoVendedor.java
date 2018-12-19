@@ -2,6 +2,7 @@
 package grafico;
 
 import fachada.Fachada;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import javafx.application.Application;
@@ -59,9 +60,9 @@ public class GraficoVendedor extends Application {
 
     private double getValorTotalDasVendasMesFuncionario(int mes, String cpf) {
         double valorVenda = 0.0;
-        ArrayList<Venda> vendas = fachada.getVendas();
+        ArrayList<Venda> vendas = fachada.getVendasFuncionario(cpf, LocalDate.now().getYear());
         for (int i = 0; i < vendas.size(); i++) {
-            if (mes == vendas.get(i).getData().getMonthValue() && cpf.equals(vendas.get(i).getFuncionario().getCpf())) {
+            if (mes == vendas.get(i).getData().getMonthValue()) {
                 valorVenda += vendas.get(i).getPrecoTotal();
             }
         }

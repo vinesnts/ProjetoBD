@@ -14,6 +14,7 @@ import fachada.Fachada;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import negocio.entidades.Venda;
@@ -37,7 +38,7 @@ public class GerarRelatorioPDF {
         // Criação do objeto que será um documento PDF
         Document documento = new Document();
         // Faz o apontamento para o arquivo de destino
-        PdfWriter.getInstance(documento, new FileOutputStream("Dados/Relatorio.Pdf"));
+        PdfWriter.getInstance(documento, new FileOutputStream("Dados/Relatorio-" + LocalDate.now() + ".Pdf"));
         // Realiza a abertura do arquivo para escrita
         documento.open();
 

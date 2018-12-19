@@ -80,7 +80,7 @@ public class Fachada {
 
     public void atualizarCliente(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException, NomeInvalidoException {
         if (nome.equals(""))    throw new NomeInvalidoException();
-        clientes.atualizar(cpf, nome, dataAniversario);
+        clientes.atualizar(new Cliente(cpf, nome, dataAniversario));
     }
 
     public Cliente getCliente(String cpf) throws ClienteInexistenteException {
@@ -114,10 +114,6 @@ public class Fachada {
 
     public Funcionario getFuncionario(String cpf) throws FuncionarioInexistenteException {
         return funcionarios.buscarFuncionario(cpf);
-    }
-
-    public Funcionario getMelhorFunc() {
-        return vendas.getMelhorFuncionario();
     }
 
     public ArrayList<Funcionario> getFuncionarios() {
@@ -192,6 +188,11 @@ public class Fachada {
     public ArrayList<Venda> getVendas() {
         return vendas.getVendas();
     }
+    
+    
+    public ArrayList<Venda> getVendas(int ano) {
+        return vendas.getVendas(ano);
+    }
 
     /**
      *
@@ -202,4 +203,13 @@ public class Fachada {
     public Venda buscarVenda(int id) throws VendaInexistenteException {
         return vendas.buscar(id);
     }
+
+    public ArrayList<Venda> getVendasFuncionario(String cpf, int ano) {
+        return vendas.getVendasFuncionario(cpf, ano);
+    }
+    
+    public ArrayList<Pacote> getQuantidadeVendasProdutos() {
+        return pacotes.getQuantidadeVendasProdutos();
+    }
+
 }

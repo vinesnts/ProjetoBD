@@ -5,6 +5,7 @@
  */
 package dados.interfacerepositorio;
 
+import java.util.ArrayList;
 import negocio.entidades.Produto;
 import negocio.excecoes.ProdutoInexistenteException;
 
@@ -23,4 +24,6 @@ public interface IRepositorioProduto {
     public Produto buscar(int id) throws ProdutoInexistenteException;
     
     public boolean verificarExistencia(Produto produto);
+
+    public ArrayList<Produto> getProdutos();
 }

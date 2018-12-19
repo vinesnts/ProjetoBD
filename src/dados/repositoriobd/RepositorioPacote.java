@@ -34,7 +34,7 @@ public class RepositorioPacote implements IRepositorioPacote {
                     "  `Quantidade` int(11) NOT NULL,\n" +
                     "  PRIMARY KEY (`IdPacote`),\n" +
                     "  KEY `IdProduto` (`IdProduto`),\n" +
-                    "  CONSTRAINT `IdProduto` FOREIGN KEY (`IdProduto`) REFERENCES `produto` (`IdProduto`) ON DELETE SET NULL ON UPDATE SET NULL)\n";
+                    "  CONSTRAINT `IdProduto` FOREIGN KEY (`IdProduto`) REFERENCES `produto` (`IdProduto`) ON DELETE CASCADE ON UPDATE CASCADE)\n";
         String createView = "CREATE VIEW IF NOT EXISTS pacote_view AS SELECT *\n" +
                     "FROM pacote \n" +
                     "NATURAL JOIN venda_pacote\n" +
@@ -148,6 +148,7 @@ public class RepositorioPacote implements IRepositorioPacote {
      * @throws negocio.excecoes.PacoteInexistenteException lanca mensagem de que
      * o pacote nao existe
      */
+    @Override
     public Pacote buscar(int id) throws PacoteInexistenteException {
         String sql = "SELECT * \n"
                 + "FROM pacote_view\n"
@@ -226,6 +227,7 @@ public class RepositorioPacote implements IRepositorioPacote {
      *
      * @return Array com todos os pacotes
      */
+    @Override
     public ArrayList<Pacote> getPacotes() {
         String sql = "SELECT * \n"
                 + "FROM pacote_view";
@@ -264,7 +266,7 @@ public class RepositorioPacote implements IRepositorioPacote {
         String sql = "SELECT * \n"
                 + "FROM pacote_view"
                 + "WHERE IdVenda=(?)";
-        ArrayList<Pacote> lista = new ArrayList<Pacote>();
+        ArrayList<Pacote> lista = new ArrayList<>();
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -294,4 +296,40 @@ public class RepositorioPacote implements IRepositorioPacote {
 
         return lista;
     }
+    
+    @Override
+    public ArrayList<Pacote> getQuantidadeVendasProdutos() {
+        String sql = "SELECT * FROM produto pr, (SELECT p.IdProduto, SUM(p.Quantidade)\n" +
+                    "AS NumeroVendas FROM pacote p\n" +
+                    "GROUP BY p.IdProduto) p\n" +
+                    "WHERE p.IdProduto=pr.IdProduto";
+        ArrayList<Pacote> lista = new ArrayList<>();
+
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int idProduto = rs.getInt("IdProduto");
+                String nome = rs.getString("Nome");
+                Double preco = rs.getDouble("Preco");
+                String tamanho = rs.getString("Tamanho");
+                String marca = rs.getString("Marca");
+                String categoria = rs.getString("Categoria");
+                int quantidade = rs.getInt("NumeroVendas");
+
+                lista.add(new Pacote(new Produto(idProduto, nome, preco,
+                        tamanho, marca, categoria), quantidade));
+            }
+
+            pst.close();
+            conexao.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+
+        return lista;
+    }    
 }

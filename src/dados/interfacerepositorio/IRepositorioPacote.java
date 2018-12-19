@@ -3,6 +3,7 @@ package dados.interfacerepositorio;
 
 import java.util.ArrayList;
 import negocio.entidades.Pacote;
+import negocio.excecoes.PacoteInexistenteException;
 
 
 /**
@@ -33,4 +34,10 @@ public interface IRepositorioPacote {
     public void atualizar(Pacote carrinho);
     
     public ArrayList<Pacote> getPacotes(int idVenda);
+
+    public ArrayList<Pacote> getPacotes();
+
+    public Pacote buscar(int id) throws PacoteInexistenteException;
+    
+    public ArrayList<Pacote> getQuantidadeVendasProdutos();
 }

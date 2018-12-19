@@ -6,6 +6,7 @@
 package dados.interfacerepositorio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import negocio.entidades.Cliente;
 import negocio.excecoes.ClienteInexistenteException;
 
@@ -23,10 +24,12 @@ public interface IRepositorioCliente {
 
     public void remover(Cliente cliente);
 
-    public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException;
+    public void atualizar(Cliente cliente) throws ClienteInexistenteException;
 
     public Cliente buscar(String cpf) throws ClienteInexistenteException;
 
     public boolean verificarExistencia(Cliente cliente);
+
+    public ArrayList<Cliente> getClientes();
 
 }

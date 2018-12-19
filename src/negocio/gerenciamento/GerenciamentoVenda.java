@@ -1,6 +1,7 @@
 
 package negocio.gerenciamento;
 
+import dados.interfacerepositorio.IRepositorioVenda;
 import dados.repositoriobd.RepositorioVenda;
 import negocio.entidades.Funcionario;
 import negocio.entidades.Venda;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  */
 public class GerenciamentoVenda {
 
-    private RepositorioVenda repositorio;
+    private IRepositorioVenda repositorio;
     private static GerenciamentoVenda instancia;
 
     private GerenciamentoVenda() {
@@ -87,13 +88,12 @@ public class GerenciamentoVenda {
         return repositorio.getVendas();
     }
 
-    /**
-     *
-     * @return O melhor funcionario daquele periodode tempo // implementar
-     * isso(tempo)
-     */
-    public Funcionario getMelhorFuncionario() {
-        return repositorio.getMelhorFuncionario();
+    public ArrayList<Venda> getVendasFuncionario(String cpf, int ano) {
+        return repositorio.getVendasFuncionario(cpf, ano);
+    }
+
+    public ArrayList<Venda> getVendas(int ano) {
+        return repositorio.getVendasAno(ano);
     }
 
 }
