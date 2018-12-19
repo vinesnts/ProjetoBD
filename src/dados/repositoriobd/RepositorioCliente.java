@@ -97,16 +97,16 @@ public class RepositorioCliente implements IRepositorioCliente {
     }
 
     @Override
-    public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
+    public void atualizar(Cliente cliente) throws ClienteInexistenteException {
         String sql = "UPDATE cliente SET Nome=(?), DataAniversario=(?) WHERE CPF=(?)";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
 
-            pst.setString(1, nome);
-            pst.setDate(2, Date.valueOf(dataAniversario));
-            pst.setString(3, cpf);
+            pst.setString(1, cliente.getNome());
+            pst.setDate(2, Date.valueOf(cliente.getDataAniversario()));
+            pst.setString(3, cliente.getCpf());
             
             pst.executeUpdate();
             pst.close();
@@ -185,10 +185,11 @@ public class RepositorioCliente implements IRepositorioCliente {
         return false;
     }
 
+    @Override
     public ArrayList<Cliente> getClientes() {
         String sql = "SELECT * FROM cliente\n"
                 + "WHERE NOT DataAniversario IS NULL";
-        ArrayList<Cliente> lista = new ArrayList<Cliente>();
+        ArrayList<Cliente> lista = new ArrayList<>();
 
         try {
             Connection conn = ConexaoMySql.getConnection();

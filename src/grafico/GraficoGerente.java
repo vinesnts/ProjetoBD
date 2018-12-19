@@ -37,23 +37,22 @@ public class GraficoGerente extends Application {
     
     public Node criarGraficoPizza() {
         PieChart graficoPizza = new PieChart();
-        ArrayList<Venda> vendas = fachada.getVendas();
-        for (int i = 1; i <13; i++) {
-                graficoPizza.getData().addAll(new PieChart.Data("" + "Mes: "+i, getValorTotalDasVendasMes(i, ano)));
+        for (int i = 1; i <= 12; i++) {
+                graficoPizza.getData().addAll(new PieChart.Data("" + "Mes: "+i, getValorTotalDasVendasMes(i)));
         }
 
-        graficoPizza.setTitle("Gráfico Vendas "+ ano);
+        graficoPizza.setTitle("Gráfico Vendas " + ano);
         graficoPizza.setPrefSize(400, 300);
         return graficoPizza;
 
     }
 
-    private double getValorTotalDasVendasMes(int mes, int ano) {
+    private double getValorTotalDasVendasMes(int mes) {
         double valorVenda = 0.0;
-        ArrayList<Venda> vendas = fachada.getVendas();
+        ArrayList<Venda> vendas = fachada.getVendas(ano);
         for (int i = 0; i < vendas.size(); i++) {
-            if (mes == vendas.get(i).getData().getMonthValue() && ano == vendas.get(i).getData().getYear()) {
-                valorVenda = vendas.get(i).getPrecoTotal();
+            if (mes == vendas.get(i).getData().getMonthValue()) {
+                valorVenda += vendas.get(i).getPrecoTotal();
             }
         }
 

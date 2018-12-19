@@ -5,6 +5,7 @@
  */
 package dados.interfacerepositorio;
 
+import java.util.ArrayList;
 import negocio.entidades.Venda;
 import negocio.excecoes.VendaInexistenteException;
 
@@ -23,5 +24,11 @@ public interface IRepositorioVenda {
     public Venda buscar(int id)throws VendaInexistenteException;
 
     public boolean verificarExistencia(Venda venda);
+    
+    public ArrayList<Venda> getVendas();
+    
+    public ArrayList<Venda> getVendasAno(int ano);
+
+    public ArrayList<Venda> getVendasFuncionario(String cpf, int ano);
 
 }

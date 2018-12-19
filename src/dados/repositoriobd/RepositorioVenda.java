@@ -51,15 +51,16 @@ public class RepositorioVenda implements IRepositorioVenda {
                 + "IdCliente, c.Nome AS NomeCliente, \n"
                 + "IdFuncionario, f.Nome AS NomeFuncionario\n"
                 + "FROM venda v, cliente c, funcionario f\n"
-                + "WHERE (v.IdCliente=c.CPF AND v.IdFuncionario=f.CPF)";
+                + "WHERE (v.IdCliente=c.CPF AND v.IdFuncionario=f.CPF)\n"
+                + "ORDER BY v.IdVenda DESC";
         String createTableVendaPacote = "CREATE TABLE IF NOT EXISTS `venda_pacote` (\n"
                 + "  `IdVendaPacote` int(11) NOT NULL AUTO_INCREMENT,\n"
                 + "  `IdVenda` int(11) NOT NULL,\n"
-                + "  `IdPacote` int(11) NOT NULL,\n"
+                + "  `IdPacote` int(11) DEFAULT NULL,\n"
                 + "  PRIMARY KEY (`IdVendaPacote`),\n"
                 + "  KEY `IdVenda` (`IdVenda`),\n"
                 + "  KEY `IdPacote` (`IdPacote`),\n"
-                + "  CONSTRAINT `IdPacote` FOREIGN KEY (`IdPacote`) REFERENCES `pacote` (`IdPacote`) ON DELETE CASCADE ON UPDATE CASCADE,\n"
+                + "  CONSTRAINT `IdPacote` FOREIGN KEY (`IdPacote`) REFERENCES `pacote` (`IdPacote`) ON DELETE SET NULL ON UPDATE SET NULL,\n"
                 + "  CONSTRAINT `IdVenda` FOREIGN KEY (`IdVenda`) REFERENCES `venda` (`IdVenda`) ON DELETE CASCADE ON UPDATE CASCADE)";
 
         try {
@@ -272,6 +273,7 @@ public class RepositorioVenda implements IRepositorioVenda {
      *
      * @return O Array de vendas cadastradas no repositorio
      */
+    @Override
     public ArrayList<Venda> getVendas() {
         IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
         ArrayList<Venda> lista = new ArrayList<>();
@@ -308,40 +310,96 @@ public class RepositorioVenda implements IRepositorioVenda {
         }
         return lista;
     }
+    
+    @Override
+    public ArrayList<Venda> getVendasAno(int ano) {
+        IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
+        ArrayList<Venda> lista = new ArrayList<>();
+        String sql = "SELECT * FROM venda_view\n"
+                + "WHERE year(Data)=(?)";
+
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setInt(1, ano);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int idVenda = rs.getInt("IdVenda");
+                Date dataAux = rs.getDate("Data");
+                Time hora = rs.getTime("Data");
+                String cpfCliente = rs.getString("IdCliente");
+                String nomeCliente = rs.getString("NomeCliente");
+                String cpfFuncionario = rs.getString("IdFuncionario");
+                String nomeFuncionario = rs.getString("NomeFuncionario");
+                Double precoTotal = rs.getDouble("PrecoTotal");
+                Double desconto = rs.getDouble("Desconto");
+
+                Cliente c = new Cliente(nomeCliente, cpfCliente);
+                Funcionario f = new Funcionario(nomeFuncionario, cpfFuncionario);
+                
+                lista.add(new Venda(idVenda, LocalDateTime.of(dataAux.toLocalDate(),
+                                hora.toLocalTime()), c, f, precoTotal, desconto));
+            }
+            
+            pst.close();
+            conexao.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+        return lista;
+    }
+
 
 
     /**
      *
      * @param cpf
+     * @param ano
      * @return o valor total das vendas do funcionário passado como parametro
      */
-    private double getValorTotalDasVendasDoFuncionario(String cpf) {
-        ArrayList<Venda> vendas = this.getVendas();
-        double valorVenda = 0.0;
-        for (int i = 0; i < vendas.size(); i++) {
-            if (cpf.equals(vendas.get(i).getFuncionario().getCpf())) {
-                valorVenda += vendas.get(i).getPrecoTotal();
-            }
-        }
-        return valorVenda;
-    }
+    @Override
+    public ArrayList<Venda> getVendasFuncionario(String cpf, int ano) {
+        IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
+        ArrayList<Venda> lista = new ArrayList<>();
+        String sql = "SELECT * FROM venda_view\n"
+                + "WHERE year(Data)=(?)\n"
+                + "AND IdFuncionario=(?)";
 
-    /**
-     *
-     * @return o melhor funcionario
-     */
-    public Funcionario getMelhorFuncionario() {
-        ArrayList<Venda> vendas = this.getVendas();
-        double maiorVenda = 0.0, valorVenda;
-        Funcionario funcionario = null;
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setInt(1, ano);
+            pst.setString(2, cpf);
+            ResultSet rs = pst.executeQuery();
 
-        for (int i = 0; i < vendas.size(); i++) {
-            valorVenda = getValorTotalDasVendasDoFuncionario(vendas.get(i).getFuncionario().getCpf());
-            if (valorVenda > maiorVenda) {
-                maiorVenda = valorVenda;
-                funcionario = vendas.get(i).getFuncionario();
+            while (rs.next()) {
+                int idVenda = rs.getInt("IdVenda");
+                Date dataAux = rs.getDate("Data");
+                Time hora = rs.getTime("Data");
+                String cpfCliente = rs.getString("IdCliente");
+                String nomeCliente = rs.getString("NomeCliente");
+                String cpfFuncionario = rs.getString("IdFuncionario");
+                String nomeFuncionario = rs.getString("NomeFuncionario");
+                Double precoTotal = rs.getDouble("PrecoTotal");
+                Double desconto = rs.getDouble("Desconto");
+
+                Cliente c = new Cliente(nomeCliente, cpfCliente);
+                Funcionario f = new Funcionario(nomeFuncionario, cpfFuncionario);
+                
+                lista.add(new Venda(idVenda, LocalDateTime.of(dataAux.toLocalDate(),
+                                hora.toLocalTime()), c, f, precoTotal, desconto));
             }
+            
+            pst.close();
+            conexao.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
-        return funcionario;
+        return lista;
     }
 }

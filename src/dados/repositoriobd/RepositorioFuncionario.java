@@ -218,7 +218,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
     public ArrayList<Funcionario> getFuncionarios() {
         String sql = "SELECT * FROM funcionario\n" +
                     "WHERE NOT Senha IS NULL";
-        ArrayList<Funcionario> lista = new ArrayList<Funcionario>();
+        ArrayList<Funcionario> lista = new ArrayList<>();
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -248,29 +248,69 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      *
      * @return Retorna o Array com os funcionarios que são vendedores
      */
+    @Override
     public ArrayList<Funcionario> getVendedores() {
-        ArrayList<Funcionario> vendedores = new ArrayList();
-        ArrayList<Funcionario> funcionarios = this.getFuncionarios();
-        for (int i = 0; i < funcionarios.size(); i++) {
-            if (!funcionarios.get(i).eGerente()) {
-                vendedores.add(funcionarios.get(i));
+        String sql = "SELECT * FROM funcionario\n" +
+                    "WHERE (NOT Senha IS NULL)" +
+                    "AND eGerente=FALSE";
+        ArrayList<Funcionario> lista = new ArrayList<>();
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()) {
+                Boolean eGerente = rs.getBoolean("eGerente");
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String senha = rs.getString("Senha");
+                
+                lista.add(new Funcionario(nome, cpf, eGerente, senha));
             }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
-        return vendedores;
+        
+        return lista;
     }
 
     /**
      *
      * @return Retorna o Array com os funcionarios que são gerentes.
      */
+    @Override
     public ArrayList<Funcionario> getGerentes() {
-        ArrayList<Funcionario> gerentes = new ArrayList();
-        ArrayList<Funcionario> funcionarios = this.getFuncionarios();
-        for (int i = 0; i < funcionarios.size(); i++) {
-            if (funcionarios.get(i).eGerente()) {
-                gerentes.add(funcionarios.get(i));
+        String sql = "SELECT * FROM funcionario\n" +
+                    "WHERE (NOT Senha IS NULL)" +
+                    "AND eGerente=TRUE";
+        ArrayList<Funcionario> lista = new ArrayList<>();
+        
+        try {
+            Connection conexao = ConexaoMySql.getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()) {
+                Boolean eGerente = rs.getBoolean("eGerente");
+                String cpf = rs.getString("CPF");
+                String nome = rs.getString("Nome");
+                String senha = rs.getString("Senha");
+                
+                lista.add(new Funcionario(nome, cpf, eGerente, senha));
             }
+            
+            pst.close();
+            conexao.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
-        return gerentes;
+        
+        return lista;
     }
 }

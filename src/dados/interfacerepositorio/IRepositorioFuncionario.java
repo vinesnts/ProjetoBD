@@ -25,4 +25,8 @@ public interface IRepositorioFuncionario {
     public boolean verificarExistencia(Funcionario funcionario);
     
     public ArrayList<Funcionario> getFuncionarios();
+
+    public ArrayList<Funcionario> getVendedores();
+
+    public ArrayList<Funcionario> getGerentes();
 }

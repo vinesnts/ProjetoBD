@@ -134,48 +134,14 @@ public class TelaControladorMenuPrincipal implements Initializable {
     }
 
     @FXML
-    private void redirecionaTelaRelatorioVendas(ActionEvent event) {
-        GerarRelatorioPDF gr = new GerarRelatorioPDF();
-        try {
-            gr.criarRelatorio();
-            JFXDialogLayout content = new JFXDialogLayout();
-            content.setHeading(new ImageView("gui/icons/okay.png"));
-            content.setBody(new Label("Relatório gerado com sucesso"));
-            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
-            dialogo.setOverlayClose(false);
-            dialogo.setFocusTraversable(true);
-            stackPane.setVisible(true);
-            botaoOkay.setVisible(true);
-            botaoOkay.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    dialogo.close();
-                    botaoOkay.setVisible(false);
-                    stackPane.setVisible(false);
-                }
-            });
-            content.setActions(botaoOkay);
-            dialogo.show();
-        } catch (DocumentException | FileNotFoundException ex) {
-            JFXDialogLayout content = new JFXDialogLayout();
-            content.setHeading(new ImageView("gui/icons/erro.png"));
-            content.setBody(new Label("Erro ao gerar relatorio de vendas"));
-            JFXDialog dialogo = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
-            dialogo.setOverlayClose(false);
-            dialogo.setFocusTraversable(true);
-            stackPane.setVisible(true);
-            botaoOkay.setVisible(true);
-            botaoOkay.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    dialogo.close();
-                    botaoOkay.setVisible(false);
-                    stackPane.setVisible(false);
-                }
-            });
-            content.setActions(botaoOkay);
-            dialogo.show();
-        }
+    private void redirecionaTelaRelatorioVendas(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        stage.setTitle("Relatorios");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/gui/TelaRelatorios.fxml")));
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML

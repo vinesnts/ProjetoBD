@@ -1,11 +1,11 @@
 
 package negocio.gerenciamento;
 
+import dados.interfacerepositorio.IRepositorioCliente;
 import dados.repositoriobd.RepositorioCliente;
 import negocio.entidades.Cliente;
 import negocio.excecoes.ClienteExistenteException;
 import negocio.excecoes.ClienteInexistenteException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class GerenciamentoCliente {
 
-    private RepositorioCliente repositorio;
+    private IRepositorioCliente repositorio;
     private static GerenciamentoCliente instancia;
 
     /**
@@ -69,9 +69,8 @@ public class GerenciamentoCliente {
      * cliente já cadastrado, se sim atualiza os dados do cliente, caso não a
      * exceção é lançada
      */
-    public void atualizar(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException {
-        repositorio.atualizar(cpf, nome, dataAniversario);
-        //repositorio.gravar();
+    public void atualizar(Cliente cliente) throws ClienteInexistenteException {
+        repositorio.atualizar(cliente);
     }
 
     /**

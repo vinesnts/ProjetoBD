@@ -210,9 +210,10 @@ public class RepositorioProduto implements IRepositorioProduto {
     }
     //Retorna o Array de Produtos.
 
+    @Override
     public ArrayList<Produto> getProdutos() {
         String sql = "SELECT * FROM produto";
-        ArrayList<Produto> lista = new ArrayList<Produto>();
+        ArrayList<Produto> lista = new ArrayList<>();
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
