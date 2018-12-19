@@ -279,7 +279,7 @@ public class TelaControladorVenda implements Initializable {
         if (descontoTexto.equals("")) {
             descontoTexto = "0";
         }
-        desconto = Integer.parseInt(descontoTexto);
+        desconto = Double.parseDouble(descontoTexto);
         double valor = calcularValorPacote();
         if (desconto < 0 || desconto > 15) {
             labelMsgDesconto.setText("Desconto invalido!");

@@ -28,11 +28,13 @@ public class RepositorioPacote implements IRepositorioPacote {
     }
 
     private RepositorioPacote() {
-        String sql = "CREATE TABLE IF NOT EXISTS `pacote` (\n"
-                + "  `IdProduto` int(11) NOT NULL,\n"
-                + "  `Quantidade` int(11) DEFAULT NULL,\n"
-                + "  PRIMARY KEY (`IdProduto`),\n"
-                + "  CONSTRAINT `IdProduto` FOREIGN KEY (`IdProduto`) REFERENCES `produto` (`IdProduto`))";
+        String sql = "CREATE TABLE IF NOT EXISTS `pacote` (\n" +
+                    "  `IdPacote` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                    "  `IdProduto` int(11) DEFAULT NULL,\n" +
+                    "  `Quantidade` int(11) NOT NULL,\n" +
+                    "  PRIMARY KEY (`IdPacote`),\n" +
+                    "  KEY `IdProduto` (`IdProduto`),\n" +
+                    "  CONSTRAINT `IdProduto` FOREIGN KEY (`IdProduto`) REFERENCES `produto` (`IdProduto`) ON DELETE SET NULL ON UPDATE SET NULL)";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();

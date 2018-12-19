@@ -30,7 +30,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
                     "  `eGerente` tinyint(4) DEFAULT 0,\n" +
                     "  `CPF` varchar(14) NOT NULL,\n" +
                     "  `Nome` varchar(45) NOT NULL,\n" +
-                    "  `Senha` varchar(45) NOT NULL,\n" +
+                    "  `Senha` varchar(45) DEFAULT NULL,\n" +
                     "  PRIMARY KEY (`CPF`))";
 
         try {
@@ -80,16 +80,17 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public void remover(Funcionario funcionario) {
-        String sql = "DELETE FROM funcionario WHERE CPF=(?) AND Senha=(?)";
+        String sql = "UPDATE funcionario SET Senha=(?) WHERE CPF=(?) AND Senha=(?)";
         
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             
-            pst.setString(1, funcionario.getCpf());
-            pst.setString(2, funcionario.getSenha());
+            pst.setString(1, null);
+            pst.setString(2, funcionario.getCpf());
+            pst.setString(3, funcionario.getSenha());
             
-            pst.execute();
+            pst.executeUpdate();
             pst.close();
             conexao.close();
             
@@ -133,7 +134,10 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public Funcionario buscar(String cpf) throws FuncionarioInexistenteException {
-        String sql = "SELECT * FROM funcionario WHERE CPF=(?)";
+        String sql = "SELECT * FROM (\n" +
+                    "	SELECT * FROM funcionario \n" +
+                    "	WHERE CPF=(?)) f\n" +
+                    "WHERE NOT f.Senha IS NULL";
         Funcionario funcionario = null;
         
         try {
@@ -172,7 +176,10 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public boolean verificarExistencia(Funcionario funcionario) {
-        String sql = "SELECT * FROM funcionario WHERE CPF=(?)";
+        String sql = "SELECT * FROM (\n" +
+                    "	SELECT * FROM funcionario \n" +
+                    "	WHERE CPF=(?)) f\n" +
+                    "WHERE NOT f.Senha IS NULL";
         Funcionario f;
         
         try {
@@ -209,7 +216,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario {
      */
     @Override
     public ArrayList<Funcionario> getFuncionarios() {
-        String sql = "SELECT * FROM funcionario";
+        String sql = "SELECT * FROM funcionario\n" +
+                    "WHERE NOT Senha IS NULL";
         ArrayList<Funcionario> lista = new ArrayList<Funcionario>();
         
         try {

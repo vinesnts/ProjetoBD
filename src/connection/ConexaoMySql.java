@@ -24,7 +24,7 @@ public class ConexaoMySql {
     }
     
     public static void gerarUsuario() {
-        String sql = "INSERT INTO funcionario VALUES (?,?,?,?)";
+        String sql = "INSERT IGNORE funcionario VALUES (?,?,?,?)";
         Funcionario funcionario = new Funcionario("Administrador", "000.000.000-00", true, "admin");
         
         try {

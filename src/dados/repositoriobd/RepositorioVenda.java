@@ -13,8 +13,6 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import negocio.entidades.Cliente;
 import negocio.entidades.Funcionario;
@@ -47,8 +45,8 @@ public class RepositorioVenda implements IRepositorioVenda {
                 + "  PRIMARY KEY (`IdVenda`),\n"
                 + "  KEY `IdCliente` (`IdCliente`),\n"
                 + "  KEY `IdFuncionario` (`IdFuncionario`),\n"
-                + "  CONSTRAINT `IdCliente` FOREIGN KEY (`IdCliente`) REFERENCES `cliente` (`CPF`),\n"
-                + "  CONSTRAINT `IdFuncionario` FOREIGN KEY (`IdFuncionario`) REFERENCES `funcionario` (`CPF`))";
+                + "  CONSTRAINT `IdCliente` FOREIGN KEY (`IdCliente`) REFERENCES `cliente` (`CPF`) ON DELETE NO ACTION ON UPDATE NO ACTION,\n"
+                + "  CONSTRAINT `IdFuncionario` FOREIGN KEY (`IdFuncionario`) REFERENCES `funcionario` (`CPF`) ON DELETE NO ACTION ON UPDATE NO ACTION)";
         String venda_pacote = "CREATE TABLE IF NOT EXISTS `venda_pacote` (\n"
                 + "  `IdVendaPacote` int(11) NOT NULL AUTO_INCREMENT,\n"
                 + "  `IdVenda` int(11) NOT NULL,\n"
@@ -56,8 +54,8 @@ public class RepositorioVenda implements IRepositorioVenda {
                 + "  PRIMARY KEY (`IdVendaPacote`),\n"
                 + "  KEY `IdVenda` (`IdVenda`),\n"
                 + "  KEY `IdPacote` (`IdPacote`),\n"
-                + "  CONSTRAINT `IdPacote` FOREIGN KEY (`IdPacote`) REFERENCES `pacote` (`IdPacote`),\n"
-                + "  CONSTRAINT `IdVenda` FOREIGN KEY (`IdVenda`) REFERENCES `venda` (`IdVenda`))";
+                + "  CONSTRAINT `IdPacote` FOREIGN KEY (`IdPacote`) REFERENCES `pacote` (`IdPacote`) ON DELETE CASCADE ON UPDATE CASCADE,\n"
+                + "  CONSTRAINT `IdVenda` FOREIGN KEY (`IdVenda`) REFERENCES `venda` (`IdVenda`) ON DELETE CASCADE ON UPDATE CASCADE)";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -70,7 +68,7 @@ public class RepositorioVenda implements IRepositorioVenda {
             pst.close();
             conexao.close();
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -103,7 +101,7 @@ public class RepositorioVenda implements IRepositorioVenda {
             conexao.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -129,7 +127,7 @@ public class RepositorioVenda implements IRepositorioVenda {
                 conexao.close();
                 
             } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace(); // System.out.println("ERRO: " + e.getMessage());
+                System.out.println("ERRO: " + e.getMessage());
             }
         }
 
@@ -141,27 +139,20 @@ public class RepositorioVenda implements IRepositorioVenda {
      */
     @Override
     public void remover(Venda venda) {
-        String sql = "DELETE FROM pacote WHERE IdPacote=(\n"
-                + "SELECT IdPacote FROM venda_pacote WHERE IdVenda=(?))\n"
-                + "DELETE FROM venda_pacote WHERE IdVenda=(\n"
-                + "SELECT IdVenda FROM venda WHERE IdVenda=(?))"
-                + "DELETE FROM venda WHERE IdVenda=(\n"
-                + "(SELECT IdVenda FROM produto WHERE IdVenda=(?)))\n";
+        String sql = "DELETE FROM venda WHERE IdVenda=(?)";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
 
             pst.setInt(1, venda.getId());
-            pst.setInt(2, venda.getId());
-            pst.setInt(3, venda.getId());
 
             pst.execute();
             pst.close();
             conexao.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -185,7 +176,7 @@ public class RepositorioVenda implements IRepositorioVenda {
             pst.close();
             conexao.close();
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -235,7 +226,7 @@ public class RepositorioVenda implements IRepositorioVenda {
             conexao.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
 
         if (venda == null) {
@@ -266,7 +257,7 @@ public class RepositorioVenda implements IRepositorioVenda {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
 
         return false;
@@ -279,12 +270,11 @@ public class RepositorioVenda implements IRepositorioVenda {
     public ArrayList<Venda> getVendas() {
         IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
         ArrayList<Venda> lista = new ArrayList<>();
-        String sql = "SELECT IdVenda, Data, PrecoTotal, Desconto,\n"
-                + "cliente.CPF, cliente.Nome, cliente.DataAniversario,\n"
-                + "funcionario.CPF, funcionario.Nome\n"
-                + "FROM venda\n"
-                + "NATURAL JOIN cliente\n"
-                + "NATURAL JOIN funcionario\n";
+        String sql = "SELECT IdVenda, Data, PrecoTotal, Desconto,\n" +
+                    "IdCliente, c.Nome, \n" +
+                    "IdFuncionario, f.Nome\n" +
+                    "FROM venda v, cliente c, funcionario f\n" +
+                    "WHERE (v.IdCliente=c.CPF AND v.IdFuncionario=f.CPF)";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -295,15 +285,14 @@ public class RepositorioVenda implements IRepositorioVenda {
                 int idVenda = rs.getInt("IdVenda");
                 Date data = rs.getDate("Data");
                 Time hora = rs.getTime("Data");
-                String cpfCliente = rs.getString("cliente.CPF");
-                String nomeCliente = rs.getString("cliente.Nome");
-                String aniversario = rs.getString("DataAniversario");
-                String cpfFuncionario = rs.getString("funcionario.CPF");
-                String nomeFuncionario = rs.getString("funcionario.Nome");
+                String cpfCliente = rs.getString("IdCliente");
+                String nomeCliente = rs.getString("c.Nome");
+                String cpfFuncionario = rs.getString("IdFuncionario");
+                String nomeFuncionario = rs.getString("f.Nome");
                 Double precoTotal = rs.getDouble("PrecoTotal");
                 Double desconto = rs.getDouble("Desconto");
 
-                Cliente c = new Cliente(nomeCliente, cpfCliente, LocalDate.parse(aniversario));
+                Cliente c = new Cliente(nomeCliente, cpfCliente);
                 Funcionario f = new Funcionario(nomeFuncionario, cpfFuncionario);
                 
                 lista.add(new Venda(idVenda, LocalDateTime.of(data.toLocalDate(),
@@ -314,7 +303,7 @@ public class RepositorioVenda implements IRepositorioVenda {
             conexao.close();
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); //System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
         return lista;
     }
