@@ -1,12 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.controladores;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import grafico.GraficoGerente;
 import fachada.Fachada;
+import grafico.GraficoVendedor;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,13 +13,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import negocio.TextFieldFormatter;
+import negocio.entidades.Funcionario;
+import negocio.excecoes.FuncionarioInexistenteException;
 
 /**
  * FXML Controller class
@@ -29,22 +30,28 @@ import negocio.TextFieldFormatter;
  */
 public class TelaControladorGraficoGerente implements Initializable {
 
-    @FXML
-    private AnchorPane anchorPane;
-    @FXML
-    private Label labelDataInicio;
-    @FXML
-    private Button botaoMostrarGrafico;
-    @FXML
-    private Button botaoCancelar;
+    Fachada fachada;
+    
     @FXML
     private Label labelMsgErro;
     @FXML
-    private AnchorPane anchorPaneGrafico;
-    @FXML
     private TextField txCampoAno;
-
-    Fachada fachada;
+    @FXML
+    private Tab totaVendasAnoTab;
+    @FXML
+    private Tab meuTotalVendasTab;
+    @FXML
+    private JFXTextField txCampoCPF;
+    @FXML
+    private JFXButton botaoMostrarGrafico1;
+    @FXML
+    private Label labelMsgErro1;
+    @FXML
+    private JFXButton botaoTotalVendasAno;
+    @FXML
+    private AnchorPane anchorPaneTotalAno;
+    @FXML
+    private AnchorPane anchorPaneMeuTotal;
     
     /**
      * Initializes the controller class.
@@ -53,10 +60,11 @@ public class TelaControladorGraficoGerente implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fachada = Fachada.getInstance();
+        txCampoCPF.setText(fachada.getLogado().getCpf());
     }
 
     @FXML
-    private void acaoMostrarGrafico(ActionEvent event) {
+    private void acaoTotalVendasAno(ActionEvent event) {
         try {
 
             int ano = Integer.parseInt(txCampoAno.getText());
@@ -64,17 +72,29 @@ public class TelaControladorGraficoGerente implements Initializable {
             graficoGerente.setAno(ano);
             labelMsgErro.setText("");
             FlowPane flow = new FlowPane(graficoGerente.criarGraficoPizza());
-            anchorPaneGrafico.getChildren().setAll(flow);
+            anchorPaneTotalAno.getChildren().setAll(flow);
 
         } catch (NumberFormatException error) {
             labelMsgErro.setText("Entrada invalida.");
         }
-
+    }
+    
+    @FXML
+    private void acaoMeuTotalVendas(ActionEvent event) {
+        try {
+            Funcionario funcionario = fachada.getFuncionario(txCampoCPF.getText());
+            if (funcionario.getCpf().equals(txCampoCPF.getText())) {
+                GraficoVendedor graficoVendedor = new GraficoVendedor();
+                FlowPane flow = new FlowPane(graficoVendedor.criarGraficoLinha(txCampoCPF.getText()));
+                anchorPaneMeuTotal.getChildren().setAll(flow);
+            }
+        } catch (FuncionarioInexistenteException e) {
+            labelMsgErro.setText(e.getMessage());
+        }
     }
 
     @FXML
     private void acaoCancelarTelaMenu(ActionEvent event) throws IOException {
-//        anchorPane.setVisible(false);
         ((Node) event.getSource()).getScene().getWindow().hide();
 
     }
@@ -87,5 +107,6 @@ public class TelaControladorGraficoGerente implements Initializable {
         tff.setTf(txCampoAno);
         tff.formatter();
     }
+
 
 }

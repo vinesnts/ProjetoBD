@@ -52,7 +52,6 @@ public class TelaControladorGraficoVendedor implements Initializable {
         fachada = Fachada.getInstance();
         txCampoCPF.setText(fachada.getLogado().getCpf());
     }
-    // s.setScene(new Scene(new FlowPane(criarGraficoLinha())));
 
     @FXML
     private void acaoCancelarFuncionario(ActionEvent event) throws IOException {
@@ -66,8 +65,7 @@ public class TelaControladorGraficoVendedor implements Initializable {
             Funcionario funcionario = fachada.getFuncionario(txCampoCPF.getText());
             if (funcionario.getCpf().equals(txCampoCPF.getText())) {
                 GraficoVendedor graficoVendedor = new GraficoVendedor();
-                graficoVendedor.setCpf(txCampoCPF.getText());
-                FlowPane flow = new FlowPane(graficoVendedor.criarGraficoLinha());
+                FlowPane flow = new FlowPane(graficoVendedor.criarGraficoLinha(txCampoCPF.getText()));
                 anchorPaneGrafico.getChildren().setAll(flow);
             }
         } catch (FuncionarioInexistenteException e) {
