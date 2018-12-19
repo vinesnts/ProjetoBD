@@ -105,10 +105,10 @@ public class Venda implements Serializable {
         if (desconto < 0 || desconto > 15) {
                 throw new NumberFormatException();
         }
-        this.desconto = desconto / 100;
-        if (cliente.getDataAniversario().equals(dataVenda.toLocalDate())) {
-                desconto += 0.05;
+        if (cliente.getDataAniversario() != null && cliente.getDataAniversario().getMonth().equals(dataVenda.toLocalDate().getMonth())) {
+                desconto += 5.0;
         }
+        this.desconto = desconto / 100;
     }
     
     public double getDesconto() {

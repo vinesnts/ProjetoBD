@@ -104,3 +104,15 @@
 .date-picker {
     jfx-default-color: #0080ff;
 }
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #0080ff;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #0080ff;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #0080ff;
+    -fx-stroke-width: 3pt;
+}
+

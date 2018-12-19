@@ -37,7 +37,7 @@ public class RepositorioCliente implements IRepositorioCliente {
     private RepositorioCliente() {
         String sql = "CREATE TABLE IF NOT EXISTS `cliente` (\n" +
                     "  `CPF` varchar(14) NOT NULL,\n" +
-                    "  `Nome` varchar(45) DEFAULT NULL,\n" +
+                    "  `Nome` varchar(45) NOT NULL,\n" +
                     "  `DataAniversario` date DEFAULT NULL,\n" +
                     "  PRIMARY KEY (`CPF`))";
 
@@ -77,15 +77,16 @@ public class RepositorioCliente implements IRepositorioCliente {
 
     @Override
     public void remover(Cliente cliente) {
-        String sql = "DELETE FROM cliente WHERE CPF=(?)";
+        String sql = "UPDATE cliente SET DataAniversario=(?) WHERE CPF=(?)";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
 
-            pst.setString(1, cliente.getCpf());
+            pst.setString(1, null);
+            pst.setString(2, cliente.getCpf());
             
-            pst.execute();
+            pst.executeUpdate();
             pst.close();
             conexao.close();
 
@@ -118,7 +119,10 @@ public class RepositorioCliente implements IRepositorioCliente {
 
     @Override
     public Cliente buscar(String cpf) throws ClienteInexistenteException {
-        String sql = "SELECT * FROM cliente WHERE CPF=?";
+        String sql = "SELECT * FROM (\n" +
+                    "	SELECT * FROM cliente \n" +
+                    "	WHERE CPF=(?)) c\n" +
+                    "WHERE NOT c.DataAniversario IS NULL";
         Cliente cliente = null;
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -149,7 +153,10 @@ public class RepositorioCliente implements IRepositorioCliente {
     @Override
     public boolean verificarExistencia(Cliente cliente) {
 
-        String sql = "SELECT * FROM cliente WHERE CPF = (?)";
+        String sql = "SELECT * FROM (\n" +
+                    "	SELECT * FROM cliente \n" +
+                    "	WHERE CPF=(?)) c\n" +
+                    "WHERE NOT c.DataAniversario IS NULL";
         Cliente c;
         try {
             Connection conn = ConexaoMySql.getConnection();
@@ -179,7 +186,8 @@ public class RepositorioCliente implements IRepositorioCliente {
     }
 
     public ArrayList<Cliente> getClientes() {
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT * FROM cliente\n"
+                + "WHERE NOT DataAniversario IS NULL";
         ArrayList<Cliente> lista = new ArrayList<Cliente>();
 
         try {

@@ -28,17 +28,26 @@ public class RepositorioPacote implements IRepositorioPacote {
     }
 
     private RepositorioPacote() {
-        String sql = "CREATE TABLE IF NOT EXISTS `pacote` (\n"
-                + "  `IdProduto` int(11) NOT NULL,\n"
-                + "  `Quantidade` int(11) DEFAULT NULL,\n"
-                + "  PRIMARY KEY (`IdProduto`),\n"
-                + "  CONSTRAINT `IdProduto` FOREIGN KEY (`IdProduto`) REFERENCES `produto` (`IdProduto`))";
+        String createTable = "CREATE TABLE IF NOT EXISTS `pacote` (\n" +
+                    "  `IdPacote` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                    "  `IdProduto` int(11) DEFAULT NULL,\n" +
+                    "  `Quantidade` int(11) NOT NULL,\n" +
+                    "  PRIMARY KEY (`IdPacote`),\n" +
+                    "  KEY `IdProduto` (`IdProduto`),\n" +
+                    "  CONSTRAINT `IdProduto` FOREIGN KEY (`IdProduto`) REFERENCES `produto` (`IdProduto`) ON DELETE SET NULL ON UPDATE SET NULL)\n";
+        String createView = "CREATE VIEW IF NOT EXISTS pacote_view AS SELECT *\n" +
+                    "FROM pacote \n" +
+                    "NATURAL JOIN venda_pacote\n" +
+                    "NATURAL JOIN produto";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
-            PreparedStatement pst = conexao.prepareStatement(sql);
-
+            
+            PreparedStatement pst = conexao.prepareStatement(createTable);
             pst.execute();
+            pst = conexao.prepareStatement(createView);
+            pst.execute();
+            
             pst.close();
             conexao.close();
 
@@ -141,7 +150,7 @@ public class RepositorioPacote implements IRepositorioPacote {
      */
     public Pacote buscar(int id) throws PacoteInexistenteException {
         String sql = "SELECT * \n"
-                + "FROM pacote NATURAL JOIN produto \n"
+                + "FROM pacote_view\n"
                 + "WHERE IdProduto=(?)";
 
         Pacote pacote = null;
@@ -188,8 +197,8 @@ public class RepositorioPacote implements IRepositorioPacote {
     @Override
     public boolean verificarExistencia(Pacote pacote) {
         String sql = "SELECT IdProduto \n"
-                + "FROM pacote NATURAL JOIN produto \n"
-                + "WHERE IdProduto=(IdProduto=(1))";
+                + "FROM pacote_view \n"
+                + "WHERE IdProduto=(IdProduto=(?))";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -219,7 +228,7 @@ public class RepositorioPacote implements IRepositorioPacote {
      */
     public ArrayList<Pacote> getPacotes() {
         String sql = "SELECT * \n"
-                + "FROM pacote NATURAL JOIN produto";
+                + "FROM pacote_view";
         ArrayList<Pacote> lista = new ArrayList<>();
 
         try {
@@ -253,8 +262,7 @@ public class RepositorioPacote implements IRepositorioPacote {
     @Override
     public ArrayList<Pacote> getPacotes(int idVenda) {
         String sql = "SELECT * \n"
-                + "FROM pacote NATURAL JOIN venda_pacote"
-                + "NATURAL JOIN produto"
+                + "FROM pacote_view"
                 + "WHERE IdVenda=(?)";
         ArrayList<Pacote> lista = new ArrayList<Pacote>();
 

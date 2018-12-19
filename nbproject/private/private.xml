@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/media/Arquivos/BCC/2018.2/BD/ProjetoBD/ProjetoLoja/src/dados/repositoriobd/RepositorioVenda.java</file>
-            <file>file:/media/Arquivos/BCC/2018.2/BD/ProjetoBD/ProjetoLoja/src/dados/repositoriobd/RepositorioCliente.java</file>
-            <file>file:/media/Arquivos/BCC/2018.2/BD/ProjetoBD/ProjetoLoja/src/dados/repositoriobd/RepositorioPacote.java</file>
-            <file>file:/media/Arquivos/BCC/2018.2/BD/ProjetoBD/ProjetoLoja/src/dados/repositoriobd/RepositorioProduto.java</file>
-            <file>file:/media/Arquivos/BCC/2018.2/BD/ProjetoBD/ProjetoLoja/src/negocio/entidades/Venda.java</file>
-            <file>file:/media/Arquivos/BCC/2018.2/BD/ProjetoBD/ProjetoLoja/src/negocio/entidades/Funcionario.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

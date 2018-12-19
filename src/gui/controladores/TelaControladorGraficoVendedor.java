@@ -41,7 +41,7 @@ public class TelaControladorGraficoVendedor implements Initializable {
     private JFXTextField txCampoCPF;
     @FXML
     private Label labelMsgErro;
-    
+
     private Fachada fachada;
 
     /**
@@ -49,33 +49,24 @@ public class TelaControladorGraficoVendedor implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	fachada = Fachada.getInstance();
-    	txCampoCPF.setText(fachada.getLogado().getCpf());
+        fachada = Fachada.getInstance();
+        txCampoCPF.setText(fachada.getLogado().getCpf());
     }
-    // s.setScene(new Scene(new FlowPane(criarGraficoLinha())));
 
     @FXML
     private void acaoCancelarFuncionario(ActionEvent event) throws IOException {
-//        anchorPane.setVisible(false);
-    	((Node) event.getSource()).getScene().getWindow().hide();
+        ((Node) event.getSource()).getScene().getWindow().hide();
 
     }
 
     @FXML
     private void acaoMostrarGrafico(ActionEvent event) {
         try {
-            if (txCampoCPF.getText().equals("")) {
-               // txCampoMatricula.clear();
-                //labelMsgErro.setText("Campo Inválido.");
-            } else {
-                Funcionario funcionario = fachada.getFuncionario(txCampoCPF.getText());
-                if (funcionario.getSenha().equals(txCampoCPF.getText())) {
-                    GraficoVendedor graficoVendedor = new GraficoVendedor();
-                    graficoVendedor.setCpf(txCampoCPF.getText());
-                    FlowPane flow = new FlowPane(graficoVendedor.criarGraficoLinha());
-                    anchorPaneGrafico.getChildren().setAll(flow);
-
-                }
+            Funcionario funcionario = fachada.getFuncionario(txCampoCPF.getText());
+            if (funcionario.getCpf().equals(txCampoCPF.getText())) {
+                GraficoVendedor graficoVendedor = new GraficoVendedor();
+                FlowPane flow = new FlowPane(graficoVendedor.criarGraficoLinha(txCampoCPF.getText()));
+                anchorPaneGrafico.getChildren().setAll(flow);
             }
         } catch (FuncionarioInexistenteException e) {
             labelMsgErro.setText(e.getMessage());

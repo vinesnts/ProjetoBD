@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package grafico;
 
 import com.itextpdf.text.Document;
@@ -78,8 +74,8 @@ public class GerarRelatorioPDF {
         for (int i = 0; i < vendas.size(); i++) {
 
             PdfPCell celula1 = new PdfPCell(new Phrase(String.valueOf(vendas.get(i).getId())));
-            PdfPCell celula2 = new PdfPCell(new Phrase(vendas.get(i).getCliente().getNome()));
-            PdfPCell celula3 = new PdfPCell(new Phrase(vendas.get(i).getFuncionario().getNome()));
+            PdfPCell celula2 = new PdfPCell(new Phrase(vendas.get(i).getCliente().getNome() + "\n" + vendas.get(i).getCliente().getCpf()));
+            PdfPCell celula3 = new PdfPCell(new Phrase(vendas.get(i).getFuncionario().getNome() + "\n" + vendas.get(i).getFuncionario().getCpf()));
             PdfPCell celula4 = new PdfPCell(new Phrase(String.valueOf(new DecimalFormat(".00").format(vendas.get(i).getPrecoTotal()))));
             PdfPCell celula5 = new PdfPCell(new Phrase(vendas.get(i).getData().format(formatador)));
 
