@@ -35,7 +35,7 @@ public class RepositorioVenda implements IRepositorioVenda {
     }
 
     private RepositorioVenda() {
-        String venda = "CREATE TABLE IF NOT EXISTS `venda` (\n"
+        String createTableVenda = "CREATE TABLE IF NOT EXISTS `venda` (\n"
                 + "  `IdVenda` int(11) NOT NULL AUTO_INCREMENT,\n"
                 + "  `IdCliente` varchar(14) NOT NULL,\n"
                 + "  `IdFuncionario` varchar(14) NOT NULL,\n"
@@ -46,8 +46,13 @@ public class RepositorioVenda implements IRepositorioVenda {
                 + "  KEY `IdCliente` (`IdCliente`),\n"
                 + "  KEY `IdFuncionario` (`IdFuncionario`),\n"
                 + "  CONSTRAINT `IdCliente` FOREIGN KEY (`IdCliente`) REFERENCES `cliente` (`CPF`) ON DELETE NO ACTION ON UPDATE NO ACTION,\n"
-                + "  CONSTRAINT `IdFuncionario` FOREIGN KEY (`IdFuncionario`) REFERENCES `funcionario` (`CPF`) ON DELETE NO ACTION ON UPDATE NO ACTION)";
-        String venda_pacote = "CREATE TABLE IF NOT EXISTS `venda_pacote` (\n"
+                + "  CONSTRAINT `IdFuncionario` FOREIGN KEY (`IdFuncionario`) REFERENCES `funcionario` (`CPF`) ON DELETE NO ACTION ON UPDATE NO ACTION)\n";
+        String createViewVenda = "CREATE VIEW IF NOT EXISTS `venda_view` AS SELECT IdVenda, Data, PrecoTotal, Desconto,\n"
+                + "IdCliente, c.Nome AS NomeCliente, \n"
+                + "IdFuncionario, f.Nome AS NomeFuncionario\n"
+                + "FROM venda v, cliente c, funcionario f\n"
+                + "WHERE (v.IdCliente=c.CPF AND v.IdFuncionario=f.CPF)";
+        String createTableVendaPacote = "CREATE TABLE IF NOT EXISTS `venda_pacote` (\n"
                 + "  `IdVendaPacote` int(11) NOT NULL AUTO_INCREMENT,\n"
                 + "  `IdVenda` int(11) NOT NULL,\n"
                 + "  `IdPacote` int(11) NOT NULL,\n"
@@ -60,9 +65,11 @@ public class RepositorioVenda implements IRepositorioVenda {
         try {
             Connection conexao = ConexaoMySql.getConnection();
             
-            PreparedStatement pst = conexao.prepareStatement(venda);
+            PreparedStatement pst = conexao.prepareStatement(createTableVenda);
             pst.execute();
-            pst = conexao.prepareStatement(venda_pacote);
+            pst = conexao.prepareStatement(createViewVenda);
+            pst.execute();
+            pst = conexao.prepareStatement(createTableVendaPacote);
             pst.execute();
             
             pst.close();
@@ -189,10 +196,8 @@ public class RepositorioVenda implements IRepositorioVenda {
     @Override
     public Venda buscar(int id) throws VendaInexistenteException {
         IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
-        String sql = "SELECT * FROM venda\n"
-                + "NATURAL JOIN cliente\n"
-                + "NATURAL JOIN funcionario\n"
-                + "WHERE IdVenda=(?)";
+        String sql = "SELECT * FROM venda_view\n" +
+                    "WHERE IdVenda=(1)";
 
         Venda venda = null;
 
@@ -239,7 +244,7 @@ public class RepositorioVenda implements IRepositorioVenda {
     @Override
     public boolean verificarExistencia(Venda venda) {
         IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
-        String sql = "SELECT IdVenda FROM venda\n"
+        String sql = "SELECT IdVenda FROM venda_view\n"
                 + "WHERE IdVenda=(?)";
 
         try {
@@ -270,11 +275,7 @@ public class RepositorioVenda implements IRepositorioVenda {
     public ArrayList<Venda> getVendas() {
         IRepositorioPacote pacotebd = RepositorioPacote.getInstance();
         ArrayList<Venda> lista = new ArrayList<>();
-        String sql = "SELECT IdVenda, Data, PrecoTotal, Desconto,\n" +
-                    "IdCliente, c.Nome, \n" +
-                    "IdFuncionario, f.Nome\n" +
-                    "FROM venda v, cliente c, funcionario f\n" +
-                    "WHERE (v.IdCliente=c.CPF AND v.IdFuncionario=f.CPF)";
+        String sql = "SELECT * FROM venda_view";
 
         try {
             Connection conexao = ConexaoMySql.getConnection();
@@ -286,9 +287,9 @@ public class RepositorioVenda implements IRepositorioVenda {
                 Date data = rs.getDate("Data");
                 Time hora = rs.getTime("Data");
                 String cpfCliente = rs.getString("IdCliente");
-                String nomeCliente = rs.getString("c.Nome");
+                String nomeCliente = rs.getString("NomeCliente");
                 String cpfFuncionario = rs.getString("IdFuncionario");
-                String nomeFuncionario = rs.getString("f.Nome");
+                String nomeFuncionario = rs.getString("NomeFuncionario");
                 Double precoTotal = rs.getDouble("PrecoTotal");
                 Double desconto = rs.getDouble("Desconto");
 
