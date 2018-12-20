@@ -80,7 +80,7 @@ public class Fachada {
 
     public void atualizarCliente(String cpf, String nome, LocalDate dataAniversario) throws ClienteInexistenteException, NomeInvalidoException {
         if (nome.equals(""))    throw new NomeInvalidoException();
-        clientes.atualizar(new Cliente(cpf, nome, dataAniversario));
+        clientes.atualizar(new Cliente(nome, cpf, dataAniversario));
     }
 
     public Cliente getCliente(String cpf) throws ClienteInexistenteException {

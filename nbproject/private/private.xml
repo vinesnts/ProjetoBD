@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Raquell%20Vieira/Desktop/Faculdade%202018.2/Banco%20de%20Dados/ProjetoBD/src/dados/repositoriobd/RepositorioCliente.java</file>
+            <file>file:/C:/Users/Raquell%20Vieira/Desktop/Faculdade%202018.2/Banco%20de%20Dados/ProjetoBD/src/dados/repositoriobd/RepositorioFuncionario.java</file>
+            <file>file:/C:/Users/Raquell%20Vieira/Desktop/Faculdade%202018.2/Banco%20de%20Dados/ProjetoBD/src/connection/ConexaoMySql.java</file>
+            <file>file:/C:/Users/Raquell%20Vieira/Desktop/Faculdade%202018.2/Banco%20de%20Dados/ProjetoBD/src/gui/controladores/TelaControladorGerenciaCliente.java</file>
+        </group>
     </open-files>
 </project-private>
